@@ -3,6 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+## 防止验证口令泄露 ##
+!src/main/resources/application.properties
 
 ### STS ###
 .apt_generated
