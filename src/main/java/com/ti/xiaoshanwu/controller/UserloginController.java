@@ -29,6 +29,15 @@ public class UserloginController {
     @Resource
     private UserloginService userloginService;
 
+    /**
+     * Get user login by userid and userpwd string.
+     *
+     * @param userid  the userid
+     * @param userpwd the userpwd
+     * @param session the session
+     * @param model   the model
+     * @return the string
+     */
     @RequestMapping("/login")
     public String getUserLoginByUseridAndUserpwd(String userid,
                                                  String userpwd,
