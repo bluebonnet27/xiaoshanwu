@@ -25,7 +25,8 @@ public class MailController {
         try {
             mailService.sendSimpleMail(email, "注册验证码", message);
         }catch (Exception e){
-            return "";
+            e.printStackTrace();
+            return "?????????";
         }
         return checkCode;
     }

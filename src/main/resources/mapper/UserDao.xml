@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.UserDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.User" id="UserMap">
+        <result property="userid" column="userid" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="userpwd" column="userpwd" jdbcType="VARCHAR"/>
+        <result property="useremail" column="useremail" jdbcType="VARCHAR"/>
+        <result property="userbirth" column="userbirth" jdbcType="TIMESTAMP"/>
+        <result property="usersex" column="usersex" jdbcType="INTEGER"/>
+        <result property="userlv" column="userlv" jdbcType="INTEGER"/>
+        <result property="userimg" column="userimg" jdbcType="INTEGER"/>
+        <result property="userrole" column="userrole" jdbcType="INTEGER"/>
+        <result property="userstatement" column="userstatement" jdbcType="VARCHAR"/>
+        <result property="userregtime" column="userregtime" jdbcType="TIMESTAMP"/>
+        <result property="usermoney" column="usermoney" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select
+          userid, username, userpwd, useremail, userbirth, usersex, userlv, userimg, userrole, userstatement, userregtime, usermoney
+        from user
+        where userid = #{userid}
+    </select>
+
+    <!--  登录查询  -->
+    <select id="queryByEmail" resultMap="UserMap">
+        select
+            userid, username, userpwd, useremail, userbirth, usersex, userlv, userimg, userrole, userstatement, userregtime, usermoney
+        from user
+        where useremail = #{useremail}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+          userid, username, userpwd, useremail, userbirth, usersex, userlv, userimg, userrole, userstatement, userregtime, usermoney
+        from user
+        <where>
+            <if test="userid != null">
+                and userid = #{userid}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="userpwd != null and userpwd != ''">
+                and userpwd = #{userpwd}
+            </if>
+            <if test="useremail != null and useremail != ''">
+                and useremail = #{useremail}
+            </if>
+            <if test="userbirth != null">
+                and userbirth = #{userbirth}
+            </if>
+            <if test="usersex != null">
+                and usersex = #{usersex}
+            </if>
+            <if test="userlv != null">
+                and userlv = #{userlv}
+            </if>
+            <if test="userimg != null">
+                and userimg = #{userimg}
+            </if>
+            <if test="userrole != null">
+                and userrole = #{userrole}
+            </if>
+            <if test="userstatement != null and userstatement != ''">
+                and userstatement = #{userstatement}
+            </if>
+            <if test="userregtime != null">
+                and userregtime = #{userregtime}
+            </if>
+            <if test="usermoney != null">
+                and usermoney = #{usermoney}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from user
+        <where>
+            <if test="userid != null">
+                and userid = #{userid}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="userpwd != null and userpwd != ''">
+                and userpwd = #{userpwd}
+            </if>
+            <if test="useremail != null and useremail != ''">
+                and useremail = #{useremail}
+            </if>
+            <if test="userbirth != null">
+                and userbirth = #{userbirth}
+            </if>
+            <if test="usersex != null">
+                and usersex = #{usersex}
+            </if>
+            <if test="userlv != null">
+                and userlv = #{userlv}
+            </if>
+            <if test="userimg != null">
+                and userimg = #{userimg}
+            </if>
+            <if test="userrole != null">
+                and userrole = #{userrole}
+            </if>
+            <if test="userstatement != null and userstatement != ''">
+                and userstatement = #{userstatement}
+            </if>
+            <if test="userregtime != null">
+                and userregtime = #{userregtime}
+            </if>
+            <if test="usermoney != null">
+                and usermoney = #{usermoney}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userid" useGeneratedKeys="true">
+        insert into user(username, userpwd, useremail, userbirth, usersex, userlv, userimg, userrole, userstatement, userregtime, usermoney)
+        values (#{username}, #{userpwd}, #{useremail}, #{userbirth}, #{usersex}, #{userlv}, #{userimg}, #{userrole}, #{userstatement}, #{userregtime}, #{usermoney})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="userid" useGeneratedKeys="true">
+        insert into user(username, userpwd, useremail, userbirth, usersex, userlv, userimg, userrole, userstatement, userregtime, usermoney)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.username}, #{entity.userpwd}, #{entity.useremail}, #{entity.userbirth}, #{entity.usersex}, #{entity.userlv}, #{entity.userimg}, #{entity.userrole}, #{entity.userstatement}, #{entity.userregtime}, #{entity.usermoney})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="userid" useGeneratedKeys="true">
+        insert into user(username, userpwd, useremail, userbirth, usersex, userlv, userimg, userrole, userstatement, userregtime, usermoney)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.username}, #{entity.userpwd}, #{entity.useremail}, #{entity.userbirth}, #{entity.usersex}, #{entity.userlv}, #{entity.userimg}, #{entity.userrole}, #{entity.userstatement}, #{entity.userregtime}, #{entity.usermoney})
+        </foreach>
+        on duplicate key update
+        username = values(username),
+        userpwd = values(userpwd),
+        useremail = values(useremail),
+        userbirth = values(userbirth),
+        usersex = values(usersex),
+        userlv = values(userlv),
+        userimg = values(userimg),
+        userrole = values(userrole),
+        userstatement = values(userstatement),
+        userregtime = values(userregtime),
+        usermoney = values(usermoney)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="userpwd != null and userpwd != ''">
+                userpwd = #{userpwd},
+            </if>
+            <if test="useremail != null and useremail != ''">
+                useremail = #{useremail},
+            </if>
+            <if test="userbirth != null">
+                userbirth = #{userbirth},
+            </if>
+            <if test="usersex != null">
+                usersex = #{usersex},
+            </if>
+            <if test="userlv != null">
+                userlv = #{userlv},
+            </if>
+            <if test="userimg != null">
+                userimg = #{userimg},
+            </if>
+            <if test="userrole != null">
+                userrole = #{userrole},
+            </if>
+            <if test="userstatement != null and userstatement != ''">
+                userstatement = #{userstatement},
+            </if>
+            <if test="userregtime != null">
+                userregtime = #{userregtime},
+            </if>
+            <if test="usermoney != null">
+                usermoney = #{usermoney},
+            </if>
+        </set>
+        where userid = #{userid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from user where userid = #{userid}
+    </delete>
+
+</mapper>
+
