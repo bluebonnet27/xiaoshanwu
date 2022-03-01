@@ -28,11 +28,13 @@ public class IndexController {
             User currentUser = this.userService.queryById(userid);
             System.out.println("----------------INFO--------------");
             System.out.println(currentUser.toString());
+
+            model.addAttribute("uname",username);
+            return "index";
         }else {
             System.out.println("-------------WRONG----------------");
+            model.addAttribute("msg","session空");
+            return "messagepage";
         }
-
-        model.addAttribute("uname",username);
-        return "index";
     }
 }

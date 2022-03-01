@@ -133,6 +133,31 @@ public class User implements Serializable {
         this.usermoney = usermoney;
     }
 
+    /**
+     * 注册时插入新用户的专用构造器
+     *
+     * @param username      the username
+     * @param userpwd       the userpwd
+     * @param useremail     the useremail
+     * @param userbirth     the userbirth
+     * @param usersex       the usersex
+     * @param userimg       the userimg
+     * @param userrole      the userrole
+     * @param userstatement the userstatement
+     * @param userregtime   the userregtime
+     */
+    public User(String username, String userpwd, String useremail, Date userbirth, Integer usersex, Integer userimg, Integer userrole, String userstatement, Date userregtime) {
+        this.username = username;
+        this.userpwd = userpwd;
+        this.useremail = useremail;
+        this.userbirth = userbirth;
+        this.usersex = usersex;
+        this.userimg = userimg;
+        this.userrole = userrole;
+        this.userstatement = userstatement;
+        this.userregtime = userregtime;
+    }
+
     @Override
     public String toString() {
         return "User{" +

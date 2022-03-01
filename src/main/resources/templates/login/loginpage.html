@@ -72,10 +72,10 @@
         <div id="loginform" class="col-sm">
             <form>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">电子邮件地址</label>
+                    <label for="exampleInputEmail1" class="form-label">电子邮件地址/用户名</label>
                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                            placeholder="example@example.com" v-model="uemail">
-                    <div id="emailHelp" class="form-text">你注册时绑定的电子邮件地址，一般以@地址结尾</div>
+                    <div id="emailHelp" class="form-text">用户请填写邮箱，管理员请填写用户名</div>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">密码</label>
@@ -87,7 +87,8 @@
                     <label class="form-check-label" for="exampleCheck1">记住我</label>
                 </div>
             </form>
-            <button type="submit" class="btn btn-primary" @click="submitForm()">登录</button>
+            <button type="button" class="btn btn-primary" @click="submitForm()">用户登录</button>
+            <button type="button" class="btn btn-danger" @click="submitForm()">管理员登录</button>
 
             <div class="alert alert-info alert-dismissible fade show">
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>

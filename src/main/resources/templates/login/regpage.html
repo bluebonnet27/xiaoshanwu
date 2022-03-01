@@ -104,6 +104,10 @@
                             <option value="1">嘉然</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="ustatement" class="form-label">描述</label>
+                        <textarea class="form-control" type="text" id="ustatement" v-model="ustate"></textarea>
+                    </div>
                 </form>
                 <button class="btn btn-info" @click="regForm()">注册</button>
             </div>
@@ -125,6 +129,7 @@
             ubirth:"",
             usex:"",
             uhead:"",
+            ustate:"",
             errMsg:"",
             resMsg:""
         },
@@ -140,7 +145,31 @@
                     })
                     .then(response =>{
                         if(response.data.result){
-                            alert("USER NOT EXIST!")
+                            alert("用户名可用！")
+                        }else{
+                            alert(response.data.errMsg);
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        alert(error);
+                    });
+            },
+
+            regForm:function (){
+                const formDate=new FormData();
+                formDate.append("username",this.uname);
+                formDate.append("userpwd",this.upwd);
+                formDate.append("useremail",this.uemail);
+                formDate.append("usersex",this.usex);
+                formDate.append("userhead",this.uhead);
+                formDate.append("userbirth",this.ubirth);
+                formDate.append("userstatement",this.ustate);
+
+                axios
+                    .post('http://localhost:8080/login/regfull',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
                         }else{
                             alert(response.data.errMsg);
                         }
