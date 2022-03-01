@@ -31,6 +31,14 @@ public interface UserService {
     User queryByEmail(String useremail);
 
     /**
+     * Query by username user.
+     *
+     * @param username the username
+     * @return the user
+     */
+    User queryByUsername(String username);
+
+    /**
      * 分页查询
      *
      * @param user 筛选条件

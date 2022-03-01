@@ -4,6 +4,8 @@ import com.ti.xiaoshanwu.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
+
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**
@@ -30,6 +32,14 @@ public interface UserDao {
      * @return the user
      */
     User queryByEmail(String useremail);
+
+    /**
+     * Query by username user.
+     *
+     * @param username the username
+     * @return the user
+     */
+    User queryByUsername(String username);
 
     /**
      * 查询指定行数据

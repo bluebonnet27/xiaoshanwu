@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>小山屋论坛-登录</title>
+    <title>小山屋论坛-注册</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
@@ -46,7 +46,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="#">登录</a>
+        <a class="navbar-brand" href="#">注册</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -58,41 +58,58 @@
     </div>
 </nav>
 <div class="container">
-    <div id="mainpart" class="row">
-        <div class="col-sm">
-            <div class="card">
-                <img src = 'https://s3.bmp.ovh/imgs/2022/02/c1c0272b79d6655e.png' class="card-img"/>
-                <div class="card-body">
-                    <h4 class="card-title">更新日志 v0.1</h4>
-                    <p class="card-text">代码正在施工中</p>
-                    <a href="https://github.com/bluebonnet27/xiaoshanwu" class="btn btn-primary">github地址</a>
-                </div>
+    <div class="row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-6">
+            <div id="formmain">
+                <form class="row g-3">
+                    <label for="usernameinput" class="form-label">用户昵称</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" id="usernameinput" aria-describedby="usernamehelp" v-model="uname">
+                        <div id="usernamehelp" class="form-text">起一个好听点的名字</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-primary mb-3" @click="checkName()">检查名字可用性</button>
+                    </div>
+                </form>
+
+
+                <form>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">密码</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" v-model="upwd">
+                    </div>
+                    <div class="mb-3">
+                        <label for="emailinput" class="form-label">电子邮件</label>
+                        <input class="form-control" id="emailinput" v-model="uemail">
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthdate" class="form-label">出生日期</label>
+                        <input class="form-control" type="date" id="birthdate" v-model="ubirth">
+                    </div>
+                    <div class="mb-3">
+                        <label for="sexselect" class="form-label">性别</label>
+                        <select id="sexselect" class="form-select" aria-label="Default select example" v-model="usex">
+                            <option value="0">男</option>
+                            <option value="1">女</option>
+                            <option value="2">非二元性别</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="headselect" class="form-label">头像</label>
+                        <select id="headselect" class="form-select" aria-label="Default select example" v-model="uhead">
+                            <option value="0">27</option>
+                            <option value="1">嘉然</option>
+                        </select>
+                    </div>
+                </form>
+                <button class="btn btn-info" @click="regForm()">注册</button>
             </div>
         </div>
-        <div id="loginform" class="col-sm">
-            <form>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">电子邮件地址</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                           placeholder="example@example.com" v-model="uemail">
-                    <div id="emailHelp" class="form-text">你注册时绑定的电子邮件地址，一般以@地址结尾</div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">密码</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" v-model="upwd">
-                    <div id="pwdHelp" class="form-text">不要将密码泄露给任何人</div>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">记住我</label>
-                </div>
-            </form>
-            <button type="submit" class="btn btn-primary" @click="submitForm()">登录</button>
+        <div class="col-sm-3">
 
-            <div class="alert alert-info alert-dismissible fade show">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>提示：</strong> 如果你没有账号，可以考虑注册一个
-            </div>
         </div>
     </div>
 </div>
@@ -100,34 +117,36 @@
 </html>
 <script>
     new Vue({
-        el:"#loginform",
+        el:"#formmain",
         data:{
-            uemail:"",
+            uname:"",
             upwd:"",
+            uemail:"",
+            ubirth:"",
+            usex:"",
+            uhead:"",
             errMsg:"",
             resMsg:""
         },
         methods:{
-            submitForm:function (){
+            checkName:function (){
                 //封装表单参数
                 const formDate=new FormData();
-                formDate.append("email",this.uemail);
-                formDate.append("pwd",this.upwd);
+                formDate.append("uname",this.uname);
 
-                axios
-                    .post('http://localhost:8080/login/testlogin',formDate)
+                axios.post('http://localhost:8080/login/checkname',formDate)
                     .catch(function (error) { // 请求失败处理
-                        console.log(error);
+                        alert(error);
                     })
                     .then(response =>{
                         if(response.data.result){
-                            window.open('http://localhost:8080/ind/indextest?username='+response.data.resMsg)
+                            alert("USER NOT EXIST!")
                         }else{
                             alert(response.data.errMsg);
                         }
                     })
                     .catch(function (error) { // 请求失败处理
-                        console.log(error);
+                        alert(error);
                     });
             }
         }

@@ -35,6 +35,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryByEmail(String useremail) { return this.userDao.queryByEmail(useremail); }
 
+    @Override
+    public User queryByUsername(String username) { return this.userDao.queryByUsername(username); }
+
     /**
      * 分页查询
      *

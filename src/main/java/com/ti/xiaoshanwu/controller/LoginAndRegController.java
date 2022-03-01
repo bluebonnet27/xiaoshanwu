@@ -6,6 +6,7 @@ import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -29,6 +30,9 @@ public class LoginAndRegController {
         return "login/loginpage";
     }
 
+    @RequestMapping("toreg")
+    public String toReg(){ return "login/regpage"; }
+
     @RequestMapping("testlogin")
     public @ResponseBody String getUserByUseremailAndUserpwd(HttpSession session,
                                                             String email,
@@ -51,5 +55,20 @@ public class LoginAndRegController {
         }
 
         return loginBackResult.toString();
+    }
+
+    @RequestMapping("checkname")
+    public @ResponseBody String checkIfNameExisted(@RequestParam String uname){
+        JsonResult checkName = new JsonResult();
+        if(this.userService.queryByUsername(uname)!=null){
+            checkName.setResult(false);
+            checkName.setErrMsg("冲突的用户信息!");
+            System.out.println("---------------false-------------");
+        }else {
+            checkName.setResult(true);
+            System.out.println("---------------true-------------");
+        }
+
+        return checkName.toString();
     }
 }

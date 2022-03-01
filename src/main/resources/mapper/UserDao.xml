@@ -33,6 +33,14 @@
         where useremail = #{useremail}
     </select>
 
+    <!--  根据名字查询用户  -->
+    <select id="queryByUsername" resultMap="UserMap">
+        select
+            userid, username, userpwd, useremail, userbirth, usersex, userlv, userimg, userrole, userstatement, userregtime, usermoney
+        from user
+        where username = #{username}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="UserMap">
         select
