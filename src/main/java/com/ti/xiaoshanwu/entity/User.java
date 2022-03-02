@@ -158,6 +158,12 @@ public class User implements Serializable {
         this.userregtime = userregtime;
     }
 
+    /**
+     * Instantiates a new User.
+     */
+    public User() {
+    }
+
     @Override
     public String toString() {
         return "User{" +

@@ -45,7 +45,9 @@ public class LoginAndRegController {
                                                             String email,
                                                             String pwd){
         JsonResult loginBackResult = new JsonResult();
+
         User selectedUser = this.userService.queryByEmail(email);
+
         if (selectedUser!=null){
             if(Objects.equals(pwd, selectedUser.getUserpwd())){
                 loginBackResult.setResult(true);
