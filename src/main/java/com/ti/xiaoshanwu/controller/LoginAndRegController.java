@@ -1,8 +1,10 @@
 package com.ti.xiaoshanwu.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.ti.xiaoshanwu.entity.Admin;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
+import com.ti.xiaoshanwu.service.AdminService;
 import com.ti.xiaoshanwu.service.UserService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,9 @@ public class LoginAndRegController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private AdminService adminService;
 
     @RequestMapping("tologin")
     public String toLogin(){
@@ -57,6 +62,29 @@ public class LoginAndRegController {
         }
 
         return loginBackResult.toString();
+    }
+
+    @RequestMapping("adminlogin")
+    public @ResponseBody String adminLogin(HttpSession session,
+                                           String adminname,
+                                           String adminpwd){
+        JsonResult adminQueryBackResult = new JsonResult();
+        Admin selectedAdmin = this.adminService.queryByAdminname(adminname);
+        if(selectedAdmin==null){
+            adminQueryBackResult.setResult(false);
+            adminQueryBackResult.setErrMsg("用户不存在！");
+        }else {
+            String selectedPwd = selectedAdmin.getAdminpwd();
+            if(!Objects.equals(adminpwd, selectedPwd)){
+                adminQueryBackResult.setResult(false);
+                adminQueryBackResult.setErrMsg("密码错误！");
+            }else {
+                adminQueryBackResult.setResult(true);
+                adminQueryBackResult.setResMsg(selectedAdmin.getAdminname());
+                session.setAttribute("uid",selectedAdmin.getAdminid());
+            }
+        }
+        return adminQueryBackResult.toString();
     }
 
     @RequestMapping("checkname")

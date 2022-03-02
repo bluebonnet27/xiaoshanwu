@@ -44,28 +44,38 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">登录</a>
+        <a class="navbar-brand" href="#">
+            小山屋论坛</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">首页</a>
+                    <a class="nav-link active" aria-current="page" href="#">关于</a>
                 </li>
             </ul>
         </div>
         <div id="he-plugin-simple"></div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
 </nav>
 <div class="container">
     <div id="mainpart" class="row">
+        <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">主页</a></li>
+                <li class="breadcrumb-item active" aria-current="page">登录</li>
+            </ol>
+        </nav>
         <div class="col-sm">
             <div class="card">
                 <img src = 'https://s3.bmp.ovh/imgs/2022/02/c1c0272b79d6655e.png' class="card-img"/>
                 <div class="card-body">
                     <h4 class="card-title">更新日志 v0.1</h4>
                     <p class="card-text">代码正在施工中</p>
-                    <a href="https://github.com/bluebonnet27/xiaoshanwu" class="btn btn-primary">github地址</a>
+                    <a href="https://github.com/bluebonnet27/xiaoshanwu" class="btn btn-info"><span class="bi-github"></span> github地址</a>
                 </div>
             </div>
         </div>
@@ -87,16 +97,26 @@
                     <label class="form-check-label" for="exampleCheck1">记住我</label>
                 </div>
             </form>
-            <button type="button" class="btn btn-primary" @click="submitForm()">用户登录</button>
-            <button type="button" class="btn btn-danger" @click="submitForm()">管理员登录</button>
+            <button type="button" class="btn btn-primary" @click="submitForm()"><span class="bi-person"></span> 用户登录</button>
+            <button type="button" class="btn btn-danger" @click="submitAdminForm()"><span class="bi-tools"></span> 管理员登录</button>
 
             <div class="alert alert-info alert-dismissible fade show">
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>提示：</strong> 如果你没有账号，可以考虑注册一个
+                <strong>提示：</strong> 如果你没有账号，可以考虑
+                <a href="http://localhost:8080/login/toreg" class="alert-link">注册一个</a>
             </div>
         </div>
     </div>
 </div>
+<footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+    <div class="container">
+        <ul class="bd-footer-links ps-0 mb-3">
+            <li class="d-inline-block" ><a href="https://github.com/bluebonnet27/xiaoshanwu">GitHub</a></li>
+        </ul>
+        <p class="mb-0">小山屋论坛 Copyright© 2022 All Rights Reserved. </p>
+        <p class="mb-0">当前版本 v0.1。</p>
+    </div>
+</footer>
 </body>
 </html>
 <script>
@@ -130,6 +150,28 @@
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                     });
+            },
+            submitAdminForm:function (){
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("adminname",this.uemail);
+                formDate.append("adminpwd",this.upwd);
+
+                axios
+                    .post('http://localhost:8080/login/adminlogin',formDate)
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    })
+                    .then(response =>{
+                        if(response.data.result){
+                            window.open('http://localhost:8080/ind/adminindex')
+                        }else{
+                            alert(response.data.errMsg);
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
             }
         }
     })
@@ -138,7 +180,7 @@
     WIDGET = {
         "CONFIG": {
             "modules": "01234",
-            "background": "1",
+            "background": "5",
             "tmpColor": "FFFFFF",
             "tmpSize": "16",
             "cityColor": "FFFFFF",
@@ -153,7 +195,7 @@
             "fixed": "false",
             "vertical": "top",
             "horizontal": "left",
-            "key": "50a3a4fcbf7e4ded93fb1b06583a189f"
+            "key": "cf27931f9fc64a1ab5a731d34257357d"
         }
     }
 </script>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.AdminDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Admin" id="AdminMap">
+        <result property="adminid" column="adminid" jdbcType="INTEGER"/>
+        <result property="adminname" column="adminname" jdbcType="VARCHAR"/>
+        <result property="adminpwd" column="adminpwd" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AdminMap">
+        select
+          adminid, adminname, adminpwd
+        from admin
+        where adminid = #{adminid}
+    </select>
+
+    <select id="queryByAdminname" resultMap="AdminMap">
+        select
+            adminid, adminname, adminpwd
+        from admin
+        where adminname = #{adminname}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AdminMap">
+        select
+          adminid, adminname, adminpwd
+        from admin
+        <where>
+            <if test="adminid != null">
+                and adminid = #{adminid}
+            </if>
+            <if test="adminname != null and adminname != ''">
+                and adminname = #{adminname}
+            </if>
+            <if test="adminpwd != null and adminpwd != ''">
+                and adminpwd = #{adminpwd}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from admin
+        <where>
+            <if test="adminid != null">
+                and adminid = #{adminid}
+            </if>
+            <if test="adminname != null and adminname != ''">
+                and adminname = #{adminname}
+            </if>
+            <if test="adminpwd != null and adminpwd != ''">
+                and adminpwd = #{adminpwd}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="adminid" useGeneratedKeys="true">
+        insert into admin(adminname, adminpwd)
+        values (#{adminname}, #{adminpwd})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="adminid" useGeneratedKeys="true">
+        insert into admin(adminname, adminpwd)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.adminname}, #{entity.adminpwd})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="adminid" useGeneratedKeys="true">
+        insert into admin(adminname, adminpwd)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.adminname}, #{entity.adminpwd})
+        </foreach>
+        on duplicate key update
+        adminname = values(adminname),
+        adminpwd = values(adminpwd)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update admin
+        <set>
+            <if test="adminname != null and adminname != ''">
+                adminname = #{adminname},
+            </if>
+            <if test="adminpwd != null and adminpwd != ''">
+                adminpwd = #{adminpwd},
+            </if>
+        </set>
+        where adminid = #{adminid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from admin where adminid = #{adminid}
+    </delete>
+
+</mapper>
+

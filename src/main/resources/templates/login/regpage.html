@@ -44,21 +44,31 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">注册</a>
+        <a class="navbar-brand" href="#">
+            小山屋论坛</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">首页</a>
+                    <a class="nav-link active" aria-current="page" href="#">关于</a>
                 </li>
             </ul>
         </div>
         <div id="he-plugin-simple"></div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
 </nav>
 <div class="container">
     <div class="row">
+        <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">主页</a></li>
+                <li class="breadcrumb-item active" aria-current="page">注册</li>
+            </ol>
+        </nav>
         <div class="col-sm-3">
 
         </div>
@@ -71,7 +81,7 @@
                         <div id="usernamehelp" class="form-text">起一个好听点的名字</div>
                     </div>
                     <div class="col-sm-6">
-                        <button type="button" class="btn btn-primary mb-3" @click="checkName()">检查名字可用性</button>
+                        <button type="button" class="btn btn-outline-info mb-3" @click="checkName()">检查名字可用性</button>
                     </div>
                 </form>
 
@@ -109,7 +119,8 @@
                         <textarea class="form-control" type="text" id="ustatement" v-model="ustate"></textarea>
                     </div>
                 </form>
-                <button class="btn btn-info" @click="regForm()">注册</button>
+                <button class="btn btn-primary" @click="regForm()"><span class="bi-arrow-right-circle-fill"></span> 注册</button>
+                <button class="btn btn-success" href="http://localhost:8080/login/tologin"><span class="bi-box-arrow-down-right"></span> 已有账号？直接登录！</button>
             </div>
         </div>
         <div class="col-sm-3">
@@ -117,6 +128,15 @@
         </div>
     </div>
 </div>
+<footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+    <div class="container">
+        <ul class="bd-footer-links ps-0 mb-3">
+            <li class="d-inline-block" ><a href="https://github.com/bluebonnet27/xiaoshanwu">GitHub</a></li>
+        </ul>
+        <p class="mb-0">小山屋论坛 Copyright© 2022 All Rights Reserved. </p>
+        <p class="mb-0">当前版本 v0.1。</p>
+    </div>
+</footer>
 </body>
 </html>
 <script>
@@ -185,7 +205,7 @@
     WIDGET = {
         "CONFIG": {
             "modules": "01234",
-            "background": "1",
+            "background": "5",
             "tmpColor": "FFFFFF",
             "tmpSize": "16",
             "cityColor": "FFFFFF",
@@ -200,7 +220,7 @@
             "fixed": "false",
             "vertical": "top",
             "horizontal": "left",
-            "key": "50a3a4fcbf7e4ded93fb1b06583a189f"
+            "key": "cf27931f9fc64a1ab5a731d34257357d"
         }
     }
 </script>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>小山屋论坛-控制台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <!--<script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>-->
+
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <!--  vue.js  -->
+    <script src="js/vue.js"></script>
+
+    <!--  bootstrap5 图标库-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+    <!--  备用cdn  -->
+
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+
+    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+    <!--  和风天气  -->
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
+
+    <style>
+        #mainpart{
+            margin-top: 50px;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            小山屋论坛</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">关于</a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="nav-item dropdown d-flex">
+            <a class="nav-link link-light dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${adminname}">
+                用户
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="#"><span class="bi-people"></span> 反馈</a></li>
+                <li><a class="dropdown-item" href="#"><span class="bi-power"></span> 退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">管理员选项</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-3">
+            <h3><span class="bi-clipboard-check"></span> 论坛管理</h3>
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action">今日论坛数据</button>
+                <button type="button" class="list-group-item list-group-item-action">用户管理</button>
+                <button type="button" class="list-group-item list-group-item-action">模块管理</button>
+                <button type="button" class="list-group-item list-group-item-action">帖子管理</button>
+                <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
+                    个人信息管理
+                </button>
+            </div>
+            <h3><span class="bi-card-checklist"></span> 记录</h3>
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action">登录记录</button>
+                <button type="button" class="list-group-item list-group-item-action">财产变更记录</button>
+                <button type="button" class="list-group-item list-group-item-action">热度操作记录</button>
+                <button type="button" class="list-group-item list-group-item-action">经验扣除记录</button>
+                <button type="button" class="list-group-item list-group-item-action">黑名单</button>
+            </div>
+            <h3><span class="bi-three-dots"></span> 其他</h3>
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action">通知</button>
+                <button type="button" class="list-group-item list-group-item-action">公告</button>
+                <button type="button" class="list-group-item list-group-item-action">反馈</button>
+            </div>
+        </div>
+        <div class="col-9">
+            <h1><span class="bi-pencil-square"></span> 修改密码</h1>
+            <div id="loginform" class="col-sm">
+                <form>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">用户名</label>
+                        <input type="email" readonly class="form-control-plaintext" id="exampleInputEmail1" aria-describedby="emailHelp"
+                               th:value="${adminname}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">密码</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" v-model="adminpwd">
+                        <div id="pwdHelp" class="form-text">在此处填写新的密码</div>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary" @click="submitForm()">修改密码</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+    <div class="container">
+        <ul class="bd-footer-links ps-0 mb-3">
+            <li class="d-inline-block" ><a href="https://github.com/bluebonnet27/xiaoshanwu">GitHub</a></li>
+        </ul>
+        <p class="mb-0">小山屋论坛 Copyright© 2022 All Rights Reserved. </p>
+        <p class="mb-0">当前版本 v0.1。</p>
+    </div>
+</footer>
+</body>
+</html>
+<script>
+    new Vue({
+        el:"#loginform",
+        data:{
+            adminpwd:"",
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            submitForm:function (){
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("adminpwd",this.adminpwd);
+
+                axios
+                    .post('http://localhost:8080/adm/changepwd',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            window.open('http://localhost:8080/login/tologin')
+                        }else{
+                            alert(response.data.errMsg);
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+</script>
