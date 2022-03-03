@@ -43,6 +43,20 @@ public class IndexController {
         }
     }
 
+    @RequestMapping("userindex")
+    public String goUserIndex(HttpSession session,
+                          String username,
+                          Model model){
+        if(session.getAttribute("uid")!=null){
+            model.addAttribute("uname",username);
+            return "user/userindex";
+        }else {
+            System.out.println("-------------WRONG----------------");
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+    }
+
     @RequestMapping("/adminindex")
     public String goAdminIndex(HttpSession session,
                                Model model){
