@@ -24,39 +24,55 @@ public class IndexController {
     @Resource
     private AdminService adminService;
 
+    /**
+     * 首页跳转的测试方法.（已废弃）
+     *
+     * @param session  服务器内的session
+     * @param username 用户名
+     * @param model    model
+     * @return index.html 或者 404
+     */
     @RequestMapping("indextest")
     public String goIndex(HttpSession session,
                           String username,
                           Model model){
         if(session.getAttribute("uid")!=null){
-//            int userid = (int) session.getAttribute("uid");
-//            User currentUser = this.userService.queryById(userid);
-//            System.out.println("----------------INFO--------------");
-//            System.out.println(currentUser.toString());
-
             model.addAttribute("uname",username);
             return "index";
         }else {
-            System.out.println("-------------WRONG----------------");
             model.addAttribute("msg","session空");
             return "messagepage";
         }
     }
 
+    /**
+     * 跳转到用户首页.
+     *
+     * @param session  the session
+     * @param username the username
+     * @param model    the model
+     * @return the string
+     */
     @RequestMapping("userindex")
     public String goUserIndex(HttpSession session,
                           String username,
                           Model model){
         if(session.getAttribute("uid")!=null){
             model.addAttribute("uname",username);
-            return "user/userindex";
+            return "user/usermng";
         }else {
-            System.out.println("-------------WRONG----------------");
             model.addAttribute("msg","session空");
             return "messagepage";
         }
     }
 
+    /**
+     * 跳转到管理员首页.
+     *
+     * @param session the session
+     * @param model   the model
+     * @return the string
+     */
     @RequestMapping("/adminindex")
     public String goAdminIndex(HttpSession session,
                                Model model){
@@ -76,5 +92,19 @@ public class IndexController {
             model.addAttribute("msg","session空");
             return "messagepage";
         }
+    }
+
+    /**
+     * 登出系统，销毁session并返回登录页
+     *
+     * @param session the session
+     * @param model   the model
+     * @return the string
+     */
+    @RequestMapping("logout")
+    public String goLogout(HttpSession session,
+                           Model model){
+        session.removeAttribute("uid");
+        return "login/loginpage";
     }
 }
