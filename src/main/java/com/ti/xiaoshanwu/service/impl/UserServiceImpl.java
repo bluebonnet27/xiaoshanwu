@@ -2,6 +2,7 @@ package com.ti.xiaoshanwu.service.impl;
 
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.dao.UserDao;
+import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static org.springframework.beans.BeanUtils.copyProperties;
 
 /**
  * (User)表服务实现类
@@ -30,6 +36,58 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryById(Integer userid) {
         return this.userDao.queryById(userid);
+    }
+
+    /**
+     * Convert user to user user.
+     *
+     * @param user the user
+     * @return the user
+     */
+    @Override
+    public UserImpl convertUserToUserImpl(User user) {
+        UserImpl userimpl = new UserImpl();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        Date date;
+        String ubirth = dateFormat.format(user.getUserbirth());
+        String ureg = dateFormat.format(user.getUserregtime());
+
+        String urole = "用户";
+        if(user.getUserrole()==1){
+            urole = "版主";
+        }
+
+        String usex = "男";
+        if (user.getUsersex() == 1){
+            usex = "女";
+        }else if (user.getUsersex() == 2){
+            usex = "非二元性别者";
+        }
+
+        String uimg = "https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg";
+        int userimg = user.getUserimg()!=null?user.getUserimg():0;
+        switch (userimg){
+            case 0:
+                uimg = "https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg";
+                break;
+            case 1:
+                uimg = "https://s3.bmp.ovh/imgs/2021/09/1ecc277aceb7f0cc.jpg";
+                break;
+            default:
+                uimg = "https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg";
+                break;
+        }
+
+        //org.springframework.beans.BeanUtils.copyProperties(父类对象,子类对象);
+        copyProperties(user,userimpl);
+        userimpl.setUserbirthImpl(ubirth);
+        userimpl.setUsersexImpl(usex);
+        userimpl.setUserroleImpl(urole);
+        userimpl.setUserregtimeImpl(ureg);
+        userimpl.setUserimgImpl(uimg);
+
+        return userimpl;
     }
 
     @Override

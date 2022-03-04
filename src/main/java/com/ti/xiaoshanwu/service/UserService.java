@@ -1,6 +1,7 @@
 package com.ti.xiaoshanwu.service;
 
 import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -21,6 +22,14 @@ public interface UserService {
      * @return 实例对象
      */
     User queryById(Integer userid);
+
+    /**
+     * Convert user to user user.
+     *
+     * @param user the user
+     * @return the user
+     */
+    UserImpl convertUserToUserImpl(User user);
 
     /**
      * Query by email user.

@@ -136,13 +136,13 @@
                 formDate.append("pwd",this.upwd);
 
                 axios
-                    .post('http://localhost:8080/login/testlogin',formDate)
+                    .post('/login/testlogin',formDate)
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                     })
                     .then(response =>{
                         if(response.data.result){
-                            window.open('http://localhost:8080/ind/userindex?username='+response.data.resMsg)
+                            window.open('/ind/userindex?username='+response.data.resMsg,'_self')
                         }else{
                             alert(response.data.errMsg);
                         }

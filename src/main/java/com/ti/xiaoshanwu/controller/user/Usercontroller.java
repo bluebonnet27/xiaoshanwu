@@ -1,6 +1,7 @@
 package com.ti.xiaoshanwu.controller.user;
 
 import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 /**
+ * The type Usercontroller.
+ *
  * @author TiHongsheng
  */
 @Controller
@@ -19,12 +22,20 @@ public class Usercontroller {
     @Resource
     private UserService userService;
 
-//    @RequestMapping("userinfo")
-//    public String queryUserByid(HttpSession session, Model model){
-//        Integer targetUserid = (Integer) session.getAttribute("uid");
-//        if(targetUserid==null){
-//            mo
-//        }
-//        User targetUser = userService.queryById(targetUserid);
-//    }
+    @RequestMapping("userinfo")
+    public String queryUserByid(HttpSession session, Model model){
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        if(targetUserid==null){
+            model.addAttribute("errtitle","Uid is null");
+            model.addAttribute("errsubtitle","targetuid is null");
+            model.addAttribute("errtext","");
+
+            return "errorhandle";
+        }
+        User targetUser = userService.queryById(targetUserid);
+        UserImpl targetUserImpl = userService.convertUserToUserImpl(targetUser);
+
+        model.addAttribute("user",targetUserImpl);
+        return "user/userinfopage";
+    }
 }
