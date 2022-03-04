@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>小山屋论坛-用户管理</title>
+    <title>小山屋论坛-修改密码</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
@@ -81,7 +81,7 @@
     <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">小山屋论坛</a></li>
-            <li class="breadcrumb-item active" aria-current="page">用户中心</li>
+            <li class="breadcrumb-item active" aria-current="page">修改密码</li>
         </ol>
     </nav>
     <div class="row">
@@ -107,77 +107,23 @@
             </div>
         </div>
         <div class="col-9">
-            <h1><span class="bi-person"></span> 个人信息</h1>
-            <form>
-                <fieldset disabled>
-                    <div class="row mb-3">
-                        <label for="useridlab" class="col-sm-2 col-form-label">ID</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="useridlab" th:value="${user.getUserid()}">
-                        </div>
+            <h1><span class="bi-key"></span> 修改密码</h1>
+            <div id="loginform" class="col-sm">
+                <form>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">用户名</label>
+                        <input type="email" readonly class="form-control-plaintext" id="username" aria-describedby="emailHelp"
+                               th:value="${user.getUsername()}">
                     </div>
-                    <div class="row mb-3">
-                        <label for="usernamelab" class="col-sm-2 col-form-label">用户名</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="usernamelab" th:value="${user.getUsername()}">
-                        </div>
+                    <div class="mb-3">
+                        <label for="userpassword" class="form-label">密码</label>
+                        <input type="password" class="form-control" id="userpassword" v-model="userpwd">
+                        <div id="pwdHelp" class="form-text">在此处填写新的密码</div>
                     </div>
-                    <div class="row mb-3">
-                        <label for="useremaillab" class="col-sm-2 col-form-label">邮箱</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="useremaillab" th:value="${user.getUseremail()}">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="userbirthlab" class="col-sm-2 col-form-label">生日</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="userbirthlab" th:value="${user.getUserbirthImpl()}">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="usersexlab" class="col-sm-2 col-form-label">性别</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="usersexlab" th:value="${user.getUsersexImpl()}">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="userlvlab" class="col-sm-2 col-form-label">等级</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="userlvlab" th:value="${user.getUserlv()}">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">头像</label>
-                        <div class="col-sm-8">
-                            <img th:src="@{${user.getUserimgImpl()}}">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="userrolelab" class="col-sm-2 col-form-label">角色</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="userrolelab" th:value="${user.getUserroleImpl()}">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="userregtimelab" class="col-sm-2 col-form-label">注册时间</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="userregtimelab" th:value="${user.getUserregtimeImpl()}">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="usermoneylab" class="col-sm-2 col-form-label">财产</label>
-                        <div class="col-sm-8">
-                            <input  class="form-control" id="usermoneylab" th:value="${user.getUsermoney()}">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="userslab" class="col-sm-2 col-form-label">个人描述</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="userslab" th:value="${user.getUserstatement()}">
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
+                </form>
+                <button type="button" class="btn btn-primary" @click="submitForm()">修改密码</button>
+
+            </div>
         </div>
     </div>
     <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
@@ -192,3 +138,34 @@
 </div>
 </body>
 </html>
+<script>
+    new Vue({
+        el:"#loginform",
+        data:{
+            userpwd:"",
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            submitForm:function (){
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("newpwd",this.userpwd);
+
+                axios
+                    .post('/user/userchangepwd',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            window.open('/login/tologin','_self')
+                        }else{
+                            alert(response.data.errMsg);
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+</script>

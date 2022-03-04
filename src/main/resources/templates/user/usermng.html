@@ -88,16 +88,22 @@
     <div class="col-3">
         <h3><span class="bi-person"></span> 我的</h3>
         <div class="list-group">
-            <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
-                我的数据
-            </button>
+            <button type="button" class="list-group-item list-group-item-action active"
+                    onclick="window.location.href='/ind/userindex'">
+                我的数据</button>
             <button type="button" class="list-group-item list-group-item-action">我的帖子</button>
             <button type="button" class="list-group-item list-group-item-action">我的主题</button>
             <button type="button" class="list-group-item list-group-item-action">我的收藏</button>
-            <button type="button" class="list-group-item list-group-item-action" onclick="window.location.href='http://localhost:8080/user/userinfo'">
-                我的信息
-            </button>
-            <button type="button" class="list-group-item list-group-item-action">修改密码</button>
+        </div>
+        <h3><span class="bi-safe"></span> 安全</h3>
+        <div class="list-group">
+            <button type="button" class="list-group-item list-group-item-action">我的信息</button>
+            <button type="button" class="list-group-item list-group-item-action"
+                    onclick="window.location.href='/user/tochangepwd'">
+                修改密码</button>
+            <button type="button" class="list-group-item list-group-item-action"
+                    onclick="window.location.href='/user/tochangeemail'">
+                修改邮箱</button>
         </div>
     </div>
     <div class="col-9">

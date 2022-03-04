@@ -142,7 +142,7 @@
                     })
                     .then(response =>{
                         if(response.data.result){
-                            window.open('/ind/userindex?username='+response.data.resMsg,'_self')
+                            window.open('/ind/userindex','_self')
                         }else{
                             alert(response.data.errMsg);
                         }

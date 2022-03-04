@@ -57,8 +57,11 @@ public class IndexController {
     public String goUserIndex(HttpSession session,
                           String username,
                           Model model){
-        if(session.getAttribute("uid")!=null){
-            model.addAttribute("uname",username);
+        Integer userid = (Integer) session.getAttribute("uid");
+
+        if(userid!=null){
+            User user = this.userService.queryById(userid);
+            model.addAttribute("uname",user.getUsername());
             return "user/usermng";
         }else {
             model.addAttribute("msg","session空");
