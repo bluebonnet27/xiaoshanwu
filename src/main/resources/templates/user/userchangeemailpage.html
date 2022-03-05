@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <title>小山屋论坛-修改电子邮件地址</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -107,22 +107,36 @@
             </div>
         </div>
         <div class="col-9">
-            <h1><span class="bi-key"></span> 修改邮箱地址</h1>
+            <h1><span class="bi-envelope"></span> 修改邮箱地址</h1>
             <div id="loginform" class="col-sm">
                 <form>
                     <div class="mb-3">
                         <label for="username" class="form-label">邮箱地址</label>
-                        <input type="email" readonly class="form-control-plaintext" id="username" aria-describedby="emailHelp"
-                               th:value="${user.getUseremail()}">
+                        <div class="col-sm-5">
+                            <input type="email" readonly class="form-control-plaintext" id="username" aria-describedby="emailHelp"
+                                   th:value="${user.getUseremail()}">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="userpassword" class="form-label">新的邮箱地址</label>
-                        <input type="email" class="form-control" id="userpassword" v-model="userpwd">
-                        <div id="pwdHelp" class="form-text">在此处填写新的邮箱地址</div>
+                        <div class="col-sm-5">
+                            <input type="email" class="form-control" id="userpassword" v-model="useremail">
+                            <div id="emailHelp" class="form-text">在此处填写新的邮箱地址</div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="code1" class="form-label">验证码</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" id="code1" v-model="usercode">
+                            <div id="code1help" class="form-text">填写验证码</div>
+                        </div>
+                        <button type="button" class="btn btn-info" :disable="dis" @click="getCode()">
+                            发送验证码</button>
                     </div>
                 </form>
-                <button type="button" class="btn btn-primary" @click="submitForm()">修改密码</button>
-
+                <button type="button" class="btn btn-primary btn-lg" @click="submitForm()">
+                    修改邮箱
+                </button>
             </div>
         </div>
     </div>
@@ -138,3 +152,51 @@
 </div>
 </body>
 </html>
+<script>
+    new Vue({
+        el:"#loginform",
+        data:{
+            dis:false,
+            usercode:"",
+            useremail:"",
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            getCode:function (){
+                axios
+                    .post('/user/getCheckCode')
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            this.dis = true
+                        }else {
+                            alert(response.data.errMsg)
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            },
+            submitForm:function (){
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("inCode",this.usercode);
+                formDate.append("newEmail",this.useremail);
+
+                axios
+                    .post('/user/changeemail',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                        }else{
+                            alert(response.data.errMsg);
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+</script>

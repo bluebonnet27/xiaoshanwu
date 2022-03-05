@@ -1,9 +1,11 @@
 package com.ti.xiaoshanwu.controller.user;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.UserService;
+import com.ti.xiaoshanwu.service.impl.MailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * The type Usercontroller.
@@ -24,6 +28,9 @@ public class Usercontroller {
     @Resource
     private UserService userService;
 
+    @Resource
+    private MailService mailService;
+
     @RequestMapping("tochangepwd")
     public String toChangPwd(HttpSession session, Model model){
         Integer targetUserid = (Integer) session.getAttribute("uid");
@@ -33,6 +40,35 @@ public class Usercontroller {
         return "user/userchangepwdpage";
     }
 
+    /**
+     * 前端请求验证码.
+     *
+     * @param session session - 获取用户 - 获取邮件地址
+     * @return the string
+     */
+    @RequestMapping("getCheckCode")
+    public @ResponseBody String getChangeEmailCode(HttpSession session){
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        User targetUser = userService.queryById(targetUserid);
+        String email = targetUser.getUseremail();
+        JsonResult emailCodeBackResult = new JsonResult();
+
+        String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
+        String message = "您的注册验证码为："+checkCode;
+        try {
+            mailService.sendSimpleMail(email, "注册验证码", message);
+            session.setAttribute("emailcode",checkCode);
+            emailCodeBackResult.setResult(true);
+            emailCodeBackResult.setResMsg("验证码发送成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            emailCodeBackResult.setResult(false);
+            emailCodeBackResult.setErrMsg("验证码发送失败");
+        }
+
+        return emailCodeBackResult.toString();
+    }
+
     @RequestMapping("tochangeemail")
     public String toChangEmail(HttpSession session, Model model){
         Integer targetUserid = (Integer) session.getAttribute("uid");
@@ -40,6 +76,35 @@ public class Usercontroller {
 
         model.addAttribute("user",targetUser);
         return "user/userchangeemailpage";
+    }
+
+    @RequestMapping("changeemail")
+    @ResponseBody
+    public String changeEmail(HttpSession session ,
+                              String inCode ,
+                              String newEmail){
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        JsonResult emailBackResult = new JsonResult();
+
+        String serverCode = (String) session.getAttribute("emailcode");
+        if(Objects.equals(inCode,serverCode)){
+            User newUser = new User();
+            newUser.setUserid(targetUserid);
+            newUser.setUseremail(newEmail);
+            User backUser = this.userService.update(newUser);
+            if(backUser==null){
+                emailBackResult.setResult(false);
+                emailBackResult.setErrMsg("由于数据库的原因，更新失败");
+            }else {
+                emailBackResult.setResult(true);
+                emailBackResult.setResMsg("更新成功");
+            }
+        }else {
+            emailBackResult.setResult(false);
+            emailBackResult.setErrMsg("验证码错误，请重新进入此页面获取新的验证码");
+        }
+
+        return emailBackResult.toString();
     }
 
     @RequestMapping("userinfo")
