@@ -54,9 +54,9 @@ public class Usercontroller {
         JsonResult emailCodeBackResult = new JsonResult();
 
         String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
-        String message = "您的注册验证码为："+checkCode;
+        String message = "您的验证码为："+checkCode;
         try {
-            mailService.sendSimpleMail(email, "注册验证码", message);
+            mailService.sendSimpleMail(email, "小山屋论坛-验证码", message);
             session.setAttribute("emailcode",checkCode);
             emailCodeBackResult.setResult(true);
             emailCodeBackResult.setResMsg("验证码发送成功");

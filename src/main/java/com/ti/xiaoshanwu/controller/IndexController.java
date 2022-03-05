@@ -49,13 +49,11 @@ public class IndexController {
      * 跳转到用户首页.
      *
      * @param session  the session
-     * @param username the username
      * @param model    the model
      * @return the string
      */
     @RequestMapping("userindex")
     public String goUserIndex(HttpSession session,
-                          String username,
                           Model model){
         Integer userid = (Integer) session.getAttribute("uid");
 

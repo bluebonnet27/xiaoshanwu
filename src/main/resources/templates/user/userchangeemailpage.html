@@ -130,7 +130,7 @@
                             <input class="form-control" id="code1" v-model="usercode">
                             <div id="code1help" class="form-text">填写验证码</div>
                         </div>
-                        <button type="button" class="btn btn-info" :disable="dis" @click="getCode()">
+                        <button type="button" class="btn btn-info" v-bind:class="{disabled:dis}" @click="getCode()">
                             发送验证码</button>
                     </div>
                 </form>
