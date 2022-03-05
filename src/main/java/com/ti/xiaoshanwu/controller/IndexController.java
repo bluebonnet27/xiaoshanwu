@@ -59,8 +59,12 @@ public class IndexController {
 
         if(userid!=null){
             User user = this.userService.queryById(userid);
-            model.addAttribute("uname",user.getUsername());
-            return "user/usermng";
+
+
+
+
+            model.addAttribute("user",user);
+            return "index";
         }else {
             model.addAttribute("msg","session空");
             return "messagepage";

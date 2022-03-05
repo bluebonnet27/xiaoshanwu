@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.ArticleDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Article" id="ArticleMap">
+        <result property="articleid" column="articleid" jdbcType="INTEGER"/>
+        <result property="articlethemeid" column="articlethemeid" jdbcType="INTEGER"/>
+        <result property="articleauthorid" column="articleauthorid" jdbcType="INTEGER"/>
+        <result property="articlereplycount" column="articlereplycount" jdbcType="INTEGER"/>
+        <result property="articletitle" column="articletitle" jdbcType="VARCHAR"/>
+        <result property="articlecontent" column="articlecontent" jdbcType="VARCHAR"/>
+        <result property="articlepublishtime" column="articlepublishtime" jdbcType="TIMESTAMP"/>
+        <result property="articlechangetime" column="articlechangetime" jdbcType="TIMESTAMP"/>
+        <result property="articlethumb" column="articlethumb" jdbcType="INTEGER"/>
+        <result property="articlecollect" column="articlecollect" jdbcType="INTEGER"/>
+        <result property="articlehot" column="articlehot" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ArticleMap">
+        select
+          articleid, articlethemeid, articleauthorid, articlereplycount, articletitle, articlecontent, articlepublishtime, articlechangetime, articlethumb, articlecollect, articlehot
+        from article
+        where articleid = #{articleid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ArticleMap">
+        select
+          articleid, articlethemeid, articleauthorid, articlereplycount, articletitle, articlecontent, articlepublishtime, articlechangetime, articlethumb, articlecollect, articlehot
+        from article
+        <where>
+            <if test="articleid != null">
+                and articleid = #{articleid}
+            </if>
+            <if test="articlethemeid != null">
+                and articlethemeid = #{articlethemeid}
+            </if>
+            <if test="articleauthorid != null">
+                and articleauthorid = #{articleauthorid}
+            </if>
+            <if test="articlereplycount != null">
+                and articlereplycount = #{articlereplycount}
+            </if>
+            <if test="articletitle != null and articletitle != ''">
+                and articletitle = #{articletitle}
+            </if>
+            <if test="articlecontent != null and articlecontent != ''">
+                and articlecontent = #{articlecontent}
+            </if>
+            <if test="articlepublishtime != null">
+                and articlepublishtime = #{articlepublishtime}
+            </if>
+            <if test="articlechangetime != null">
+                and articlechangetime = #{articlechangetime}
+            </if>
+            <if test="articlethumb != null">
+                and articlethumb = #{articlethumb}
+            </if>
+            <if test="articlecollect != null">
+                and articlecollect = #{articlecollect}
+            </if>
+            <if test="articlehot != null">
+                and articlehot = #{articlehot}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from article
+        <where>
+            <if test="articleid != null">
+                and articleid = #{articleid}
+            </if>
+            <if test="articlethemeid != null">
+                and articlethemeid = #{articlethemeid}
+            </if>
+            <if test="articleauthorid != null">
+                and articleauthorid = #{articleauthorid}
+            </if>
+            <if test="articlereplycount != null">
+                and articlereplycount = #{articlereplycount}
+            </if>
+            <if test="articletitle != null and articletitle != ''">
+                and articletitle = #{articletitle}
+            </if>
+            <if test="articlecontent != null and articlecontent != ''">
+                and articlecontent = #{articlecontent}
+            </if>
+            <if test="articlepublishtime != null">
+                and articlepublishtime = #{articlepublishtime}
+            </if>
+            <if test="articlechangetime != null">
+                and articlechangetime = #{articlechangetime}
+            </if>
+            <if test="articlethumb != null">
+                and articlethumb = #{articlethumb}
+            </if>
+            <if test="articlecollect != null">
+                and articlecollect = #{articlecollect}
+            </if>
+            <if test="articlehot != null">
+                and articlehot = #{articlehot}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="articleid" useGeneratedKeys="true">
+        insert into article(articlethemeid, articleauthorid, articlereplycount, articletitle, articlecontent, articlepublishtime, articlechangetime, articlethumb, articlecollect, articlehot)
+        values (#{articlethemeid}, #{articleauthorid}, #{articlereplycount}, #{articletitle}, #{articlecontent}, #{articlepublishtime}, #{articlechangetime}, #{articlethumb}, #{articlecollect}, #{articlehot})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="articleid" useGeneratedKeys="true">
+        insert into article(articlethemeid, articleauthorid, articlereplycount, articletitle, articlecontent, articlepublishtime, articlechangetime, articlethumb, articlecollect, articlehot)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.articlethemeid}, #{entity.articleauthorid}, #{entity.articlereplycount}, #{entity.articletitle}, #{entity.articlecontent}, #{entity.articlepublishtime}, #{entity.articlechangetime}, #{entity.articlethumb}, #{entity.articlecollect}, #{entity.articlehot})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="articleid" useGeneratedKeys="true">
+        insert into article(articlethemeid, articleauthorid, articlereplycount, articletitle, articlecontent, articlepublishtime, articlechangetime, articlethumb, articlecollect, articlehot)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.articlethemeid}, #{entity.articleauthorid}, #{entity.articlereplycount}, #{entity.articletitle}, #{entity.articlecontent}, #{entity.articlepublishtime}, #{entity.articlechangetime}, #{entity.articlethumb}, #{entity.articlecollect}, #{entity.articlehot})
+        </foreach>
+        on duplicate key update
+        articlethemeid = values(articlethemeid),
+        articleauthorid = values(articleauthorid),
+        articlereplycount = values(articlereplycount),
+        articletitle = values(articletitle),
+        articlecontent = values(articlecontent),
+        articlepublishtime = values(articlepublishtime),
+        articlechangetime = values(articlechangetime),
+        articlethumb = values(articlethumb),
+        articlecollect = values(articlecollect),
+        articlehot = values(articlehot)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update article
+        <set>
+            <if test="articlethemeid != null">
+                articlethemeid = #{articlethemeid},
+            </if>
+            <if test="articleauthorid != null">
+                articleauthorid = #{articleauthorid},
+            </if>
+            <if test="articlereplycount != null">
+                articlereplycount = #{articlereplycount},
+            </if>
+            <if test="articletitle != null and articletitle != ''">
+                articletitle = #{articletitle},
+            </if>
+            <if test="articlecontent != null and articlecontent != ''">
+                articlecontent = #{articlecontent},
+            </if>
+            <if test="articlepublishtime != null">
+                articlepublishtime = #{articlepublishtime},
+            </if>
+            <if test="articlechangetime != null">
+                articlechangetime = #{articlechangetime},
+            </if>
+            <if test="articlethumb != null">
+                articlethumb = #{articlethumb},
+            </if>
+            <if test="articlecollect != null">
+                articlecollect = #{articlecollect},
+            </if>
+            <if test="articlehot != null">
+                articlehot = #{articlehot},
+            </if>
+        </set>
+        where articleid = #{articleid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from article where articleid = #{articleid}
+    </delete>
+
+</mapper>
+

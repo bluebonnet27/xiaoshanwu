@@ -1,6 +1,7 @@
 package com.ti.xiaoshanwu.controller.user;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
@@ -30,6 +31,15 @@ public class Usercontroller {
 
     @Resource
     private MailService mailService;
+
+    @RequestMapping("tousercenter")
+    public String toUserCenter(HttpSession session, Model model){
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        User targetUser = userService.queryById(targetUserid);
+
+        model.addAttribute("user",targetUser);
+        return "user/usermng";
+    }
 
     @RequestMapping("tochangepwd")
     public String toChangPwd(HttpSession session, Model model){
