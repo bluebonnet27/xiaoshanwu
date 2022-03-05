@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.ThemeDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Theme" id="ThemeMap">
+        <result property="themeid" column="themeid" jdbcType="INTEGER"/>
+        <result property="themename" column="themename" jdbcType="VARCHAR"/>
+        <result property="themeadminid" column="themeadminid" jdbcType="INTEGER"/>
+        <result property="themestatement" column="themestatement" jdbcType="VARCHAR"/>
+        <result property="themetime" column="themetime" jdbcType="TIMESTAMP"/>
+        <result property="themecount" column="themecount" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ThemeMap">
+        select
+          themeid, themename, themeadminid, themestatement, themetime, themecount
+        from theme
+        where themeid = #{themeid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ThemeMap">
+        select
+          themeid, themename, themeadminid, themestatement, themetime, themecount
+        from theme
+        <where>
+            <if test="themeid != null">
+                and themeid = #{themeid}
+            </if>
+            <if test="themename != null and themename != ''">
+                and themename = #{themename}
+            </if>
+            <if test="themeadminid != null">
+                and themeadminid = #{themeadminid}
+            </if>
+            <if test="themestatement != null and themestatement != ''">
+                and themestatement = #{themestatement}
+            </if>
+            <if test="themetime != null">
+                and themetime = #{themetime}
+            </if>
+            <if test="themecount != null">
+                and themecount = #{themecount}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from theme
+        <where>
+            <if test="themeid != null">
+                and themeid = #{themeid}
+            </if>
+            <if test="themename != null and themename != ''">
+                and themename = #{themename}
+            </if>
+            <if test="themeadminid != null">
+                and themeadminid = #{themeadminid}
+            </if>
+            <if test="themestatement != null and themestatement != ''">
+                and themestatement = #{themestatement}
+            </if>
+            <if test="themetime != null">
+                and themetime = #{themetime}
+            </if>
+            <if test="themecount != null">
+                and themecount = #{themecount}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="themeid" useGeneratedKeys="true">
+        insert into theme(themename, themeadminid, themestatement, themetime, themecount)
+        values (#{themename}, #{themeadminid}, #{themestatement}, #{themetime}, #{themecount})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="themeid" useGeneratedKeys="true">
+        insert into theme(themename, themeadminid, themestatement, themetime, themecount)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.themename}, #{entity.themeadminid}, #{entity.themestatement}, #{entity.themetime}, #{entity.themecount})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="themeid" useGeneratedKeys="true">
+        insert into theme(themename, themeadminid, themestatement, themetime, themecount)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.themename}, #{entity.themeadminid}, #{entity.themestatement}, #{entity.themetime}, #{entity.themecount})
+        </foreach>
+        on duplicate key update
+        themename = values(themename),
+        themeadminid = values(themeadminid),
+        themestatement = values(themestatement),
+        themetime = values(themetime),
+        themecount = values(themecount)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update theme
+        <set>
+            <if test="themename != null and themename != ''">
+                themename = #{themename},
+            </if>
+            <if test="themeadminid != null">
+                themeadminid = #{themeadminid},
+            </if>
+            <if test="themestatement != null and themestatement != ''">
+                themestatement = #{themestatement},
+            </if>
+            <if test="themetime != null">
+                themetime = #{themetime},
+            </if>
+            <if test="themecount != null">
+                themecount = #{themecount},
+            </if>
+        </set>
+        where themeid = #{themeid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from theme where themeid = #{themeid}
+    </delete>
+
+</mapper>
+
