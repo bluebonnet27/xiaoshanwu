@@ -1,7 +1,5 @@
 package com.ti.xiaoshanwu.controller.user;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
@@ -24,7 +22,7 @@ import java.util.Random;
  */
 @Controller
 @RequestMapping("user")
-public class Usercontroller {
+public class UserController {
 
     @Resource
     private UserService userService;

@@ -123,5 +123,21 @@ public class Article implements Serializable {
         this.articlehot = articlehot;
     }
 
+    @Override
+    public String toString() {
+        return "Article{" +
+                "articleid=" + articleid +
+                ", articlethemeid=" + articlethemeid +
+                ", articleauthorid=" + articleauthorid +
+                ", articlereplycount=" + articlereplycount +
+                ", articletitle='" + articletitle + '\'' +
+                ", articlecontent='" + articlecontent + '\'' +
+                ", articlepublishtime=" + articlepublishtime +
+                ", articlechangetime=" + articlechangetime +
+                ", articlethumb=" + articlethumb +
+                ", articlecollect=" + articlecollect +
+                ", articlehot=" + articlehot +
+                '}';
+    }
 }
 

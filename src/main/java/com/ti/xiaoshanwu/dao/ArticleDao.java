@@ -32,6 +32,10 @@ public interface ArticleDao {
      */
     List<Article> queryAllByLimit(Article article, @Param("pageable") Pageable pageable);
 
+    List<Article> queryAllByLimit1(@Param("ar") Article article, @Param("pageable") Pageable pageable);
+
+    List<Article> queryAllByLimit2();
+
     /**
      * 统计总行数
      *
@@ -39,6 +43,8 @@ public interface ArticleDao {
      * @return 总行数
      */
     long count(Article article);
+
+    long count1(@Param("ar") Article article);
 
     /**
      * 新增数据

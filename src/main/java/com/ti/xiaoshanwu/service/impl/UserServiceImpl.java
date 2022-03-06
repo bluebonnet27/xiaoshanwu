@@ -1,5 +1,6 @@
 package com.ti.xiaoshanwu.service.impl;
 
+import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.dao.UserDao;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
@@ -65,19 +66,9 @@ public class UserServiceImpl implements UserService {
             usex = "非二元性别者";
         }
 
-        String uimg = "https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg";
+        HeadImgConverter headImgConverter = new HeadImgConverter();
         int userimg = user.getUserimg()!=null?user.getUserimg():0;
-        switch (userimg){
-            case 0:
-                uimg = "https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg";
-                break;
-            case 1:
-                uimg = "https://s3.bmp.ovh/imgs/2021/09/1ecc277aceb7f0cc.jpg";
-                break;
-            default:
-                uimg = "https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg";
-                break;
-        }
+        String uimg = headImgConverter.imgConvert(userimg);
 
         //org.springframework.beans.BeanUtils.copyProperties(父类对象,子类对象);
         copyProperties(user,userimpl);

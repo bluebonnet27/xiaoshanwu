@@ -1,8 +1,12 @@
 package com.ti.xiaoshanwu.service;
 
 import com.ti.xiaoshanwu.entity.Article;
+import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * (Article)表服务接口
@@ -29,6 +33,10 @@ public interface ArticleService {
      */
     Page<Article> queryByPage(Article article, PageRequest pageRequest);
 
+    Page<Article> queryByPage1(Article article,PageRequest pageRequest);
+
+
+
     /**
      * 新增数据
      *
@@ -52,5 +60,13 @@ public interface ArticleService {
      * @return 是否成功
      */
     boolean deleteById(Integer articleid);
+
+    /**
+     * Convert to article array list.
+     *
+     * @param articles the articles
+     * @return the array list
+     */
+    ArrayList<ArticleImpl> convertToArticleImpl(ArrayList<Article> articles);
 
 }
