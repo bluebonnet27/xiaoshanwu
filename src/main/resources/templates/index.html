@@ -51,10 +51,14 @@
             margin-top: 5px;
             margin-bottom: 5px;
         }
+        #mainbody{
+            background-image: url("https://s3.bmp.ovh/imgs/2022/03/07ca2075685f0fd8.png");
+            background-size:100% 100%;
+        }
     </style>
 
 </head>
-<body>
+<body id="mainbody">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="#">
@@ -122,21 +126,38 @@
             </ul>
 
             <div class="card" id="tiezi" th:each="article,iterStat : ${articlesimpl}">
+
+                <div class="card-header">
+                    <span class="badge rounded-pill bg-primary" th:text="${article.getThemeName()}">分区</span>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${article.getArticletitle()}"></h5>
-                    <h6 class="card-subtitle mb-2 text-muted" th:text="${article.getArticleauthorid()}"></h6>
+                    <a th:text="${article.getArticletitle()}" class="h4 link-primary">文章标题</a>
+                    <p class="card-text" th:utext="${'作者：' + article.getArticleauthorid() + ' || 发布时间：' + article.getArticlepublishtime() }">
+                        @作者 time: 发布时间
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <span class="bi-hand-thumbs-up"></span>
+                    <span class="badge bg-secondary" th:text="${article.getArticlethumb()}">14</span>
+                    <span class="bi-star"></span>
+                    <span class="badge bg-secondary" th:text="${article.getArticlecollect()}">30</span>
+                    <span class="bi-chat"></span>
+                    <span class="badge bg-secondary" th:text="${article.getArticlereplycount()}">5</span>
                 </div>
             </div>
 
             <div class="alert alert-info" role="alert" th:text="${'共：'+pages.getTotalElements()+'行'}">
+                共114514行
             </div>
 
             <nav>
                 <ul class="pagination">
                     <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
                         th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
-                        <a class="page-link" href="#" th:text="${i}">
-                            Previous</a>
+                        <a class="page-link"
+                           th:href="@{http://localhost:8080/article/defaultindex(page=${i},limit=${pages.getSize()})}"
+                           th:text="${i}">
+                            1</a>
                     </li>
                 </ul>
             </nav>

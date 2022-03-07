@@ -103,9 +103,14 @@ public class IndexController {
                 String articleAuthorNameImpl = targetUser.getUsername();
                 String articleAuthorHeadImgUrlImpl =
                         headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+                String themeName = this.themeService.queryById(article.getArticlethemeid()).getThemename();
+                String bgimg =
+                        headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
 
                 articleImpl.setArticleauthoridImpl(articleAuthorNameImpl);
                 articleImpl.setArticleauthorImg(articleAuthorHeadImgUrlImpl);
+                articleImpl.setThemeName(themeName);
+                articleImpl.setArticleImgUrl(bgimg);
 
                 articlesImpl.add(articleImpl);
             }

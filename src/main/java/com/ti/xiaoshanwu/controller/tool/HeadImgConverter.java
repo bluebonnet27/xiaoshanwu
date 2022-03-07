@@ -24,4 +24,21 @@ public class HeadImgConverter {
 
         return uimg;
     }
+
+    public String imgConvertBg(Integer imgid){
+        String imgUrl;
+        switch (imgid){
+            case 0:
+                imgUrl = "https://s3.bmp.ovh/imgs/2022/03/7e4c94ce2fbbf7c7.png";
+                break;
+            case 1:
+                imgUrl = "https://s3.bmp.ovh/imgs/2022/03/0a33856b5bada5a2.png";
+                break;
+            default:
+                imgUrl = "https://s3.bmp.ovh/imgs/2022/03/7e4c94ce2fbbf7c7.png";
+                break;
+        }
+
+        return imgUrl;
+    }
 }

@@ -11,12 +11,42 @@ public class ArticleImpl extends Article {
 
     private String articleauthorImg;
 
+    private String themeName;
+
+    private String themeNameColor;
+
+    private String articleImgUrl;
+
     public String getArticleauthoridImpl() {
         return articleauthoridImpl;
     }
 
     public String getArticleauthorImg() {
         return articleauthorImg;
+    }
+
+    public String getThemeName() {
+        return themeName;
+    }
+
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
+    }
+
+    public String getThemeNameColor() {
+        return themeNameColor;
+    }
+
+    public void setThemeNameColor(String themeNameColor) {
+        this.themeNameColor = themeNameColor;
+    }
+
+    public String getArticleImgUrl() {
+        return articleImgUrl;
+    }
+
+    public void setArticleImgUrl(String articleImgUrl) {
+        this.articleImgUrl = articleImgUrl;
     }
 
     public void setArticleauthoridImpl(String articleauthoridImpl) {
