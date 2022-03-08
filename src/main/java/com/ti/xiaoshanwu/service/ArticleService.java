@@ -35,7 +35,7 @@ public interface ArticleService {
 
     Page<Article> queryByPage1(Article article,PageRequest pageRequest);
 
-
+    List<Article> queryArticles(Article article);
 
     /**
      * 新增数据

@@ -57,6 +57,11 @@ public class ArticleServiceImpl implements ArticleService {
         return new PageImpl<>(this.articleDao.queryAllByLimit1(article , pageRequest), pageRequest, total);
     }
 
+    @Override
+    public List<Article> queryArticles(Article article) {
+        return this.articleDao.queryAllByLimitNoPage(article);
+    }
+
     /**
      * 新增数据
      *

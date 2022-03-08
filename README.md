@@ -32,3 +32,6 @@
 
 * [ alibaba / fastjson](https://github.com/alibaba/fastjson)
 * [ pandao / editor.md](https://github.com/pandao/editor.md)
+* [Apache ECharts
+  一个基于 JavaScript 的开源可视化图表库
+  ](https://echarts.apache.org/zh/index.html)

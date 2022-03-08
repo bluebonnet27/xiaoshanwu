@@ -123,6 +123,13 @@ public class Article implements Serializable {
         this.articlehot = articlehot;
     }
 
+    public Article(Integer articleauthorid) {
+        this.articleauthorid = articleauthorid;
+    }
+
+    public Article() {
+    }
+
     @Override
     public String toString() {
         return "Article{" +

@@ -36,6 +36,9 @@
     <!--  和风天气  -->
     <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
 
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.min.js"></script>
+
     <style>
         #mainpart{
             margin-top: 20px;
@@ -85,31 +88,40 @@
         </ol>
     </nav>
 
-    <div class="col-3">
-        <h3><span class="bi-person"></span> 我的</h3>
-        <div class="list-group">
-            <button type="button" class="list-group-item list-group-item-action active"
-                    onclick="window.location.href='/user/tousercenter'">
-                我的数据</button>
-            <button type="button" class="list-group-item list-group-item-action">我的帖子</button>
-            <button type="button" class="list-group-item list-group-item-action">我的主题</button>
-            <button type="button" class="list-group-item list-group-item-action">我的收藏</button>
+    <div class="row">
+        <div class="col-3">
+            <h3><span class="bi-person"></span> 我的</h3>
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action active"
+                        onclick="window.location.href='/user/tousercenter'">
+                    我的数据</button>
+                <button type="button" class="list-group-item list-group-item-action">我的帖子</button>
+                <button type="button" class="list-group-item list-group-item-action">我的主题</button>
+                <button type="button" class="list-group-item list-group-item-action">我的收藏</button>
+            </div>
+            <h3><span class="bi-safe"></span> 安全</h3>
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action"
+                        onclick="window.location.href='/user/userinfo'">
+                    我的信息</button>
+                <button type="button" class="list-group-item list-group-item-action"
+                        onclick="window.location.href='/user/tochangepwd'">
+                    修改密码</button>
+                <button type="button" class="list-group-item list-group-item-action"
+                        onclick="window.location.href='/user/tochangeemail'">
+                    修改邮箱</button>
+            </div>
         </div>
-        <h3><span class="bi-safe"></span> 安全</h3>
-        <div class="list-group">
-            <button type="button" class="list-group-item list-group-item-action"
-                    onclick="window.location.href='/user/userinfo'">
-                我的信息</button>
-            <button type="button" class="list-group-item list-group-item-action"
-                    onclick="window.location.href='/user/tochangepwd'">
-                修改密码</button>
-            <button type="button" class="list-group-item list-group-item-action"
-                    onclick="window.location.href='/user/tochangeemail'">
-                修改邮箱</button>
+        <div class="col-9">
+            <h5 th:text="'文章总数：' + ${articlenum}"></h5>
+            <div id="articletopicchart" style="width: 600px;height:400px;"></div>
+            <input type="hidden" th:value="${theme01}" id="theme01">
+            <input type="hidden" th:value="${theme0}" id="theme0">
+            <input type="hidden" th:value="${theme1}" id="theme1">
+            <input type="hidden" th:value="${themeo}" id="themeo">
         </div>
     </div>
-    <div class="col-9">
-    </div>
+
 <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
     <div class="container">
         <ul class="bd-footer-links ps-0 mb-3">
@@ -122,3 +134,33 @@
 </div>
 </body>
 </html>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var articleThemeChart = echarts.init(document.getElementById('articletopicchart'));
+
+    var theme01=$("#theme01").val();
+    var theme0=$("#theme0").val();
+    var theme1=$("#theme1").val();
+    var themeo=$("#themeo").val();
+
+    // 指定图表的配置项和数据
+    var articleThemeoption = {
+        series : [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                roseType: 'angle',
+                data:[
+                    {value:theme01, name:'管理区'},
+                    {value:theme0, name:'编程'},
+                    {value:theme1, name:'求职招聘'},
+                    {value:themeo, name:'其他'},
+                ]
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    articleThemeChart.setOption(articleThemeoption);
+</script>

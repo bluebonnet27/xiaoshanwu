@@ -36,6 +36,8 @@ public interface ArticleDao {
 
     List<Article> queryAllByLimit2();
 
+    List<Article> queryAllByLimitNoPage(@Param("ar") Article article);
+
     /**
      * 统计总行数
      *

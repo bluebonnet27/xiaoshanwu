@@ -1,8 +1,11 @@
 package com.ti.xiaoshanwu.controller.user;
 
+import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
+import com.ti.xiaoshanwu.service.ArticleService;
+import com.ti.xiaoshanwu.service.ThemeService;
 import com.ti.xiaoshanwu.service.UserService;
 import com.ti.xiaoshanwu.service.impl.MailService;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -30,11 +35,48 @@ public class UserController {
     @Resource
     private MailService mailService;
 
+    @Resource
+    private ArticleService articleService;
+
+    @Resource
+    private ThemeService themeService;
+
     @RequestMapping("tousercenter")
     public String toUserCenter(HttpSession session, Model model){
         Integer targetUserid = (Integer) session.getAttribute("uid");
         User targetUser = userService.queryById(targetUserid);
+        Article shefArticle = new Article();
 
+        List<Article> articles = this.articleService.queryArticles(shefArticle);
+
+        int theme__1 = 0;
+        int theme_0 = 0;
+        int theme_1 = 0;
+        int theme_others = 0;
+
+        for (Article article:articles){
+            int themeid = article.getArticlethemeid();
+            switch (themeid){
+                case -1:
+                    theme__1 += 1;
+                    break;
+                case 0:
+                    theme_0 += 1;
+                    break;
+                case 1:
+                    theme_1 +=1;
+                    break;
+                default:
+                    theme_others += 1;
+                    break;
+            }
+        }
+
+        model.addAttribute("theme01",theme__1);
+        model.addAttribute("theme0",theme_0);
+        model.addAttribute("theme1",theme_1);
+        model.addAttribute("themeo",theme_others);
+        model.addAttribute("articlenum",articles.size());
         model.addAttribute("user",targetUser);
         return "user/usermng";
     }
