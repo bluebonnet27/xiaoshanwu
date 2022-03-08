@@ -113,12 +113,16 @@
             </div>
         </div>
         <div class="col-9">
-            <h5 th:text="'文章总数：' + ${articlenum}"></h5>
-            <div id="articletopicchart" style="width: 600px;height:400px;"></div>
-            <input type="hidden" th:value="${theme01}" id="theme01">
-            <input type="hidden" th:value="${theme0}" id="theme0">
-            <input type="hidden" th:value="${theme1}" id="theme1">
-            <input type="hidden" th:value="${themeo}" id="themeo">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h5 th:text="'文章总数：' + ${articlenum}"></h5>
+                    <div id="articletopicchart" style="width: 600px;height:400px;"></div>
+                    <input type="hidden" th:value="${theme01}" id="theme01">
+                    <input type="hidden" th:value="${theme0}" id="theme0">
+                    <input type="hidden" th:value="${theme1}" id="theme1">
+                    <input type="hidden" th:value="${themeo}" id="themeo">
+                </div>
+            </div>
         </div>
     </div>
 

@@ -41,6 +41,13 @@ public class UserController {
     @Resource
     private ThemeService themeService;
 
+    /**
+     * 登录页跳转至用户中心.
+     *
+     * @param session the session
+     * @param model   the model
+     * @return html地址
+     */
     @RequestMapping("tousercenter")
     public String toUserCenter(HttpSession session, Model model){
         Integer targetUserid = (Integer) session.getAttribute("uid");
@@ -81,6 +88,13 @@ public class UserController {
         return "user/usermng";
     }
 
+    /**
+     * 跳转到修改密码的页面.
+     *
+     * @param session the session
+     * @param model   the model
+     * @return html地址
+     */
     @RequestMapping("tochangepwd")
     public String toChangPwd(HttpSession session, Model model){
         Integer targetUserid = (Integer) session.getAttribute("uid");
@@ -93,7 +107,7 @@ public class UserController {
     /**
      * 前端请求验证码.
      *
-     * @param session session - 获取用户 - 获取邮件地址
+     * @param session 获取用户，进而获取邮件地址
      * @return the string
      */
     @RequestMapping("getCheckCode")
@@ -119,6 +133,13 @@ public class UserController {
         return emailCodeBackResult.toString();
     }
 
+    /**
+     * 跳转到修改邮箱的页面.
+     *
+     * @param session the session
+     * @param model   the model
+     * @return html地址
+     */
     @RequestMapping("tochangeemail")
     public String toChangEmail(HttpSession session, Model model){
         Integer targetUserid = (Integer) session.getAttribute("uid");
