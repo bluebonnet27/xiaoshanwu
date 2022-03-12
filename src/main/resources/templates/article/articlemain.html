@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>小山屋论坛-首页</title>
+    <title>文章详情</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
@@ -81,7 +81,7 @@
         </div>
         <div class="nav-item dropdown d-flex">
             <a class="nav-link link-light dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-               role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${user.getUsername()}">
+               role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${username}">
                 用户
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -93,75 +93,11 @@
     </div>
 </nav>
 <div class="container">
-
-    <div id="subnav">
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link active" href="http://localhost:8080/ind/userindex">全部</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="#">管理区</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="#">编程</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="row" id="thinav">
+    <div class="row">
         <div class="col-sm-8">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active">默认</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">热门</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/article/defaultnew">最新</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">消灭零回复</a>
-                </li>
-            </ul>
-
-            <div class="card" id="tiezi" th:each="article,iterStat : ${articlesimpl}">
-
-                <div class="card-header">
-                    <span class="badge rounded-pill bg-primary" th:text="${article.getThemeName()}">分区</span>
-                </div>
-                <div class="card-body">
-                    <a th:text="${article.getArticletitle()}" class="h4 link-primary"
-                        th:href="@{http://localhost:8080/article/articlemore(articleid=${article.getArticleid()})}">文章标题</a>
-                    <p class="card-text" th:utext="${'作者：' + article.getArticleauthorid() + ' || 发布时间：' + article.getArticlepublishtime() }">
-                        @作者 time: 发布时间
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <span class="bi-hand-thumbs-up"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlethumb()}">14</span>
-                    <span class="bi-star"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlecollect()}">30</span>
-                    <span class="bi-chat"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlereplycount()}">5</span>
-                </div>
-            </div>
-
-            <div class="alert alert-info" role="alert" th:text="${'共：'+pages.getTotalElements()+'行'}">
-                共114514行
-            </div>
-
-            <nav>
-                <ul class="pagination">
-                    <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
-                        th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
-                        <a class="page-link"
-                           th:href="@{http://localhost:8080/article/defaultindex(page=${i},limit=${pages.getSize()})}"
-                           th:text="${i}">
-                            1</a>
-                    </li>
-                </ul>
-            </nav>
+            <h1 th:text="${article.getArticletitle()}"></h1>
+            <h5 th:text="'作者: '+${article.getArticleauthorid()}"></h5>
+            <h5 th:text="'发布日期：'+${article.getArticlepublishtime()} + '修改日期：'+${article.getArticlechangetime()}"></h5>
         </div>
         <div class="col-sm-4">
 

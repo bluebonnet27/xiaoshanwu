@@ -1,5 +1,6 @@
 package com.ti.xiaoshanwu.controller.article;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.User;
@@ -151,5 +152,21 @@ public class ArticleController {
         model.addAttribute("pages",articles);
         model.addAttribute("articlesimpl",articlesImpl);
         return "index";
+    }
+
+    @RequestMapping("articlemore")
+    public String showArticleMore(Model model,Integer articleid,HttpSession session){
+        Integer userid = (Integer) session.getAttribute("uid");
+        if(userid!=null){
+            model.addAttribute("username","请登录");
+        }else {
+            User user = this.userService.queryById(userid);
+            model.addAttribute("username",user.getUsername());
+        }
+
+        Article article = this.articleService.queryById(articleid);
+        model.addAttribute("article",article);
+
+        return "article/articlemain";
     }
 }
