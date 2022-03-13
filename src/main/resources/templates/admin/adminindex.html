@@ -78,31 +78,43 @@
         </ol>
     </nav>
     <div class="col-3">
-        <h3><span class="bi-clipboard-check"></span> 论坛管理</h3>
+        <h3>论坛管理</h3>
         <div class="list-group">
-            <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
-                今日论坛数据
+            <button type="button" class="list-group-item list-group-item-action active">
+                <span class="bi-bar-chart"></span>   今日论坛数据
             </button>
-            <button type="button" class="list-group-item list-group-item-action">用户管理</button>
-            <button type="button" class="list-group-item list-group-item-action">模块管理</button>
-            <button type="button" class="list-group-item list-group-item-action">帖子管理</button>
+            <button type="button" class="list-group-item list-group-item-action"
+                    onclick="window.location.href='http://localhost:8080/adm/allusersdefault'">
+                <span class="bi-person-video2"></span>   用户管理</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-back"></span>   模块管理</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-card-text"></span>   帖子管理</button>
             <button type="button" class="list-group-item list-group-item-action"
                     onclick="window.location.href='http://localhost:8080/adm/tochangepwd'">
-                个人信息管理</button>
+                <span class="bi-person-bounding-box"></span>   个人信息管理</button>
         </div>
-        <h3><span class="bi-card-checklist"></span> 记录</h3>
+        <h3>记录</h3>
         <div class="list-group">
-            <button type="button" class="list-group-item list-group-item-action">登录记录</button>
-            <button type="button" class="list-group-item list-group-item-action">财产变更记录</button>
-            <button type="button" class="list-group-item list-group-item-action">热度操作记录</button>
-            <button type="button" class="list-group-item list-group-item-action">经验扣除记录</button>
-            <button type="button" class="list-group-item list-group-item-action">黑名单</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-person-lines-fill"></span>   登录记录</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-currency-exchange"></span>   财产变更记录</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-activity"></span>   热度操作记录</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-arrow-down-up"></span>   经验扣除记录</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-cone-striped"></span>   黑名单</button>
         </div>
-        <h3><span class="bi-three-dots"></span> 其他</h3>
+        <h3>其他</h3>
         <div class="list-group">
-            <button type="button" class="list-group-item list-group-item-action">通知</button>
-            <button type="button" class="list-group-item list-group-item-action">公告</button>
-            <button type="button" class="list-group-item list-group-item-action">反馈</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-bell"></span>   通知管理</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-clipboard"></span>   公告管理</button>
+            <button type="button" class="list-group-item list-group-item-action">
+                <span class="bi-person-rolodex"></span>   反馈管理</button>
         </div>
     </div>
     <div class="col-9">

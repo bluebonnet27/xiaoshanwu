@@ -50,9 +50,9 @@ public class UserServiceImpl implements UserService {
         UserImpl userimpl = new UserImpl();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
-        Date date;
+        SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String ubirth = dateFormat.format(user.getUserbirth());
-        String ureg = dateFormat.format(user.getUserregtime());
+        String ureg = dateFormatTime.format(user.getUserregtime());
 
         String urole = "用户";
         if(user.getUserrole()==1){

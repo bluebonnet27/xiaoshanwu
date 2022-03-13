@@ -47,41 +47,41 @@
           userid, username, userpwd, useremail, userbirth, usersex, userlv, userimg, userrole, userstatement, userregtime, usermoney
         from user
         <where>
-            <if test="userid != null">
-                and userid = #{userid}
+            <if test="ur.userid != null">
+                and userid = #{ur.userid}
             </if>
-            <if test="username != null and username != ''">
-                and username = #{username}
+            <if test="ur.username != null and ur.username != ''">
+                and username = #{ur.username}
             </if>
-            <if test="userpwd != null and userpwd != ''">
-                and userpwd = #{userpwd}
+            <if test="ur.userpwd != null and ur.userpwd != ''">
+                and userpwd = #{ur.userpwd}
             </if>
-            <if test="useremail != null and useremail != ''">
-                and useremail = #{useremail}
+            <if test="ur.useremail != null and ur.useremail != ''">
+                and useremail = #{ur.useremail}
             </if>
-            <if test="userbirth != null">
-                and userbirth = #{userbirth}
+            <if test="ur.userbirth != null">
+                and userbirth = #{ur.userbirth}
             </if>
-            <if test="usersex != null">
-                and usersex = #{usersex}
+            <if test="ur.usersex != null">
+                and usersex = #{ur.usersex}
             </if>
-            <if test="userlv != null">
-                and userlv = #{userlv}
+            <if test="ur.userlv != null">
+                and userlv = #{ur.userlv}
             </if>
-            <if test="userimg != null">
-                and userimg = #{userimg}
+            <if test="ur.userimg != null">
+                and userimg = #{ur.userimg}
             </if>
-            <if test="userrole != null">
-                and userrole = #{userrole}
+            <if test="ur.userrole != null">
+                and userrole = #{ur.userrole}
             </if>
-            <if test="userstatement != null and userstatement != ''">
-                and userstatement = #{userstatement}
+            <if test="ur.userstatement != null and ur.userstatement != ''">
+                and userstatement = #{ur.userstatement}
             </if>
-            <if test="userregtime != null">
-                and userregtime = #{userregtime}
+            <if test="ur.userregtime != null">
+                and userregtime = #{ur.userregtime}
             </if>
-            <if test="usermoney != null">
-                and usermoney = #{usermoney}
+            <if test="ur.usermoney != null">
+                and usermoney = #{ur.usermoney}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

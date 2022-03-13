@@ -84,26 +84,62 @@
             <li class="breadcrumb-item active" aria-current="page">修改密码</li>
         </ol>
     </nav>
+
+    <div th:style="'background-image: url('+${headimgbg}+');background-repeat:no-repeat;background-size:100%;'">
+        <div class="row">
+            <div class="col-sm-2">
+                <img th:src="@{${headimg}}" class="img-fluid img-thumbnail">
+            </div>
+            <div class="col-sm-10">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>
+                            <span class="bi-person"></span>
+                        </td>
+                        <td th:text="${user.getUsername()}"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="bi-at"></span>
+                        </td>
+                        <td th:text="${user.getUseremail()}"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="bi-chat-left"></span>
+                        </td>
+                        <td th:text="${user.getUserstatement()}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-3">
-            <h3><span class="bi-person"></span> 我的</h3>
+            <h3><span class="bi-person-circle"></span> 我的</h3>
             <div class="list-group">
                 <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='/user/tousercenter'">
-                    我的数据</button>
-                <button type="button" class="list-group-item list-group-item-action">我的帖子</button>
-                <button type="button" class="list-group-item list-group-item-action">我的主题</button>
-                <button type="button" class="list-group-item list-group-item-action">我的收藏</button>
+                    <span class="bi-journal-check"></span> 我的数据</button>
+                <button type="button" class="list-group-item list-group-item-action">
+                    <span class="bi-card-text"></span> 我的帖子</button>
+                <button type="button" class="list-group-item list-group-item-action">
+                    <span class="bi-back"></span> 我的主题</button>
+                <button type="button" class="list-group-item list-group-item-action">
+                    <span class="bi-star"></span> 我的收藏</button>
             </div>
             <h3><span class="bi-safe"></span> 安全</h3>
             <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action">我的信息</button>
+                <button type="button" class="list-group-item list-group-item-action"
+                        onclick="window.location.href='/user/userinfo'">
+                    <span class="bi-clipboard-data"></span> 我的信息</button>
                 <button type="button" class="list-group-item list-group-item-action active"
                         onclick="window.location.href='/user/tochangepwd'">
-                    修改密码</button>
+                    <span class="bi-key"></span> 修改密码</button>
                 <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='/user/tochangeemail'">
-                    修改邮箱</button>
+                    <span class="bi-at"></span> 修改邮箱</button>
             </div>
         </div>
         <div class="col-9">

@@ -1,15 +1,24 @@
 package com.ti.xiaoshanwu.controller.admin;
 
 import com.ti.xiaoshanwu.entity.Admin;
+import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.AdminService;
+import com.ti.xiaoshanwu.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author TiHongsheng
@@ -20,6 +29,9 @@ public class AdminController {
 
     @Resource
     private AdminService adminService;
+
+    @Resource
+    private UserService userService;
 
     @RequestMapping("/tochangepwd")
     public String toChangePwd(HttpSession session,
@@ -73,5 +85,89 @@ public class AdminController {
         }
 
         return changePwdBackResult.toString();
+    }
+
+    @RequestMapping("allusersdefault")
+    public String getAllUsers(HttpSession session,
+                              @RequestParam(defaultValue = "1") Integer page,
+                              @RequestParam(defaultValue = "5") Integer limit,
+                              Model model){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        User siftCondition = new User();
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("userid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<User> userPages = this.userService.queryByPage(siftCondition,pageRequest);
+        ArrayList<UserImpl> userImpls = new ArrayList<>();
+
+        //发送到前端前二次处理
+        List<User> users = userPages.getContent();
+
+        for(User user:users){
+            UserImpl userImpl = this.userService.convertUserToUserImpl(user);
+            userImpls.add(userImpl);
+        }
+        model.addAttribute("userpages",userPages);
+        model.addAttribute("userImpls",userImpls);
+
+        return "admin/uuser/adminusermng";
+    }
+
+    @RequestMapping("allusershead")
+    public String getAllUsersHead(HttpSession session,
+                                  @RequestParam(defaultValue = "1") Integer page,
+                                  @RequestParam(defaultValue = "5") Integer limit,
+                                  Model model){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        User siftCondition = new User(1);
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("userid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<User> userPages = this.userService.queryByPage(siftCondition,pageRequest);
+        ArrayList<UserImpl> userImpls = new ArrayList<>();
+
+        //发送到前端前二次处理
+        List<User> users = userPages.getContent();
+
+        for(User user:users){
+            UserImpl userImpl = this.userService.convertUserToUserImpl(user);
+            userImpls.add(userImpl);
+        }
+        model.addAttribute("userpages",userPages);
+        model.addAttribute("userImpls",userImpls);
+
+        return "admin/uuser/adminusermng2";
+    }
+
+    @RequestMapping("allthemes")
+    public String getAllThemes(HttpSession session,
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "5") Integer limit,
+                               Model model){
+        return "admin/ttheme/adminthememng";
     }
 }

@@ -30,7 +30,7 @@ public interface ThemeDao {
      * @param pageable         分页对象
      * @return 对象列表
      */
-    List<Theme> queryAllByLimit(Theme theme, @Param("pageable") Pageable pageable);
+    List<Theme> queryAllByLimit(@Param("tm") Theme theme, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数

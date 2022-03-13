@@ -1,5 +1,6 @@
 package com.ti.xiaoshanwu.controller.user;
 
+import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
@@ -52,6 +53,13 @@ public class UserController {
     public String toUserCenter(HttpSession session, Model model){
         Integer targetUserid = (Integer) session.getAttribute("uid");
         User targetUser = userService.queryById(targetUserid);
+
+        HeadImgConverter headImgConverter = new HeadImgConverter();
+        String userHeadImgUrl = headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        String userHeadImgBgUrl = headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        model.addAttribute("headimg",userHeadImgUrl);
+        model.addAttribute("headimgbg",userHeadImgBgUrl);
+
         Article shefArticle = new Article();
 
         List<Article> articles = this.articleService.queryArticles(shefArticle);
@@ -100,6 +108,12 @@ public class UserController {
         Integer targetUserid = (Integer) session.getAttribute("uid");
         User targetUser = userService.queryById(targetUserid);
 
+        HeadImgConverter headImgConverter = new HeadImgConverter();
+        String userHeadImgUrl = headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        String userHeadImgBgUrl = headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        model.addAttribute("headimg",userHeadImgUrl);
+        model.addAttribute("headimgbg",userHeadImgBgUrl);
+
         model.addAttribute("user",targetUser);
         return "user/userchangepwdpage";
     }
@@ -144,6 +158,12 @@ public class UserController {
     public String toChangEmail(HttpSession session, Model model){
         Integer targetUserid = (Integer) session.getAttribute("uid");
         User targetUser = userService.queryById(targetUserid);
+
+        HeadImgConverter headImgConverter = new HeadImgConverter();
+        String userHeadImgUrl = headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        String userHeadImgBgUrl = headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        model.addAttribute("headimg",userHeadImgUrl);
+        model.addAttribute("headimgbg",userHeadImgBgUrl);
 
         model.addAttribute("user",targetUser);
         return "user/userchangeemailpage";
@@ -190,6 +210,12 @@ public class UserController {
         }
         User targetUser = userService.queryById(targetUserid);
         UserImpl targetUserImpl = userService.convertUserToUserImpl(targetUser);
+
+        HeadImgConverter headImgConverter = new HeadImgConverter();
+        String userHeadImgUrl = headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        String userHeadImgBgUrl = headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        model.addAttribute("headimg",userHeadImgUrl);
+        model.addAttribute("headimgbg",userHeadImgBgUrl);
 
         model.addAttribute("user",targetUserImpl);
         return "user/userinfopage";

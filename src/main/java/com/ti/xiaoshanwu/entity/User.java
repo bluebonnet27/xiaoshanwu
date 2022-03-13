@@ -15,21 +15,21 @@ public class User implements Serializable {
     private Integer userid;
     
     private String username;
-    
+    //无需展示
     private String userpwd;
-    
+    //无需展示
     private String useremail;
-    
+
     private Date userbirth;
     
     private Integer usersex;
     
     private Integer userlv;
-    
+    //无需展示？
     private Integer userimg;
     
     private Integer userrole;
-    
+    //无需展示
     private String userstatement;
     
     private Date userregtime;
@@ -156,6 +156,15 @@ public class User implements Serializable {
         this.userrole = userrole;
         this.userstatement = userstatement;
         this.userregtime = userregtime;
+    }
+
+    /**
+     * 作为用户角色筛选条件的专用构造器.
+     *
+     * @param userrole the userrole
+     */
+    public User(Integer userrole) {
+        this.userrole = userrole;
     }
 
     /**

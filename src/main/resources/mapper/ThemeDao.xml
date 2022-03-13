@@ -25,23 +25,23 @@
           themeid, themename, themeadminid, themestatement, themetime, themecount
         from theme
         <where>
-            <if test="themeid != null">
-                and themeid = #{themeid}
+            <if test="tm.themeid != null">
+                and themeid = #{tm.themeid}
             </if>
-            <if test="themename != null and themename != ''">
-                and themename = #{themename}
+            <if test="tm.themename != null and tm.themename != ''">
+                and themename = #{tm.themename}
             </if>
-            <if test="themeadminid != null">
-                and themeadminid = #{themeadminid}
+            <if test="tm.themeadminid != null">
+                and themeadminid = #{tm.themeadminid}
             </if>
-            <if test="themestatement != null and themestatement != ''">
-                and themestatement = #{themestatement}
+            <if test="tm.themestatement != null and tm.themestatement != ''">
+                and themestatement = #{tm.themestatement}
             </if>
-            <if test="themetime != null">
-                and themetime = #{themetime}
+            <if test="tm.themetime != null">
+                and themetime = #{tm.themetime}
             </if>
-            <if test="themecount != null">
-                and themecount = #{themecount}
+            <if test="tm.themecount != null">
+                and themecount = #{tm.themecount}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}
