@@ -33,6 +33,14 @@ public interface BoardDao {
     List<Board> queryAllByLimit(@Param("boa") Board board, @Param("pageable") Pageable pageable);
 
     /**
+     * 查询指定行数据，无分页
+     *
+     * @param board the board
+     * @return the list
+     */
+    List<Board> queryAllByLimitNoPage(@Param("boa") Board board);
+
+    /**
      * 统计总行数
      *
      * @param board 查询条件

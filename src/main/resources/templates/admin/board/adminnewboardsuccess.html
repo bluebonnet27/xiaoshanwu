@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>小山屋论坛-用户管理</title>
+    <title>小山屋论坛-公告（管理员）</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
@@ -35,6 +35,10 @@
 
     <!--  和风天气  -->
     <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
+
+    <!--Editor.md-->
+    <link rel="stylesheet" th:href="@{/editormd/css/editormd.css}"/>
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
 
     <style>
         #mainpart{
@@ -80,7 +84,7 @@
                 <button type="button" class="list-group-item list-group-item-action">
                     <span class="bi-bar-chart"></span>   今日论坛数据
                 </button>
-                <button type="button" class="list-group-item list-group-item-action active"
+                <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='http://localhost:8080/adm/allusersdefault'">
                     <span class="bi-person-video2"></span>   用户管理</button>
                 <button type="button" class="list-group-item list-group-item-action"
@@ -109,7 +113,7 @@
             <div class="list-group">
                 <button type="button" class="list-group-item list-group-item-action">
                     <span class="bi-bell"></span>   通知管理</button>
-                <button type="button" class="list-group-item list-group-item-action"
+                <button type="button" class="list-group-item list-group-item-action active"
                         onclick="window.location.href='http://localhost:8080/adm/alladminboards'">
                     <span class="bi-clipboard"></span>   公告管理</button>
                 <button type="button" class="list-group-item list-group-item-action">
@@ -119,78 +123,27 @@
         <div class="col-9">
             <div class="row">
                 <div class="col-sm-6">
-                    <h1><span class="bi-person-video2"></span> 用户管理</h1>
-                </div>
-                <div class="col-sm-6">
-                    <form class="d-flex" style="position: center">
-                        <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search">
-                        <button class="btn btn-success" type="button">
-                            <span class="bi-search"></span></button>
-                    </form>
+                    <h1><span class="bi-clipboard"></span>   公告管理</h1>
                 </div>
             </div>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="allusersdefault">全部用户</a>
+                    <a class="nav-link" href="alladminboards">全部公告</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="allusershead">模块管理员</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="userdata">用户数据</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">其他</a>
+                    <a class="nav-link active" href="toaddnewboard">发布新公告</a>
                 </li>
             </ul>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>用户名</th>
-                    <th>出生日期</th>
-                    <th>性别</th>
-                    <th>等级</th>
-                    <th>角色</th>
-                    <th>注册日期</th>
-                    <th>财产</th>
-                    <th>管理</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user,iterStat : ${userImpls}">
-                    <td th:text="${user.getUserid()}"></td>
-                    <td th:text="${user.getUsername()}"></td>
-                    <td th:text="${user.getUserbirthImpl()}"></td>
-                    <td th:text="${user.getUsersexImpl()}"></td>
-                    <td th:text="${user.getUserlv()}"></td>
-                    <td th:text="${user.getUserroleImpl()}"
-                        th:class="${user.getUserrole()==0}?'':'table-danger'">
-                    </td>
-                    <td th:text="${user.getUserregtimeImpl()}"></td>
-                    <td th:text="${user.getUsermoney()}"></td>
-                    <td>
-                        <button class="btn btn-info disabled">
-                            <span class="bi-gear"></span> 管理
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="alert alert-info" role="alert" th:text="${'当前共有'+userpages.getTotalElements()+'个用户，更多信息请切换到“用户数据”选项卡'}">
+            <div class="card" style="margin-top: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">公告发布成功！</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="'发布时间：'+${backboard.getBoarddate()}">
+                        Card subtitle</h6>
+                    <p class="card-text">管理员公告</p>
+                    <a href="alladminboards" class="card-link">返回全部公告</a>
+                    <a href="toaddnewboard" class="card-link">再发布新公告</a>
+                </div>
             </div>
-
-            <nav>
-                <ul class="pagination">
-                    <li th:each="i : ${#numbers.sequence(1,userpages.getTotalPages())}"
-                        th:class="${userpages.getNumber() + 1 != i}?'page-item':'page-item active'">
-                        <a class="page-link"
-                           th:href="@{allusersdefault(page=${i},limit=${userpages.getSize()})}"
-                           th:text="${i}">
-                            Previous</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
 </div>

@@ -2,12 +2,15 @@ package com.ti.xiaoshanwu.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ti.xiaoshanwu.entity.Admin;
+import com.ti.xiaoshanwu.entity.Board;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.AdminService;
+import com.ti.xiaoshanwu.service.BoardService;
 import com.ti.xiaoshanwu.service.UserService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,6 +20,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -32,8 +36,15 @@ public class LoginAndRegController {
     @Resource
     private AdminService adminService;
 
+    @Resource
+    private BoardService boardService;
+
     @RequestMapping("tologin")
-    public String toLogin(){
+    public String toLogin(Model model){
+        //查询最新公告内容
+        Board siftBoard = new Board();
+        List<Board> boards = this.boardService.queryByNoPage(siftBoard);
+        model.addAttribute("board", boards.get(0));
         return "login/loginpage";
     }
 

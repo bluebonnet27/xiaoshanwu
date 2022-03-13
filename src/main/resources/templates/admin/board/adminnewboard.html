@@ -36,6 +36,10 @@
     <!--  和风天气  -->
     <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
 
+    <!--Editor.md-->
+    <link rel="stylesheet" th:href="@{/editormd/css/editormd.css}"/>
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+
     <style>
         #mainpart{
             margin-top: 50px;
@@ -119,7 +123,7 @@
         <div class="col-9">
             <div class="row">
                 <div class="col-sm-6">
-                    <h1><span class="bi-clipboard"></span>   公告管理</h1>
+                    <h1><span class="bi-clipboard"></span> 公告管理</h1>
                 </div>
             </div>
             <ul class="nav nav-tabs">
@@ -130,10 +134,28 @@
                     <a class="nav-link active" href="toaddnewboard">发布新公告</a>
                 </li>
             </ul>
-
-            <form class="form">
-
-            </form>
+            <div class="card" id="formmain">
+                <form name="mdEditorForm" action="/adm/newboard">
+                    <div class="row mb-3">
+                        <label for="titleinput" class="col-sm-2 form-label">公告标题</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="titleinput" name="botitle" >
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="content-editormd-markdown-doc" class="col-sm-2 form-label">正文</label>
+                        <div class="col-sm-8" id="test-editormd">>
+                            <textarea style="display:none;" class="form-control"  id="content-editormd-markdown-doc"
+                                      name="bocontent"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="d-grid gap-2 d-md-block">
+                            <button class="btn btn-primary" type="submit">提交公告</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -146,5 +168,35 @@
         <p class="mb-0">当前版本 v0.1。</p>
     </div>
 </footer>
+<script th:src="@{/js/jquery-3.5.1.js}"></script>
+<script th:src="@{/editormd/lib/marked.min.js}"></script>
+<script th:src="@{/editormd/lib/prettify.min.js}"></script>
+<script th:src="@{/editormd/lib/raphael.min.js}"></script>
+<script th:src="@{/editormd/lib/underscore.min.js}"></script>
+<script th:src="@{/editormd/lib/sequence-diagram.min.js}"></script>
+<script th:src="@{/editormd/lib/flowchart.min.js}"></script>
+<script th:src="@{/editormd/lib/jquery.flowchart.min.js}"></script>
+<script th:src="@{/editormd/js/editormd.min.js}"></script>
+<script type="text/javascript">
+    var testEditor;
+
+    $(function() {
+        testEditor = editormd("test-editormd",{
+            placeholder:'本编辑器支持Markdown编辑，左边编写，右边预览',
+            width : "90%",
+            height : 400,
+            syncScrolling : "single",
+            path : "../editormd/lib/",
+            saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
+            emoji: true,
+            theme: "default | dark",//工具栏主题
+            previewTheme: "default | dark",//预览主题
+            editorTheme: "default | dark",//编辑主题
+            tex : true,                   // 科学公式TeX语言支持，默认关闭
+            flowChart : true,             // 流程图支持，默认关闭
+            sequenceDiagram : true
+        });
+    });
+</script>
 </body>
 </html>

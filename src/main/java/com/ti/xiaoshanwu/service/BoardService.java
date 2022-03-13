@@ -5,6 +5,8 @@ import com.ti.xiaoshanwu.entity.impl.BoardImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 /**
  * (Board)表服务接口
  *
@@ -29,6 +31,14 @@ public interface BoardService {
      * @return 查询结果
      */
     Page<Board> queryByPage(Board board, PageRequest pageRequest);
+
+    /**
+     * 不分页查询所有数据.
+     *
+     * @param board the board
+     * @return the list
+     */
+    List<Board> queryByNoPage(Board board);
 
     /**
      * 新增数据

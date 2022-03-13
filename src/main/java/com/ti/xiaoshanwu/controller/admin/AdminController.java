@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -301,5 +302,40 @@ public class AdminController {
         Admin foundAdmin = this.adminService.queryById(adminid);
         model.addAttribute("admin",foundAdmin);
         return "admin/board/adminnewboard";
+    }
+
+    @RequestMapping("newboard")
+    public String addNewBoard(Model model,
+                              HttpSession session,
+                              String botitle,
+                              String bocontent){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("errtitle","session空");
+            model.addAttribute("errorsubtitle","空");
+            model.addAttribute("errtext","com/ti/xiaoshanwu/controller/admin/AdminController.java");
+            return "errorhandle";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        Board addBoard = new Board();
+        //由管理员发布的公告
+        addBoard.setBoardtype(0);
+        //日期
+        Date now = new Date();
+        addBoard.setBoarddate(now);
+        //来自前端的标题和正文
+        addBoard.setBoardtitle(botitle);
+        addBoard.setBoardcontent(bocontent);
+        //赞同，反对，对应主题
+        addBoard.setBoardthumb(0);
+        addBoard.setBoardagainst(0);
+        addBoard.setBoardtheme(-1);
+
+        Board backBoard = this.boardService.insert(addBoard);
+
+        model.addAttribute("backboard",backBoard);
+        return "admin/board/adminnewboardsuccess";
     }
 }

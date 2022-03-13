@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import javax.annotation.Resource;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -53,6 +54,17 @@ public class BoardServiceImpl implements BoardService {
     public Page<Board> queryByPage(Board board, PageRequest pageRequest) {
         long total = this.boardDao.count(board);
         return new PageImpl<>(this.boardDao.queryAllByLimit(board, pageRequest), pageRequest, total);
+    }
+
+    /**
+     * 不分页查询所有数据.
+     *
+     * @param board the board
+     * @return the list
+     */
+    @Override
+    public List<Board> queryByNoPage(Board board) {
+        return this.boardDao.queryAllByLimitNoPage(board);
     }
 
     /**

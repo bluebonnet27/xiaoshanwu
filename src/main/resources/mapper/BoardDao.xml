@@ -55,6 +55,39 @@
         limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 
+    <!--查询所有公告数据-->
+    <select id="queryAllByLimitNoPage" resultMap="BoardMap">
+        select
+        boardid, boardtype, boarddate, boardtitle, boardcontent, boardthumb, boardagainst, boardtheme
+        from board
+        <where>
+            <if test="boa.boardid != null">
+                and boardid = #{boa.boardid}
+            </if>
+            <if test="boa.boardtype != null">
+                and boardtype = #{boa.boardtype}
+            </if>
+            <if test="boa.boarddate != null">
+                and boarddate = #{boa.boarddate}
+            </if>
+            <if test="boa.boardtitle != null and boa.boardtitle != ''">
+                and boardtitle = #{boa.boardtitle}
+            </if>
+            <if test="boa.boardcontent != null and boa.boardcontent != ''">
+                and boardcontent = #{boa.boardcontent}
+            </if>
+            <if test="boa.boardthumb != null">
+                and boardthumb = #{boa.boardthumb}
+            </if>
+            <if test="boa.boardagainst != null">
+                and boardagainst = #{boa.boardagainst}
+            </if>
+            <if test="boa.boardtheme != null">
+                and boardtheme = #{boa.boardtheme}
+            </if>
+        </where>
+    </select>
+
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">
         select count(1)

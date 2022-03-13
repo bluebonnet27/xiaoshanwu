@@ -75,10 +75,10 @@
         </nav>
         <div class="col-sm">
             <div class="card">
-                <img src = 'https://s3.bmp.ovh/imgs/2022/02/c1c0272b79d6655e.png' class="card-img"/>
+                <h5 class="card-header">最新公告</h5>
                 <div class="card-body">
-                    <h4 class="card-title">更新日志 v0.1</h4>
-                    <p class="card-text">代码正在施工中</p>
+                    <h4 class="card-title" th:text="${board.getBoardtitle()}">更新日志 v0.1</h4>
+                    <p class="card-text" th:text="${board.getBoarddate()}"></p>
                     <a href="https://github.com/bluebonnet27/xiaoshanwu" class="btn btn-info"><span class="bi-github"></span> github地址</a>
                 </div>
             </div>
