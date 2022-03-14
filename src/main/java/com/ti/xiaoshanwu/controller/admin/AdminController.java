@@ -1,10 +1,13 @@
 package com.ti.xiaoshanwu.controller.admin;
 
 import com.ti.xiaoshanwu.entity.Admin;
+import com.ti.xiaoshanwu.entity.Theme;
 import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.AdminService;
+import com.ti.xiaoshanwu.service.ThemeService;
 import com.ti.xiaoshanwu.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +36,10 @@ public class AdminController {
     @Resource
     private UserService userService;
 
-    @RequestMapping("/tochangepwd")
+    @Resource
+    private ThemeService themeService;
+
+    @RequestMapping("tochangepwd")
     public String toChangePwd(HttpSession session,
                               Model model){
         if(session.getAttribute("uid")!=null){
@@ -166,8 +172,38 @@ public class AdminController {
     @RequestMapping("allthemes")
     public String getAllThemes(HttpSession session,
                                @RequestParam(defaultValue = "1") Integer page,
-                               @RequestParam(defaultValue = "5") Integer limit,
+                               @RequestParam(defaultValue = "10") Integer limit,
                                Model model){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        Theme siftCondition = new Theme();
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("themeid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<Theme> themePages = this.themeService.queryByPage(siftCondition,pageRequest);
+        ArrayList<ThemeImpl> themeImpls = new ArrayList<>();
+
+        //发送到前端前二次处理
+        List<Theme> themes = themePages.getContent();
+
+        for(Theme theme:themes){
+            ThemeImpl themeImpl = this.themeService.convertToThemeImpl(theme);
+            themeImpls.add(themeImpl);
+        }
+
+        model.addAttribute("themepages",themePages);
+        model.addAttribute("themeImpls",themeImpls);
         return "admin/ttheme/adminthememng";
     }
 }

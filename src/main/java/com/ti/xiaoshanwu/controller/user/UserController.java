@@ -122,10 +122,11 @@ public class UserController {
      * 前端请求验证码.
      *
      * @param session 获取用户，进而获取邮件地址
-     * @return the string
+     * @return json对象文本
      */
     @RequestMapping("getCheckCode")
-    public @ResponseBody String getChangeEmailCode(HttpSession session){
+    @ResponseBody
+    public String getChangeEmailCode(HttpSession session){
         Integer targetUserid = (Integer) session.getAttribute("uid");
         User targetUser = userService.queryById(targetUserid);
         String email = targetUser.getUseremail();
@@ -169,6 +170,14 @@ public class UserController {
         return "user/userchangeemailpage";
     }
 
+    /**
+     * 修改邮箱验证方法
+     *
+     * @param session  the session
+     * @param inCode   邮箱验证码
+     * @param newEmail 新的邮箱地址
+     * @return json对象文本
+     */
     @RequestMapping("changeemail")
     @ResponseBody
     public String changeEmail(HttpSession session ,

@@ -1,7 +1,10 @@
 package com.ti.xiaoshanwu.service.impl;
 
+import com.ti.xiaoshanwu.dao.UserDao;
 import com.ti.xiaoshanwu.entity.Theme;
 import com.ti.xiaoshanwu.dao.ThemeDao;
+import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import com.ti.xiaoshanwu.service.ThemeService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -9,6 +12,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+
+import static org.springframework.beans.BeanUtils.copyProperties;
 
 /**
  * (Theme)表服务实现类
@@ -20,6 +26,9 @@ import javax.annotation.Resource;
 public class ThemeServiceImpl implements ThemeService {
     @Resource
     private ThemeDao themeDao;
+
+    @Resource
+    private UserDao userDao;
 
     /**
      * 通过ID查询单条数据
@@ -78,5 +87,20 @@ public class ThemeServiceImpl implements ThemeService {
     @Override
     public boolean deleteById(Integer themeid) {
         return this.themeDao.deleteById(themeid) > 0;
+    }
+
+    @Override
+    public ThemeImpl convertToThemeImpl(Theme theme) {
+        ThemeImpl themeImpl = new ThemeImpl();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+
+        String newDate = dateFormat.format(theme.getThemetime());
+        User foundUser = this.userDao.queryById(theme.getThemeadminid());
+
+        copyProperties(theme,themeImpl);
+        themeImpl.setThemeDateImpl(newDate);
+        themeImpl.setThemeadminidImpl(foundUser.getUsername());
+
+        return themeImpl;
     }
 }

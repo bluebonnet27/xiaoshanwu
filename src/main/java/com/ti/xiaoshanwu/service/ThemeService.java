@@ -1,6 +1,7 @@
 package com.ti.xiaoshanwu.service;
 
 import com.ti.xiaoshanwu.entity.Theme;
+import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -52,5 +53,7 @@ public interface ThemeService {
      * @return 是否成功
      */
     boolean deleteById(Integer themeid);
+
+    ThemeImpl convertToThemeImpl(Theme theme);
 
 }

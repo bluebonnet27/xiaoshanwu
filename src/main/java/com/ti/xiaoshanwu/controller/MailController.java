@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import java.util.Random;
 
 /**
+ * 测试类，不用于生产环境
+ *
  * @author TiHongsheng
  */
 @Controller

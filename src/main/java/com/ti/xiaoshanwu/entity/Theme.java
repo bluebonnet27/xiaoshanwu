@@ -73,5 +73,7 @@ public class Theme implements Serializable {
         this.themecount = themecount;
     }
 
+    public Theme() {
+    }
 }
 
