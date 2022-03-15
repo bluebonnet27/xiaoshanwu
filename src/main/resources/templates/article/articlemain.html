@@ -55,6 +55,21 @@
             background-image: url("https://s3.bmp.ovh/imgs/2022/03/07ca2075685f0fd8.png");
             background-size:100% 100%;
         }
+        #test-editormd{
+            margin: 10px;
+        }
+        #headerh{
+            margin: 10px;
+        }
+        #maincard{
+            margin-top: 10px;
+        }
+        #maincard2{
+            margin-top: 5px;
+        }
+        #maincard-right1{
+            margin-top: 10px;
+        }
     </style>
 
 </head>
@@ -95,12 +110,63 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8">
-            <h1 th:text="${article.getArticletitle()}"></h1>
-            <h5 th:text="'作者: '+${article.getArticleauthorid()}"></h5>
-            <h5 th:text="'发布日期：'+${article.getArticlepublishtime()} + '修改日期：'+${article.getArticlechangetime()}"></h5>
+            <div class="card" id="maincard"
+                 th:style="'background-image: url('+${article.getArticleImgUrl()}+');background-repeat:no-repeat;background-size:100%;'">
+                <div id="headerh">
+                    <h1 th:text="${article.getArticletitle()}">标题</h1>
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                            <tr>
+                                <td class="badge bg-primary">作者</td>
+                                <td>
+                                    <img th:src="@{${article.getArticleauthorImg()}}"
+                                         style="width: 20px;height: 20px">
+                                </td>
+                                <td th:text="${article.getArticleauthoridImpl()}"></td>
+                                <td class="badge bg-primary">发布日期</td>
+                                <td th:text="${article.getArticlePublishTimeImpl()}"></td>
+                                <td class="badge bg-primary">修改日期</td>
+                                <td th:text="${article.getArticleChangeTimeImpl()}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card" id="maincard2">
+                <div id="test-editormd">
+                    <textarea style="display:none;" th:text="${article.getArticlecontent()}"></textarea>
+                </div>
+            </div>
         </div>
         <div class="col-sm-4">
+            <div class="card" id="maincard-right1">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>
+                            <span class="bi-hand-thumbs-up"></span>
+                        </td>
+                        <td th:text="${article.getArticlethumb()}">
 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="bi-star"></span>
+                        </td>
+                        <td th:text="${article.getArticlecollect()}">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="bi-reply"></span>
+                        </td>
+                        <td th:text="${article.getArticlereplycount()}">
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -113,5 +179,32 @@
         <p class="mb-0">当前版本 v0.1。</p>
     </div>
 </footer>
+<script th:src="@{/js/jquery-3.5.1.js}"></script>
+<script th:src="@{/editormd/lib/marked.min.js}"></script>
+<script th:src="@{/editormd/lib/prettify.min.js}"></script>
+<script th:src="@{/editormd/lib/raphael.min.js}"></script>
+<script th:src="@{/editormd/lib/underscore.min.js}"></script>
+<script th:src="@{/editormd/lib/sequence-diagram.min.js}"></script>
+<script th:src="@{/editormd/lib/flowchart.min.js}"></script>
+<script th:src="@{/editormd/lib/jquery.flowchart.min.js}"></script>
+<script th:src="@{/editormd/js/editormd.min.js}"></script>
+<script type="text/javascript">
+
+    var testEditor;
+
+    $(function () {
+        testEditor = editormd.markdownToHTML("test-editormd", {
+            htmlDecode: "style,script,iframe", // you can filter tags decode
+            emoji: true,
+            taskList: true,
+            tex: true, // 默认不解析
+            flowChart: false, // 默认不解析
+            sequenceDiagram: true, // 默认不解析
+            path: "./editormd/lib/",
+            previewTheme: "dark"
+        })
+    })
+
+</script>
 </body>
 </html>

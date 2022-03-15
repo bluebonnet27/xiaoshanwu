@@ -69,4 +69,12 @@ public interface ArticleService {
      */
     ArrayList<ArticleImpl> convertToArticleImpl(ArrayList<Article> articles);
 
+    /**
+     * Convert to article article.
+     *
+     * @param article the article
+     * @return the article
+     */
+    ArticleImpl convertToArticleImpl(Article article);
+
 }

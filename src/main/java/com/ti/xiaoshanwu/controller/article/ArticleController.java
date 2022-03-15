@@ -157,7 +157,7 @@ public class ArticleController {
     @RequestMapping("articlemore")
     public String showArticleMore(Model model,Integer articleid,HttpSession session){
         Integer userid = (Integer) session.getAttribute("uid");
-        if(userid!=null){
+        if(userid==null){
             model.addAttribute("username","请登录");
         }else {
             User user = this.userService.queryById(userid);
@@ -165,7 +165,9 @@ public class ArticleController {
         }
 
         Article article = this.articleService.queryById(articleid);
-        model.addAttribute("article",article);
+        ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
+
+        model.addAttribute("article",articleImpl);
 
         return "article/articlemain";
     }

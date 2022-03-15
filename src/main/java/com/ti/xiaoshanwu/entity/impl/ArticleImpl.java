@@ -17,6 +17,10 @@ public class ArticleImpl extends Article {
 
     private String articleImgUrl;
 
+    private String articlePublishTimeImpl;
+
+    private String articleChangeTimeImpl;
+
     public String getArticleauthoridImpl() {
         return articleauthoridImpl;
     }
@@ -57,4 +61,19 @@ public class ArticleImpl extends Article {
         this.articleauthorImg = articleauthorImg;
     }
 
+    public String getArticlePublishTimeImpl() {
+        return articlePublishTimeImpl;
+    }
+
+    public void setArticlePublishTimeImpl(String articlePublishTimeImpl) {
+        this.articlePublishTimeImpl = articlePublishTimeImpl;
+    }
+
+    public String getArticleChangeTimeImpl() {
+        return articleChangeTimeImpl;
+    }
+
+    public void setArticleChangeTimeImpl(String articleChangeTimeImpl) {
+        this.articleChangeTimeImpl = articleChangeTimeImpl;
+    }
 }
