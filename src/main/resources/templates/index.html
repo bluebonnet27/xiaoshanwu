@@ -76,9 +76,13 @@
                     <a class="nav-link active" aria-current="page" href="#"><span class="bi-chat-left-quote"></span>
                         风纪委员会</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/article/toarticleup"><span class="bi-chat-left-quote"></span>
+                        发布新文章</a>
+                </li>
             </ul>
-
         </div>
+
         <div class="nav-item dropdown d-flex">
             <a class="nav-link link-light dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${user.getUsername()}">
@@ -133,9 +137,24 @@
                 <div class="card-body">
                     <a th:text="${article.getArticletitle()}" class="h4 link-primary"
                         th:href="@{http://localhost:8080/article/articlemore(articleid=${article.getArticleid()})}">文章标题</a>
-                    <p class="card-text" th:utext="${'作者：' + article.getArticleauthorid() + ' || 发布时间：' + article.getArticlepublishtime() }">
-                        @作者 time: 发布时间
-                    </p>
+                    <table class="table table-borderless table-sm">
+                        <tbody>
+                           <tr>
+                               <td>
+                                   <span class="badge rounded-pill bg-success">作者</span>
+                               </td>
+                               <td th:text="${article.getArticleauthoridImpl()}">
+
+                               </td>
+                               <td>
+                                   <span class="badge rounded-pill bg-success">发布时间</span>
+                               </td>
+                               <td th:text="${article.getArticlePublishTimeImpl()}">
+
+                               </td>
+                           </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="card-footer">
                     <span class="bi-hand-thumbs-up"></span>

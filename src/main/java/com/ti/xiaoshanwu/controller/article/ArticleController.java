@@ -5,6 +5,7 @@ import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
+import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.ArticleService;
 import com.ti.xiaoshanwu.service.ThemeService;
 import com.ti.xiaoshanwu.service.UserService;
@@ -19,8 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionActivationListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -65,25 +69,9 @@ public class ArticleController {
             List<Article> articlesNew = articles.getContent();
             ArrayList<ArticleImpl> articlesImpl = new ArrayList<>();
 
-            HeadImgConverter headImgConverter = new HeadImgConverter();
 
             for(Article article:articlesNew){
-                ArticleImpl articleImpl = new ArticleImpl();
-                copyProperties(article,articleImpl);
-
-                User targetUser = this.userService.queryById(article.getArticleauthorid());
-                String articleAuthorNameImpl = targetUser.getUsername();
-                String articleAuthorHeadImgUrlImpl =
-                        headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
-                String themeName = this.themeService.queryById(article.getArticlethemeid()).getThemename();
-                String bgimg =
-                        headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
-
-                articleImpl.setArticleauthoridImpl(articleAuthorNameImpl);
-                articleImpl.setArticleauthorImg(articleAuthorHeadImgUrlImpl);
-                articleImpl.setThemeName(themeName);
-                articleImpl.setArticleImgUrl(bgimg);
-
+                ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
                 articlesImpl.add(articleImpl);
             }
 
@@ -120,25 +108,9 @@ public class ArticleController {
         List<Article> articlesNew = articles.getContent();
         ArrayList<ArticleImpl> articlesImpl = new ArrayList<>();
 
-        HeadImgConverter headImgConverter = new HeadImgConverter();
 
         for(Article article:articlesNew){
-            ArticleImpl articleImpl = new ArticleImpl();
-            copyProperties(article,articleImpl);
-
-            User targetUser = this.userService.queryById(article.getArticleauthorid());
-            String articleAuthorNameImpl = targetUser.getUsername();
-            String articleAuthorHeadImgUrlImpl =
-                    headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
-            String themeName = this.themeService.queryById(article.getArticlethemeid()).getThemename();
-            String bgimg =
-                    headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
-
-            articleImpl.setArticleauthoridImpl(articleAuthorNameImpl);
-            articleImpl.setArticleauthorImg(articleAuthorHeadImgUrlImpl);
-            articleImpl.setThemeName(themeName);
-            articleImpl.setArticleImgUrl(bgimg);
-
+            ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
             articlesImpl.add(articleImpl);
         }
 
@@ -170,5 +142,100 @@ public class ArticleController {
         model.addAttribute("article",articleImpl);
 
         return "article/articlemain";
+    }
+
+    @RequestMapping("toarticleup")
+    public String touploadArticle(Model model,
+                                  HttpSession session){
+        Integer userid = (Integer) session.getAttribute("uid");
+        if(userid==null){
+            model.addAttribute("username","请登录");
+        }else {
+            User user = this.userService.queryById(userid);
+            model.addAttribute("username",user.getUsername());
+        }
+
+
+        return "article/articleupload";
+    }
+
+    /**
+     * 向后端发送文章的方法.
+     *
+     * @param model          the model
+     * @param session        the session
+     * @param articlethemeid the articlethemeid
+     * @param articletitle   the articletitle
+     * @param articlecontent the articlecontent
+     * @return json结果
+     */
+    @RequestMapping("insertarticle")
+    public String uploadArticle(Model model,
+                                HttpSession session,
+                                Integer articlethemeid,
+                                String articletitle,
+                                String articlecontent){
+        JsonResult articleInsertResult = new JsonResult();
+
+        Integer userid = (Integer) session.getAttribute("uid");
+        if(userid==null){
+            model.addAttribute("errtitle","登录信息已失效，请重新登录！");
+            model.addAttribute("errsubtitle","session为空");
+            model.addAttribute("errtext","src/main/java/com/ti/xiaoshanwu/controller/article" +
+                    "/ArticleController.java");
+
+            return "errorhandle";
+        }else if(Objects.equals(articletitle, " ")){
+            model.addAttribute("errtitle","标题为空");
+            model.addAttribute("errsubtitle","标题为空");
+            model.addAttribute("errtext","src/main/java/com/ti/xiaoshanwu/controller/article" +
+                    "/ArticleController.java");
+
+            return "errorhandle";
+        }else if(Objects.equals(articlecontent, " ")){
+            model.addAttribute("errtitle","正文为空");
+            model.addAttribute("errsubtitle","正文为空");
+            model.addAttribute("errtext","src/main/java/com/ti/xiaoshanwu/controller/article" +
+                    "/ArticleController.java");
+
+            return "errorhandle";
+        }else {
+            Article insertArticle = new Article();
+
+            Date currentTime = new Date();
+
+            insertArticle.setArticlethemeid(articlethemeid);
+            insertArticle.setArticleauthorid(userid);
+            insertArticle.setArticlereplycount(0);
+
+            insertArticle.setArticletitle(articletitle);
+            insertArticle.setArticlecontent(articlecontent);
+
+            insertArticle.setArticlepublishtime(currentTime);
+            insertArticle.setArticlechangetime(currentTime);
+
+            insertArticle.setArticlethumb(0);
+            insertArticle.setArticlecollect(0);
+
+            insertArticle.setArticlehot(0);
+
+            Article backArticle = this.articleService.insert(insertArticle);
+
+            if(backArticle==null){
+                model.addAttribute("errtitle","数据库错误");
+                model.addAttribute("errsubtitle","由于数据库的原因，更新失败");
+                model.addAttribute("errtext","src/main/java/com/ti/xiaoshanwu/controller/article" +
+                        "/ArticleController.java");
+
+                return "errorhandle";
+            }else {
+                model.addAttribute("errtitle","新建文章成功");
+                model.addAttribute("errsubtitle","您的文章id是"+backArticle.getArticleid());
+                model.addAttribute("errtext","src/main/java/com/ti/xiaoshanwu/controller/article" +
+                        "/ArticleController.java");
+
+                return "errorhandle";
+            }
+        }
     }
 }

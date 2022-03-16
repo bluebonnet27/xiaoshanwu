@@ -96,23 +96,8 @@ public class IndexController {
             HeadImgConverter headImgConverter = new HeadImgConverter();
 
             for(Article article:articlesNew){
-                ArticleImpl articleImpl = new ArticleImpl();
-                copyProperties(article,articleImpl);
-
-                User targetUser = this.userService.queryById(article.getArticleauthorid());
-                String articleAuthorNameImpl = targetUser.getUsername();
-                String articleAuthorHeadImgUrlImpl =
-                        headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
-                String themeName = this.themeService.queryById(article.getArticlethemeid()).getThemename();
-                String bgimg =
-                        headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
-
-                articleImpl.setArticleauthoridImpl(articleAuthorNameImpl);
-                articleImpl.setArticleauthorImg(articleAuthorHeadImgUrlImpl);
-                articleImpl.setThemeName(themeName);
-                articleImpl.setArticleImgUrl(bgimg);
-
-                articlesImpl.add(articleImpl);
+                ArticleImpl articleImpl2 = this.articleService.convertToArticleImpl(article);
+                articlesImpl.add(articleImpl2);
             }
 
             model.addAttribute("user",user);

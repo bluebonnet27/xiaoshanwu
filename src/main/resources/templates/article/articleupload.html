@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>文章详情</title>
+    <title>发布新文章</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
@@ -39,6 +39,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css"/>
 
     <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+    <!--Editor.md-->
+    <link rel="stylesheet" th:href="@{/editormd/css/editormd.css}"/>
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
 
     <style>
         #subnav{
@@ -110,66 +114,30 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8">
-            <div class="card" id="maincard"
-                 th:style="'background-image: url('+${article.getArticleImgUrl()}+');background-repeat:no-repeat;background-size:100%;'">
-                <div id="headerh">
-                    <h1 th:text="${article.getArticletitle()}">标题</h1>
-                    <table class="table table-sm table-borderless">
-                        <tbody>
-                            <tr>
-                                <td class="badge bg-primary">作者</td>
-                                <td>
-                                    <img th:src="@{${article.getArticleauthorImg()}}"
-                                         style="width: 20px;height: 20px">
-                                </td>
-                                <td th:text="${article.getArticleauthoridImpl()}"></td>
-                                <td class="badge bg-primary">发布日期</td>
-                                <td th:text="${article.getArticlePublishTimeImpl()}"></td>
-                                <td class="badge bg-primary">修改日期</td>
-                                <td th:text="${article.getArticleChangeTimeImpl()}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="card" id="maincard2">
-                <div id="test-editormd">
-                    <textarea style="display:none;" th:text="${article.getArticlecontent()}"></textarea>
-                </div>
-            </div>
-            <div class="alert alert-danger" role="alert">
-                本文版权为作者所有，如需转载，请注明作者名字以及文章来源。
+            <div class="card" id="formmain">
+                <form name="mdEditorForm" action="/article/insertarticle">
+                    <div class="mb-3">
+                        <label for="titleinput" class="form-label">文章标题</label>
+                        <input class="form-control" id="titleinput" name="articletitle" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="themeinput" class="form-label">主题分区</label>
+                        <select id="themeinput" class="form-select"
+                                aria-label="Default select example" name="articlethemeid">
+                            <option value="0">编程</option>
+                            <option value="1">求职招聘</option>
+                        </select>
+                    </div>
+                    <div id="test-editormd">
+                        <textarea style="display:none;" class="form-control"  id="content-editormd-markdown-doc"
+                                  name="articlecontent"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" >提交文章</button>
+                </form>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="card" id="maincard-right1">
-                <table class="table table-borderless">
-                    <tr>
-                        <td>
-                            <span class="bi-hand-thumbs-up"></span>
-                        </td>
-                        <td th:text="${article.getArticlethumb()}">
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="bi-star"></span>
-                        </td>
-                        <td th:text="${article.getArticlecollect()}">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="bi-reply"></span>
-                        </td>
-                        <td th:text="${article.getArticlereplycount()}">
-
-                        </td>
-                    </tr>
-                </table>
-            </div>
         </div>
     </div>
 </div>
@@ -182,7 +150,6 @@
         <p class="mb-0">当前版本 v0.1。</p>
     </div>
 </footer>
-<link rel="stylesheet" th:href="@{/editormd/css/editormd.preview.css}"/>
 <script th:src="@{/js/jquery-3.5.1.js}"></script>
 <script th:src="@{/editormd/lib/marked.min.js}"></script>
 <script th:src="@{/editormd/lib/prettify.min.js}"></script>
@@ -193,22 +160,61 @@
 <script th:src="@{/editormd/lib/jquery.flowchart.min.js}"></script>
 <script th:src="@{/editormd/js/editormd.min.js}"></script>
 <script type="text/javascript">
-
     var testEditor;
 
-    $(function () {
-        testEditor = editormd.markdownToHTML("test-editormd", {
-            htmlDecode: "style,script,iframe", // you can filter tags decode
+    $(function() {
+        testEditor = editormd("test-editormd",{
+            placeholder:'本编辑器支持Markdown编辑，左边编写，右边预览',
+            width : "90%",
+            height : 400,
+            syncScrolling : "single",
+            path : "../editormd/lib/",
+            saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
             emoji: true,
-            taskList: true,
-            tex: true, // 默认不解析
-            flowChart: false, // 默认不解析
-            sequenceDiagram: true, // 默认不解析
-            path: "./editormd/lib/",
-            previewTheme: "dark"
-        })
-    })
-
+            theme: "default | dark",//工具栏主题
+            previewTheme: "default | dark",//预览主题
+            editorTheme: "default | dark",//编辑主题
+            tex : true,                   // 科学公式TeX语言支持，默认关闭
+            flowChart : true,             // 流程图支持，默认关闭
+            sequenceDiagram : true
+        });
+    });
 </script>
+<!--<script>-->
+<!--    new Vue({-->
+<!--        el:"#formmain",-->
+<!--        data:{-->
+<!--            artitle:"",-->
+<!--            artheme:"",-->
+<!--            arcontent:"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",-->
+<!--            errMsg:"",-->
+<!--            resMsg:""-->
+<!--        },-->
+<!--        methods:{-->
+<!--            uploadArticle:function (){-->
+<!--                //封装表单参数-->
+<!--                const formDate=new FormData();-->
+<!--                formDate.append("articletitle",this.artitle);-->
+<!--                formDate.append("articlecontent",this.arcontent);-->
+<!--                formDate.append("articlethemeid",this.artheme);-->
+
+<!--                axios.post('http://localhost:8080/article/insertarticle',formDate)-->
+<!--                    .catch(function (error) { // 请求失败处理-->
+<!--                        alert(error);-->
+<!--                    })-->
+<!--                    .then(response =>{-->
+<!--                        if(response.data.result){-->
+<!--                            alert(response.data.resMsg)-->
+<!--                        }else{-->
+<!--                            alert(response.data.errMsg);-->
+<!--                        }-->
+<!--                    })-->
+<!--                    .catch(function (error) { // 请求失败处理-->
+<!--                        alert(error);-->
+<!--                    });-->
+<!--            }-->
+<!--        }-->
+<!--    })-->
+<!--</script>-->
 </body>
 </html>
