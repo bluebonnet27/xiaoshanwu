@@ -62,19 +62,22 @@
             margin: 10px;
         }
         #maincard{
-            margin-top: 10px;
+            margin-top: 60px;
         }
         #maincard2{
             margin-top: 5px;
         }
         #maincard-right1{
-            margin-top: 10px;
+            margin-top: 60px;
+        }
+        #maincard-right2{
+            margin-top: 5px;
         }
     </style>
 
 </head>
 <body id="mainbody">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">
             小山屋论坛</a>
@@ -117,16 +120,28 @@
                     <table class="table table-sm table-borderless">
                         <tbody>
                             <tr>
-                                <td class="badge bg-primary">作者</td>
-                                <td>
-                                    <img th:src="@{${article.getArticleauthorImg()}}"
-                                         style="width: 20px;height: 20px">
-                                </td>
-                                <td th:text="${article.getArticleauthoridImpl()}"></td>
                                 <td class="badge bg-primary">发布日期</td>
                                 <td th:text="${article.getArticlePublishTimeImpl()}"></td>
                                 <td class="badge bg-primary">修改日期</td>
                                 <td th:text="${article.getArticleChangeTimeImpl()}"></td>
+                                <td>
+                                    <span class="badge bg-danger">
+                                        <span class="bi-hand-thumbs-up"></span>
+                                    </span>
+                                </td>
+                                <td th:text="${article.getArticlethumb()}"></td>
+                                <td>
+                                    <span class="badge bg-success">
+                                        <span class="bi-star"></span>
+                                    </span>
+                                </td>
+                                <td th:text="${article.getArticlecollect()}"></td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        <span class="bi-chat-left"></span>
+                                    </span>
+                                </td>
+                                <td th:text="${article.getArticlereplycount()}"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -143,32 +158,52 @@
         </div>
         <div class="col-sm-4">
             <div class="card" id="maincard-right1">
-                <table class="table table-borderless">
-                    <tr>
-                        <td>
-                            <span class="bi-hand-thumbs-up"></span>
-                        </td>
-                        <td th:text="${article.getArticlethumb()}">
+                <div class="card-header">
+                    操作
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-danger">
+                        <span class="bi-hand-thumbs-up"></span>点赞</button>
+                    <button class="btn btn-success">
+                        <span class="bi-star"></span>收藏</button>
+                </div>
+            </div>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="bi-star"></span>
-                        </td>
-                        <td th:text="${article.getArticlecollect()}">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="bi-reply"></span>
-                        </td>
-                        <td th:text="${article.getArticlereplycount()}">
-
-                        </td>
-                    </tr>
-                </table>
+            <div class="card" id="maincard-right2">
+                <div class="card-header">
+                    作者
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <img th:src="@{${userimpl.getUserimgImpl()}}" class="img-fluid img-thumbnail">
+                        </div>
+                        <div class="col-sm-9">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="bi-person"></span>
+                                    </td>
+                                    <td th:text="${userimpl.getUsername()}"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="bi-at"></span>
+                                    </td>
+                                    <td th:text="${userimpl.getUseremail()}"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="bi-chat-left"></span>
+                                    </td>
+                                    <td th:text="${userimpl.getUserstatement()}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

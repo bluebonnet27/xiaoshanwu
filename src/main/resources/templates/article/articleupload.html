@@ -65,7 +65,7 @@
         #headerh{
             margin: 10px;
         }
-        #maincard{
+        #formmain{
             margin-top: 10px;
         }
         #maincard2{
@@ -116,23 +116,34 @@
         <div class="col-sm-8">
             <div class="card" id="formmain">
                 <form name="mdEditorForm" action="/article/insertarticle">
-                    <div class="mb-3">
-                        <label for="titleinput" class="form-label">文章标题</label>
-                        <input class="form-control" id="titleinput" name="articletitle" >
+                    <div class="row mb-3">
+                        <label for="titleinput" class="col-sm-2 form-label">文章标题</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="titleinput" name="articletitle" >
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="themeinput" class="form-label">主题分区</label>
-                        <select id="themeinput" class="form-select"
-                                aria-label="Default select example" name="articlethemeid">
-                            <option value="0">编程</option>
-                            <option value="1">求职招聘</option>
-                        </select>
+                    <div class="row mb-3">
+                        <label for="themeinput" class="col-sm-2 form-label">主题分区</label>
+                        <div class="col-sm-8">
+                            <select id="themeinput" class="form-select"
+                                    aria-label="Default select example" name="articlethemeid">
+                                <option value="0">编程</option>
+                                <option value="1">求职招聘</option>
+                            </select>
+                        </div>
                     </div>
                     <div id="test-editormd">
                         <textarea style="display:none;" class="form-control"  id="content-editormd-markdown-doc"
                                   name="articlecontent"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary" >提交文章</button>
+                    <div class="row mb-3">
+                        <div class="col-sm-2">
+
+                        </div>
+                        <div class="col-sm-8">
+                            <button type="submit" class="btn btn-primary" >提交文章</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

@@ -5,6 +5,7 @@ import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
+import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.ArticleService;
 import com.ti.xiaoshanwu.service.ThemeService;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -126,7 +128,7 @@ public class ArticleController {
         return "index";
     }
 
-    @RequestMapping("articlemore")
+    @RequestMapping ("articlemore")
     public String showArticleMore(Model model,Integer articleid,HttpSession session){
         Integer userid = (Integer) session.getAttribute("uid");
         if(userid==null){
@@ -137,6 +139,11 @@ public class ArticleController {
         }
 
         Article article = this.articleService.queryById(articleid);
+
+        User author = this.userService.queryById(article.getArticleauthorid());
+        UserImpl userImpl = this.userService.convertUserToUserImpl(author);
+        model.addAttribute("userimpl",userImpl);
+
         ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
 
         model.addAttribute("article",articleImpl);
