@@ -197,6 +197,7 @@
     <!--统计总行数1-->
     <select id="count1" resultType="java.lang.Long">
         select count(1)
+        from article
         <where>
             <if test="ar.articleid != null">
                 and articleid = #{ar.articleid}
@@ -232,7 +233,6 @@
                 and articlehot = #{ar.articlehot}
             </if>
         </where>
-        from article
     </select>
 
     <!--新增所有列-->

@@ -93,8 +93,6 @@ public class IndexController {
             List<Article> articlesNew = articles.getContent();
             ArrayList<ArticleImpl> articlesImpl = new ArrayList<>();
 
-            HeadImgConverter headImgConverter = new HeadImgConverter();
-
             for(Article article:articlesNew){
                 ArticleImpl articleImpl2 = this.articleService.convertToArticleImpl(article);
                 articlesImpl.add(articleImpl2);

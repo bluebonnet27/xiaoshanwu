@@ -3,15 +3,20 @@ package com.ti.xiaoshanwu.controller.user;
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.ArticleService;
 import com.ti.xiaoshanwu.service.ThemeService;
 import com.ti.xiaoshanwu.service.UserService;
 import com.ti.xiaoshanwu.service.impl.MailService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -264,5 +269,66 @@ public class UserController {
         }
 
         return changePwdResult.toString();
+    }
+
+    @RequestMapping("userallarticle")
+    public String getAllArticles(HttpSession session,
+                                 @RequestParam(defaultValue = "1") Integer page,
+                                 @RequestParam(defaultValue = "5") Integer limit,
+                                 @RequestParam(defaultValue = "-1") Integer themeid,
+                                 Model model){
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        if(targetUserid==null){
+            model.addAttribute("errtitle","登录信息失效");
+            model.addAttribute("errsubtitle","uid是空的");
+            model.addAttribute("errtext","com/ti/xiaoshanwu/controller/user/UserController.java");
+
+            return "errorhandle";
+        }
+        User targetUser = userService.queryById(targetUserid);
+        UserImpl targetUserImpl = userService.convertUserToUserImpl(targetUser);
+
+        HeadImgConverter headImgConverter = new HeadImgConverter();
+        String userHeadImgUrl = headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        String userHeadImgBgUrl = headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        model.addAttribute("headimg",userHeadImgUrl);
+        model.addAttribute("headimgbg",userHeadImgBgUrl);
+
+        model.addAttribute("user",targetUserImpl);
+
+        //帖子
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        Article siftCondition = new Article();
+        siftCondition.setArticleauthorid(targetUserid);
+
+        if(themeid!=-1){
+            siftCondition.setArticlethemeid(themeid);
+        }
+
+        System.out.println("TARGET USERID "+targetUserid);
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("articleid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<Article> articles = this.articleService.queryByPage1(siftCondition,pageRequest);
+
+        //前端数据二次处理
+        List<Article> articlesNew = articles.getContent();
+        ArrayList<ArticleImpl> articlesImpl = new ArrayList<>();
+
+
+        for(Article article:articlesNew){
+            ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
+            articlesImpl.add(articleImpl);
+        }
+
+        model.addAttribute("pages",articles);
+        model.addAttribute("articlesimpl",articlesImpl);
+        model.addAttribute("tid",themeid);
+
+        return "user/uarticle/userarticlesall";
     }
 }
