@@ -65,7 +65,7 @@ public class ArticleController {
             //分页请求
             PageRequest pageRequest = PageRequest.of(page, limit, sort);
             //执行
-            Page<Article> articles = this.articleService.queryByPage1(siftCondition,pageRequest);
+            Page<Article> articles = this.articleService.queryByPageNew(siftCondition,pageRequest);
 
             //前端数据二次处理
             List<Article> articlesNew = articles.getContent();
@@ -100,7 +100,7 @@ public class ArticleController {
         //筛选条件
         Article siftCondition = new Article();
         //排序依据
-        Sort sort = Sort.by(Sort.Order.desc("articlepublishtime"));
+        Sort sort = Sort.by(Sort.Order.desc("articleid"));
         //分页请求
         PageRequest pageRequest = PageRequest.of(page, limit, sort);
         //执行
@@ -108,6 +108,7 @@ public class ArticleController {
 
         //前端数据二次处理
         List<Article> articlesNew = articles.getContent();
+
         ArrayList<ArticleImpl> articlesImpl = new ArrayList<>();
 
 
@@ -182,8 +183,6 @@ public class ArticleController {
                                 Integer articlethemeid,
                                 String articletitle,
                                 String articlecontent){
-        JsonResult articleInsertResult = new JsonResult();
-
         Integer userid = (Integer) session.getAttribute("uid");
         if(userid==null){
             model.addAttribute("errtitle","登录信息已失效，请重新登录！");

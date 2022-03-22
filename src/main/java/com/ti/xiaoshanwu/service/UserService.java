@@ -80,4 +80,5 @@ public interface UserService {
      */
     boolean deleteById(Integer userid);
 
+    long queryUserNum(User user);
 }

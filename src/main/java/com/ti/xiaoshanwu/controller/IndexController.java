@@ -83,7 +83,7 @@ public class IndexController {
             //筛选条件
             Article siftCondition = new Article();
             //排序依据
-            Sort sort = Sort.by(Sort.Order.desc("articleid"));
+            Sort sort = Sort.by(Sort.Order.asc("articlepublishtime"));
             //分页请求
             PageRequest pageRequest = PageRequest.of(0, 5 ,sort);
             //执行

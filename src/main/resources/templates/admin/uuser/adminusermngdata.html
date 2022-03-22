@@ -36,6 +36,9 @@
     <!--  和风天气  -->
     <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
 
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.min.js"></script>
+
     <style>
         #mainpart{
             margin-top: 50px;
@@ -89,7 +92,7 @@
                     <span class="bi-person-video2"></span>   用户管理</button>
                 <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='http://localhost:8080/adm/allthemes'">
-                    <span class="bi-back"></span>  主题管理</button>
+                    <span class="bi-back"></span>   主题管理</button>
                 <button type="button" class="list-group-item list-group-item-action">
                     <span class="bi-card-text"></span>   帖子管理</button>
                 <button type="button" class="list-group-item list-group-item-action"
@@ -120,65 +123,36 @@
             </div>
         </div>
         <div class="col-9">
-            <h1><span class="bi-person-video2"></span> 用户管理</h1>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><span class="bi-person-video2"></span> 用户管理</h1>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link" href="allusersdefault">全部用户</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="allusershead">模块管理员</a>
+                    <a class="nav-link" href="allusershead">模块管理员</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="userdata">用户数据</a>
+                    <a class="nav-link active" href="userdata">用户数据</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">其他</a>
                 </li>
             </ul>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>用户名</th>
-                    <th>出生日期</th>
-                    <th>性别</th>
-                    <th>等级</th>
-                    <th>注册日期</th>
-                    <th>财产</th>
-                    <th>管理</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user,iterStat : ${userImpls}">
-                    <td th:text="${user.getUserid()}"></td>
-                    <td th:text="${user.getUsername()}"></td>
-                    <td th:text="${user.getUserbirthImpl()}"></td>
-                    <td th:text="${user.getUsersexImpl()}"></td>
-                    <td th:text="${user.getUserlv()}"></td>
-                    <td th:text="${user.getUserregtimeImpl()}"></td>
-                    <td th:text="${user.getUsermoney()}"></td>
-                    <td>
-                        <button class="btn btn-info disabled">
-                            <span class="bi-gear"></span> 管理
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="alert alert-info" role="alert" th:text="${'当前共有'+userpages.getTotalElements()+'个用户，更多信息请切换到“用户数据”选项卡'}">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h5 th:text="'用户总数：' + ${totaluser}"></h5>
+                    <div id="userdatachart" style="width: 600px;height:400px;"></div>
+                    <input type="hidden" th:value="${mannum}" id="manN">
+                    <input type="hidden" th:value="${womannum}" id="womanN">
+                    <input type="hidden" th:value="${thirdmannum}" id="thirdN">
+                </div>
             </div>
-
-            <nav>
-                <ul class="pagination">
-                    <li th:each="i : ${#numbers.sequence(1,userpages.getTotalPages())}"
-                        th:class="${userpages.getNumber() + 1 != i}?'page-item':'page-item active'">
-                        <a class="page-link"
-                           th:href="@{allusershead(page=${i},limit=${userpages.getSize()})}"
-                           th:text="${i}">
-                            Previous</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -193,3 +167,31 @@
 </footer>
 </body>
 </html>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var userDataChart = echarts.init(document.getElementById('userdatachart'));
+
+    var mannum=$("#manN").val();
+    var womannum=$("#womanN").val();
+    var thirdnum=$("#thirdN").val();
+
+    // 指定图表的配置项和数据
+    var userDataoption = {
+        series : [
+            {
+                name: '用户性别',
+                type: 'pie',
+                radius: '55%',
+                roseType: 'angle',
+                data:[
+                    {value:mannum, name:'男性'},
+                    {value:womannum, name:'女性'},
+                    {value:thirdnum, name:'非二元性别者'}
+                ]
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    userDataChart.setOption(userDataoption);
+</script>

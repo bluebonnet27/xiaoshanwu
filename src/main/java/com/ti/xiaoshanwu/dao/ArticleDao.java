@@ -36,6 +36,8 @@ public interface ArticleDao {
 
     List<Article> queryAllByLimit2();
 
+    List<Article> queryAllByLimitNew(@Param("ar") Article article, @Param("pageable") Pageable pageable);
+
     List<Article> queryAllByLimitNoPage(@Param("ar") Article article);
 
     /**

@@ -35,6 +35,8 @@ public interface ArticleService {
 
     Page<Article> queryByPage1(Article article,PageRequest pageRequest);
 
+    Page<Article> queryByPageNew(Article article,PageRequest pageRequest);
+
     List<Article> queryArticles(Article article);
 
     /**

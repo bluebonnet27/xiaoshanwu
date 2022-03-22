@@ -206,4 +206,37 @@ public class AdminController {
         model.addAttribute("themeImpls",themeImpls);
         return "admin/ttheme/adminthememng";
     }
+
+    @RequestMapping("userdata")
+    public String getUserData(HttpSession session,
+                              Model model){
+
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //性别
+        User man = new User();
+        man.setUsersex(0);
+        User woman = new User();
+        woman.setUsersex(1);
+        User thirdman = new User();
+        thirdman.setUsersex(2);
+
+        long manNum = this.userService.queryUserNum(man);
+        long womanNum = this.userService.queryUserNum(woman);
+        long thirdmanNum = this.userService.queryUserNum(thirdman);
+
+        model.addAttribute("totaluser",manNum + womanNum + thirdmanNum);
+        model.addAttribute("mannum",manNum);
+        model.addAttribute("womannum",womanNum);
+        model.addAttribute("thirdmannum",thirdmanNum);
+
+        //
+        return "admin/uuser/adminusermngdata";
+    }
 }

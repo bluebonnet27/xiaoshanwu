@@ -71,6 +71,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public Page<Article> queryByPageNew(Article article, PageRequest pageRequest) {
+        long total = this.articleDao.count1(article);
+        return new PageImpl<>(this.articleDao.queryAllByLimitNew(article , pageRequest), pageRequest, total);
+    }
+
+    @Override
     public List<Article> queryArticles(Article article) {
         return this.articleDao.queryAllByLimitNoPage(article);
     }

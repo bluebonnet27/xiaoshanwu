@@ -134,4 +134,9 @@ public class UserServiceImpl implements UserService {
     public boolean deleteById(Integer userid) {
         return this.userDao.deleteById(userid) > 0;
     }
+
+    @Override
+    public long queryUserNum(User user) {
+        return this.userDao.count(user);
+    }
 }
