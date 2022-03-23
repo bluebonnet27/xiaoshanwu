@@ -101,6 +101,22 @@ public class ThemeServiceImpl implements ThemeService {
         themeImpl.setThemeDateImpl(newDate);
         themeImpl.setThemeadminidImpl(foundUser.getUsername());
 
+        String imgHead;
+        String imgBg;
+        switch (theme.getThemeid()){
+            case 0:
+                imgHead = "https://s1.328888.xyz/2022/03/22/9ckMC.jpg";
+                imgBg = "https://s1.328888.xyz/2022/03/22/9c1fg.jpg";
+                break;
+            default:
+                imgHead = "https://s1.328888.xyz/2022/03/22/9ckMC.jpg";
+                imgBg = "https://s1.328888.xyz/2022/03/22/9c1fg.jpg";
+                break;
+        }
+
+        themeImpl.setThemeHeadImgImpl(imgHead);
+        themeImpl.setThemeBgImgImpl(imgBg);
+
         return themeImpl;
     }
 }

@@ -23,15 +23,15 @@ public interface ArticleDao {
      */
     Article queryById(Integer articleid);
 
-    /**
-     * 查询指定行数据
-     *
-     * @param article 查询条件
-     * @param pageable         分页对象
-     * @return 对象列表
-     */
     List<Article> queryAllByLimit(Article article, @Param("pageable") Pageable pageable);
 
+    /**
+     * 改进的分页查询
+     *
+     * @param article  查询条件
+     * @param pageable 分页对象
+     * @return 对象列表
+     */
     List<Article> queryAllByLimit1(@Param("ar") Article article, @Param("pageable") Pageable pageable);
 
     List<Article> queryAllByLimit2();
@@ -39,6 +39,15 @@ public interface ArticleDao {
     List<Article> queryAllByLimitNew(@Param("ar") Article article, @Param("pageable") Pageable pageable);
 
     List<Article> queryAllByLimitNoPage(@Param("ar") Article article);
+
+    /**
+     * 改进的分页查询（热度）
+     *
+     * @param article  the article
+     * @param pageable the pageable
+     * @return the list
+     */
+    List<Article> queryAllByLimitHot(@Param("ar") Article article, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数

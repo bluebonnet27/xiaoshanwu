@@ -2,11 +2,14 @@ package com.ti.xiaoshanwu.controller.user;
 
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.Article;
+import com.ti.xiaoshanwu.entity.Collect;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
+import com.ti.xiaoshanwu.entity.impl.CollectImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.ArticleService;
+import com.ti.xiaoshanwu.service.CollectService;
 import com.ti.xiaoshanwu.service.ThemeService;
 import com.ti.xiaoshanwu.service.UserService;
 import com.ti.xiaoshanwu.service.impl.MailService;
@@ -46,6 +49,9 @@ public class UserController {
 
     @Resource
     private ThemeService themeService;
+
+    @Resource
+    private CollectService collectService;
 
     /**
      * 登录页跳转至用户中心.
@@ -307,7 +313,6 @@ public class UserController {
             siftCondition.setArticlethemeid(themeid);
         }
 
-        System.out.println("TARGET USERID "+targetUserid);
         //排序依据
         Sort sort = Sort.by(Sort.Order.desc("articleid"));
         //分页请求
@@ -330,5 +335,59 @@ public class UserController {
         model.addAttribute("tid",themeid);
 
         return "user/uarticle/userarticlesall";
+    }
+
+    @RequestMapping("usercollects")
+    public String getAllCollects(HttpSession session,
+                                 @RequestParam(defaultValue = "1") Integer page,
+                                 @RequestParam(defaultValue = "5") Integer limit,
+                                 @RequestParam(defaultValue = "0") Integer collecttype,
+                                 Model model){
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        if(targetUserid==null){
+            model.addAttribute("errtitle","登录信息失效");
+            model.addAttribute("errsubtitle","uid是空的");
+            model.addAttribute("errtext","com/ti/xiaoshanwu/controller/user/UserController.java");
+
+            return "errorhandle";
+        }
+        User targetUser = userService.queryById(targetUserid);
+        UserImpl targetUserImpl = userService.convertUserToUserImpl(targetUser);
+
+        HeadImgConverter headImgConverter = new HeadImgConverter();
+        String userHeadImgUrl = headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        String userHeadImgBgUrl = headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        model.addAttribute("headimg",userHeadImgUrl);
+        model.addAttribute("headimgbg",userHeadImgBgUrl);
+
+        model.addAttribute("user",targetUserImpl);
+
+        //帖子
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        Collect collectSift = new Collect();
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("collectid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<Collect> collects = this.collectService.queryByPage(collectSift,pageRequest);
+
+        //前端数据二次处理
+        List<Collect> collectsReal = collects.getContent();
+        ArrayList<CollectImpl> collectsImpl = new ArrayList<>();
+
+
+        for(Collect collect:collectsReal){
+            CollectImpl collectImpl = this.collectService.convertToCollectImpl(collect);
+            collectsImpl.add(collectImpl);
+        }
+
+        model.addAttribute("pages",collects);
+        model.addAttribute("collectsImpl",collectsImpl);
+        model.addAttribute("ctype",collecttype);
+
+        return "user/usercollect";
     }
 }

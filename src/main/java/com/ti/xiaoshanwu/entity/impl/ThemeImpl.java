@@ -11,6 +11,10 @@ public class ThemeImpl extends Theme {
 
     private String themeDateImpl;
 
+    private String themeHeadImgImpl;
+
+    private String themeBgImgImpl;
+
     public String getThemeadminidImpl() {
         return themeadminidImpl;
     }
@@ -25,5 +29,21 @@ public class ThemeImpl extends Theme {
 
     public void setThemeDateImpl(String themeDateImpl) {
         this.themeDateImpl = themeDateImpl;
+    }
+
+    public String getThemeHeadImgImpl() {
+        return themeHeadImgImpl;
+    }
+
+    public void setThemeHeadImgImpl(String themeHeadImgImpl) {
+        this.themeHeadImgImpl = themeHeadImgImpl;
+    }
+
+    public String getThemeBgImgImpl() {
+        return themeBgImgImpl;
+    }
+
+    public void setThemeBgImgImpl(String themeBgImgImpl) {
+        this.themeBgImgImpl = themeBgImgImpl;
     }
 }

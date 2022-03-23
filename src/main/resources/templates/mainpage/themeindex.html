@@ -40,6 +40,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
+
     <style>
         #subnav{
             margin-top: 20px;
@@ -50,6 +51,10 @@
         #tiezi{
             margin-top: 5px;
             margin-bottom: 5px;
+        }
+        #tiezi2{
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
         #mainbody{
             background-image: url("https://s3.bmp.ovh/imgs/2022/03/07ca2075685f0fd8.png");
@@ -100,32 +105,36 @@
     <div id="subnav">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link active" href="http://localhost:8080/ind/userindex">
-                    全部
-                </a>
+                <a th:class="${tid==-1}?'nav-link active':'nav-link'"
+                   href="http://localhost:8080/ind/userindex">全部</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="http://localhost:8080/article/totheme">
+                <a th:class="${tid==0}?'nav-link active':'nav-link'"
+                   th:href="@{totheme(tid=0)}">
                     <span class="bi-code"></span> 编程
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="http://localhost:8080/article/totheme?tid=1">
+                <a th:class="${tid==1}?'nav-link active':'nav-link'"
+                   th:href="@{totheme(tid=1)}">
                     <span class="bi-telegram"></span> 求职招聘
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="http://localhost:8080/article/totheme?tid=2">
+                <a th:class="${tid==2}?'nav-link active':'nav-link'"
+                   th:href="@{totheme(tid=2)}">
                     <span class="bi-emoji-sunglasses"></span> 动漫
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="http://localhost:8080/article/totheme?tid=3">
+                <a th:class="${tid==3}?'nav-link active':'nav-link'"
+                   th:href="@{totheme(tid=3)}">
                     <span class="bi-joystick"></span> 游戏
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="http://localhost:8080/article/totheme?tid=4g">
+                <a th:class="${tid==4}?'nav-link active':'nav-link'"
+                   th:href="@{totheme(tid=4)}">
                     <span class="bi-pen"></span> 文学
                 </a>
             </li>
@@ -136,53 +145,64 @@
         <div class="col-sm-8">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/ind/userindex">默认</a>
+                    <a th:class="${ord==0}?'nav-link active':'nav-link'"
+                       th:href="@{totheme(tid=${tid},ord=0)}">
+                        默认
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/article/defaulthot">热门</a>
+                    <a th:class="${ord==1}?'nav-link active':'nav-link'"
+                       th:href="@{totheme(tid=${tid},ord=1)}">
+                        热门
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="http://localhost:8080/article/defaultnew">最新</a>
+                    <a th:class="${ord==2}?'nav-link active':'nav-link'"
+                       th:href="@{totheme(tid=${tid},ord=2)}">
+                        最新
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/article/defaultnore">消灭零回复</a>
+                    <a th:class="${ord==3}?'nav-link active':'nav-link'"
+                       th:href="@{totheme(tid=${tid},ord=3)}">
+                        消灭零回复
+                    </a>
                 </li>
             </ul>
 
-            <div class="card" id="tiezi" th:each="article,iterStat : ${articlesimpl}">
-
-                <div class="card-header">
-                    <span class="badge rounded-pill bg-primary" th:text="${article.getThemeName()}">分区</span>
+            <div class="mdui-card" id="tiezi2" th:each="article,iterStat : ${articlesimpl}">
+                <!-- 卡片头部，包含头像、标题、副标题 -->
+                <div class="mdui-card-header">
+                    <img class="mdui-card-header-avatar" th:src="@{${article.getArticleauthorImg()}}"/>
+                    <div class="mdui-card-header-title" th:text="${article.getArticleauthoridImpl()}">
+                        Title</div>
+                    <div class="mdui-card-header-subtitle" th:text="${article.getArticlePublishTimeImpl()}">
+                        Subtitle</div>
                 </div>
-                <div class="card-body">
-                    <a th:text="${article.getArticletitle()}" class="h4 link-primary"
-                       th:href="@{http://localhost:8080/article/articlemore(articleid=${article.getArticleid()})}">文章标题</a>
-                    <table class="table table-borderless table-sm">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <span class="badge rounded-pill bg-success">作者</span>
-                            </td>
-                            <td th:text="${article.getArticleauthoridImpl()}">
 
-                            </td>
-                            <td>
-                                <span class="badge rounded-pill bg-success">发布时间</span>
-                            </td>
-                            <td th:text="${article.getArticlePublishTimeImpl()}">
-
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <!-- 卡片的标题和副标题 -->
+                <div class="mdui-card-primary">
+                    <div class="mdui-card-primary-title">
+                        <a th:text="${article.getArticletitle()}"
+                           th:href="@{http://localhost:8080/article/articlemore(articleid=${article.getArticleid()})}">
+                            文章标题</a>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <span class="bi-hand-thumbs-up"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlethumb()}">14</span>
-                    <span class="bi-star"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlecollect()}">30</span>
-                    <span class="bi-chat"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlereplycount()}">5</span>
+
+                <!-- 卡片的按钮 -->
+                <div class="mdui-card-actions">
+                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple">
+                        <i class="mdui-icon mdui-icon-left material-icons">thumb_up</i>
+                        <span class="mdui-chip-title" th:text="${article.getArticlethumb()}"></span>
+                    </button>
+                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple">
+                        <i class="mdui-icon mdui-icon-left material-icons">star</i>
+                        <span class="mdui-chip-title" th:text="${article.getArticlecollect()}"></span>
+                    </button>
+                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple">
+                        <i class="mdui-icon mdui-icon-left material-icons">textsms</i>
+                        <span class="mdui-chip-title" th:text="${article.getArticlereplycount()}"></span>
+                    </button>
                 </div>
             </div>
 
@@ -194,7 +214,10 @@
                     <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
                         th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
                         <a class="page-link"
-                           th:href="@{defaultnew(page=${i},limit=${pages.getSize()})}"
+                           th:href="@{totheme(page=${i},
+                                      limit=${pages.getSize()},
+                                      ord=${ord},
+                                      tid=${tid})}"
                            th:text="${i}">
                             Previous</a>
                     </li>
@@ -202,7 +225,32 @@
             </nav>
         </div>
         <div class="col-sm-4">
+            <div class="mdui-card mdui-hoverable">
+                <!-- 卡片头部，包含头像、标题、副标题 -->
+                <div class="mdui-card-header">
+                    <img class="mdui-card-header-avatar" th:src="@{${themeadmin.getUserimgImpl()}}"/>
+                    <div class="mdui-card-header-title" th:text="${themeadmin.getUsername()}">Title</div>
+                    <div class="mdui-card-header-subtitle">管理员</div>
+                </div>
 
+                <div class="mdui-card-media">
+                    <img th:src="@{${theme.getThemeBgImgImpl()}}"/>
+                    <div class="mdui-card-media-covered mdui-card-media-covered-gradient">
+                        <div class="mdui-card-primary">
+                            <div class="mdui-card-primary-title" th:text="${theme.getThemename()}">
+                                Title</div>
+                            <div class="mdui-card-primary-subtitle" th:text="${theme.getThemestatement()}">
+                                Subtitle</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-card-actions mdui-card-actions-stacked">
+                    <button class="mdui-btn mdui-ripple" th:text="'创建日期：'+${theme.getThemeDateImpl()}">
+                        action 1</button>
+                    <button class="mdui-btn mdui-ripple" th:text="'帖子数：'+${theme.getThemecount()}">
+                        action 2</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

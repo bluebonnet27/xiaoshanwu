@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>info</title>
+    <title>小山屋论坛-提示</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
@@ -56,10 +56,28 @@
     </div>
 </nav>
 <div class="container">
-    <div class="card" id="maincard">
-        <h1 class="card-title" th:text="${errtitle}">标题</h1>
-        <h3 class="card-title" th:text="${errsubtitle}">副标题</h3>
-        <p class="card-text" th:text="${errtext}">正文</p>
+    <div class="row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-6">
+            <div class="card" id="maincard">
+                <img src = 'https://s3.bmp.ovh/imgs/2022/02/c1c0272b79d6655e.png' class="card-img-top">
+
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${errtitle}">标题</h5>
+                    <p class="card-text" th:text="${errsubtitle}">副标题</p>
+                    <p class="card-text" th:text="${errtext}">
+                        <small class="text-muted">小山屋论坛</small>
+                    </p>
+                    <a href="http://localhost:8080/login/tologin" class="btn btn-primary"><span class="bi-person"></span> 带我去登录页面</a>
+                    <a href="http://localhost:8080/ind/userindex" class="btn btn-primary"><span class="bi-house"></span> 带我去首页</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+
+        </div>
     </div>
 </div>
 <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">

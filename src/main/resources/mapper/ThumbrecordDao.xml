@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.ThumbrecordDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Thumbrecord" id="ThumbrecordMap">
+        <result property="thumbid" column="thumbid" jdbcType="INTEGER"/>
+        <result property="thumbby" column="thumbby" jdbcType="INTEGER"/>
+        <result property="thumbbytype" column="thumbbytype" jdbcType="INTEGER"/>
+        <result property="thumbto" column="thumbto" jdbcType="INTEGER"/>
+        <result property="thumbtotype" column="thumbtotype" jdbcType="INTEGER"/>
+        <result property="thumbtime" column="thumbtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ThumbrecordMap">
+        select
+          thumbid, thumbby, thumbbytype, thumbto, thumbtotype, thumbtime
+        from thumbrecord
+        where thumbid = #{thumbid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ThumbrecordMap">
+        select
+          thumbid, thumbby, thumbbytype, thumbto, thumbtotype, thumbtime
+        from thumbrecord
+        <where>
+            <if test="thumbid != null">
+                and thumbid = #{thumbid}
+            </if>
+            <if test="thumbby != null">
+                and thumbby = #{thumbby}
+            </if>
+            <if test="thumbbytype != null">
+                and thumbbytype = #{thumbbytype}
+            </if>
+            <if test="thumbto != null">
+                and thumbto = #{thumbto}
+            </if>
+            <if test="thumbtotype != null">
+                and thumbtotype = #{thumbtotype}
+            </if>
+            <if test="thumbtime != null">
+                and thumbtime = #{thumbtime}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--  查询点赞记录  -->
+    <select id="queryAllBy4" resultMap="ThumbrecordMap">
+        select
+        thumbid, thumbby, thumbbytype, thumbto, thumbtotype, thumbtime
+        from thumbrecord
+        <where>
+            <if test="thumbid != null">
+                and thumbid = #{thumbid}
+            </if>
+            <if test="thumbby != null">
+                and thumbby = #{thumbby}
+            </if>
+            <if test="thumbbytype != null">
+                and thumbbytype = #{thumbbytype}
+            </if>
+            <if test="thumbto != null">
+                and thumbto = #{thumbto}
+            </if>
+            <if test="thumbtotype != null">
+                and thumbtotype = #{thumbtotype}
+            </if>
+            <if test="thumbtime != null">
+                and thumbtime = #{thumbtime}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from thumbrecord
+        <where>
+            <if test="thumbid != null">
+                and thumbid = #{thumbid}
+            </if>
+            <if test="thumbby != null">
+                and thumbby = #{thumbby}
+            </if>
+            <if test="thumbbytype != null">
+                and thumbbytype = #{thumbbytype}
+            </if>
+            <if test="thumbto != null">
+                and thumbto = #{thumbto}
+            </if>
+            <if test="thumbtotype != null">
+                and thumbtotype = #{thumbtotype}
+            </if>
+            <if test="thumbtime != null">
+                and thumbtime = #{thumbtime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="thumbid" useGeneratedKeys="true">
+        insert into thumbrecord(thumbby, thumbbytype, thumbto, thumbtotype, thumbtime)
+        values (#{thumbby}, #{thumbbytype}, #{thumbto}, #{thumbtotype}, #{thumbtime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="thumbid" useGeneratedKeys="true">
+        insert into thumbrecord(thumbby, thumbbytype, thumbto, thumbtotype, thumbtime)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.thumbby}, #{entity.thumbbytype}, #{entity.thumbto}, #{entity.thumbtotype}, #{entity.thumbtime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="thumbid" useGeneratedKeys="true">
+        insert into thumbrecord(thumbby, thumbbytype, thumbto, thumbtotype, thumbtime)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.thumbby}, #{entity.thumbbytype}, #{entity.thumbto}, #{entity.thumbtotype}, #{entity.thumbtime})
+        </foreach>
+        on duplicate key update
+        thumbby = values(thumbby),
+        thumbbytype = values(thumbbytype),
+        thumbto = values(thumbto),
+        thumbtotype = values(thumbtotype),
+        thumbtime = values(thumbtime)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update thumbrecord
+        <set>
+            <if test="thumbby != null">
+                thumbby = #{thumbby},
+            </if>
+            <if test="thumbbytype != null">
+                thumbbytype = #{thumbbytype},
+            </if>
+            <if test="thumbto != null">
+                thumbto = #{thumbto},
+            </if>
+            <if test="thumbtotype != null">
+                thumbtotype = #{thumbtotype},
+            </if>
+            <if test="thumbtime != null">
+                thumbtime = #{thumbtime},
+            </if>
+        </set>
+        where thumbid = #{thumbid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from thumbrecord where thumbid = #{thumbid}
+    </delete>
+
+</mapper>
+

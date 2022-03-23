@@ -44,27 +44,6 @@ public class IndexController {
     private ArticleService articleService;
 
     /**
-     * 首页跳转的测试方法.（已废弃）
-     *
-     * @param session  服务器内的session
-     * @param username 用户名
-     * @param model    model
-     * @return index.html 或者 404
-     */
-    @RequestMapping("indextest")
-    public String goIndex(HttpSession session,
-                          String username,
-                          Model model){
-        if(session.getAttribute("uid")!=null){
-            model.addAttribute("uname",username);
-            return "index";
-        }else {
-            model.addAttribute("msg","session空");
-            return "messagepage";
-        }
-    }
-
-    /**
      * 跳转到用户首页.
      *
      * @param session  the session

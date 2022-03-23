@@ -161,8 +161,8 @@
                 <div class="card-header">
                     操作
                 </div>
-                <div class="card-body">
-                    <button class="btn btn-danger">
+                <div class="card-body" id="caozuo">
+                    <button class="btn btn-danger" th:@click="|zan(${article.getArticleid()})|">
                         <span class="bi-hand-thumbs-up"></span>点赞</button>
                     <button class="btn btn-success">
                         <span class="bi-star"></span>收藏</button>
@@ -244,6 +244,36 @@
         })
     })
 
+</script>
+<script>
+    new Vue({
+        el:"#caozuo",
+        data:{
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            zan:function (aid){
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("articleid",aid);
+
+                axios
+                    .post('http://localhost:8080/article/thumb',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            location.reload()
+                        }else{
+                            alert(response.data.errMsg)
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
 </script>
 </body>
 </html>

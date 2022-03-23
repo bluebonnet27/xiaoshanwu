@@ -5,6 +5,7 @@ import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,8 @@ public interface ArticleService {
     Page<Article> queryByPage1(Article article,PageRequest pageRequest);
 
     Page<Article> queryByPageNew(Article article,PageRequest pageRequest);
+
+    Page<Article> queryByPageHot(Article article,PageRequest pageRequest);
 
     List<Article> queryArticles(Article article);
 

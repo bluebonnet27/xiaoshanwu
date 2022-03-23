@@ -67,7 +67,7 @@
         limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 
-    <!--查询指定行数据1-->
+    <!--查询指定行数据（改进的分页查询）-->
     <select id="queryAllByLimit1" resultMap="ArticleMap">
         select
         articleid, articlethemeid, articleauthorid, articlereplycount, articletitle, articlecontent, articlepublishtime, articlechangetime, articlethumb, articlecollect, articlehot
@@ -110,7 +110,7 @@
         limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 
-    <!--按照发布时间倒序查询-->
+    <!--按照发布时间倒序分页查询-->
     <select id="queryAllByLimitNew" resultMap="ArticleMap">
         select
         articleid, articlethemeid, articleauthorid, articlereplycount, articletitle, articlecontent, articlepublishtime, articlechangetime, articlethumb, articlecollect, articlehot
@@ -151,6 +151,50 @@
             </if>
         </where>
         order by articlepublishtime desc
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--按照热度分页查询-->
+    <select id="queryAllByLimitHot" resultMap="ArticleMap">
+        select
+        articleid, articlethemeid, articleauthorid, articlereplycount, articletitle, articlecontent, articlepublishtime, articlechangetime, articlethumb, articlecollect, articlehot
+        from article
+        <where>
+            <if test="ar.articleid != null">
+                and articleid = #{ar.articleid}
+            </if>
+            <if test="ar.articlethemeid != null">
+                and articlethemeid = #{ar.articlethemeid}
+            </if>
+            <if test="ar.articleauthorid != null">
+                and articleauthorid = #{ar.articleauthorid}
+            </if>
+            <if test="ar.articlereplycount != null">
+                and articlereplycount = #{ar.articlereplycount}
+            </if>
+            <if test="ar.articletitle != null and ar.articletitle != ''">
+                and articletitle = #{ar.articletitle}
+            </if>
+            <if test="ar.articlecontent != null and ar.articlecontent != ''">
+                and articlecontent = #{ar.articlecontent}
+            </if>
+            <if test="ar.articlepublishtime != null">
+                and articlepublishtime = #{ar.articlepublishtime}
+            </if>
+            <if test="ar.articlechangetime != null">
+                and articlechangetime = #{ar.articlechangetime}
+            </if>
+            <if test="ar.articlethumb != null">
+                and articlethumb = #{ar.articlethumb}
+            </if>
+            <if test="ar.articlecollect != null">
+                and articlecollect = #{ar.articlecollect}
+            </if>
+            <if test="ar.articlehot != null">
+                and articlehot = #{ar.articlehot}
+            </if>
+        </where>
+        order by articlehot desc
         limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 

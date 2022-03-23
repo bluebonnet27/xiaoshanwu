@@ -142,10 +142,10 @@
                     <a class="nav-link" href="http://localhost:8080/article/defaulthot">热门</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="http://localhost:8080/article/defaultnew">最新</a>
+                    <a class="nav-link" href="http://localhost:8080/article/defaultnew">最新</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/article/defaultnore">消灭零回复</a>
+                    <a class="nav-link active" href="http://localhost:8080/article/defaultnore">消灭零回复</a>
                 </li>
             </ul>
 
@@ -194,7 +194,7 @@
                     <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
                         th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
                         <a class="page-link"
-                           th:href="@{defaultnew(page=${i},limit=${pages.getSize()})}"
+                           th:href="@{defaultnore(page=${i},limit=${pages.getSize()})}"
                            th:text="${i}">
                             Previous</a>
                     </li>
