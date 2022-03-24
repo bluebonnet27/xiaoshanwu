@@ -2,18 +2,13 @@ package com.ti.xiaoshanwu.controller.article;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
-import com.ti.xiaoshanwu.entity.Article;
-import com.ti.xiaoshanwu.entity.Theme;
-import com.ti.xiaoshanwu.entity.Thumbrecord;
-import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.*;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
+import com.ti.xiaoshanwu.entity.impl.CommentImpl;
 import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
-import com.ti.xiaoshanwu.service.ArticleService;
-import com.ti.xiaoshanwu.service.ThemeService;
-import com.ti.xiaoshanwu.service.ThumbrecordService;
-import com.ti.xiaoshanwu.service.UserService;
+import com.ti.xiaoshanwu.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -52,6 +47,9 @@ public class ArticleController {
 
     @Resource
     private ThumbrecordService thumbrecordService;
+
+    @Resource
+    private CommentService commentService;
 
     //主题四种排序方式
     static final int ORDER_DEFAULT= 0;
@@ -312,13 +310,18 @@ public class ArticleController {
     @RequestMapping ("articlemore")
     public String showArticleMore(Model model,
                                   Integer articleid,
+                                  @RequestParam(defaultValue = "1") Integer page,
+                                  @RequestParam(defaultValue = "5") Integer limit,
+                                  @RequestParam(defaultValue = "0") Integer corder,
                                   HttpSession session){
         Integer userid = (Integer) session.getAttribute("uid");
         if(userid==null){
             model.addAttribute("username","请登录");
         }else {
             User user = this.userService.queryById(userid);
+            UserImpl userImpl = this.userService.convertUserToUserImpl(user);
             model.addAttribute("username",user.getUsername());
+            model.addAttribute("userimpl",userImpl);
         }
 
         Article article = this.articleService.queryById(articleid);
@@ -330,6 +333,35 @@ public class ArticleController {
         ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
 
         model.addAttribute("article",articleImpl);
+
+        //加载评论
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        Comment siftComment = new Comment();
+        siftComment.setCommentarticleid(articleid);
+
+        model.addAttribute("corder",corder);
+        //排序依据，已经失效，使用数据库排序代替
+        Sort sort = Sort.by(Sort.Order.desc("commentid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<Comment> comments;
+
+        //分类
+        comments = this.commentService.queryByPage(siftComment,pageRequest);
+
+        List<Comment> commentsReal = comments.getContent();
+        ArrayList<CommentImpl> commentsImpl = new ArrayList<>();;
+
+        for (Comment comment:commentsReal){
+            CommentImpl addCommentImpl = this.commentService.convertToCommentImpl(comment);
+            commentsImpl.add(addCommentImpl);
+        }
+
+        model.addAttribute("pages",comments);
+        model.addAttribute("commentsImpl",commentsImpl);
 
         return "article/articlemain";
     }
@@ -454,8 +486,6 @@ public class ArticleController {
         }else {
             Article newArticle = new Article();
             Article oldArticle = this.articleService.queryById(articleid);
-
-            System.out.println("===========================articleid" + articleid);
 
             newArticle.setArticleid(articleid);
             newArticle.setArticlethumb(oldArticle.getArticlethumb() + 1);

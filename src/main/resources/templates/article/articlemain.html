@@ -152,8 +152,82 @@
                     <textarea style="display:none;" th:text="${article.getArticlecontent()}"></textarea>
                 </div>
             </div>
+
             <div class="alert alert-danger" role="alert">
                 本文版权为作者所有，如需转载，请注明作者名字以及文章来源。
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10">
+                    <h1><span class="bi-quote"></span> 评论列表</h1>
+                </div>
+                <div class="col-sm-2">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            排序方式
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item active" href="#">默认排序</a></li>
+                            <li><a class="dropdown-item" href="#">按最热</a></li>
+                            <li><a class="dropdown-item" href="#">按最新</a></li>
+                            <li><a class="dropdown-item" href="#">按点赞最多</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3" th:each="comment,iterStat : ${commentsImpl}">
+                <div class="row g-0">
+                    <div class="col-md-2">
+                        <img th:src="@{${comment.getCommentUserHeadImpl()}}" class="img-fluid img-thumbnail">
+                        <button type="button" class="btn btn-danger">
+                            <span class="bi-exclamation-triangle"></span> 举报该评论
+                        </button>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${comment.getCommentUserNameImpl()}+'    #'+${iterStat.count}">Card title</h5>
+                            <p class="card-text" th:text="${comment.getCommentcontent()}">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text">
+                                <small class="text-muted" th:text="'发表于' + ${comment.getCommentDateImpl()}">
+                                    Last updated 3 mins ago
+                                </small>
+                            </p>
+                            <a href="#" class="btn btn-outline-info">
+                                <span class="bi-hand-thumbs-up"></span>点赞
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav>
+                <ul class="pagination">
+                    <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
+                        th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
+                        <a class="page-link"
+                           th:href="@{articlemore(page=${i},limit=${pages.getSize()},corder=${corder})}"
+                           th:text="${i}">
+                            Previous</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="card mb-3" id="mycomment">
+                <div class="row g-0">
+                    <div class="col-md-2">
+                        <img th:src="@{${userimpl.getUserimgImpl()}}" class="img-fluid img-thumbnail">
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">在此处写下您的评论：</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1"
+                                          placeholder="说点什么... ..." rows="3" v-model="mycontent">
+                                </textarea>
+                            </div>
+                            <button type="button" class="btn btn-info" th:@click="|tocomment(${article.getArticleid()})|">提交</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-sm-4">
@@ -260,6 +334,37 @@
 
                 axios
                     .post('http://localhost:8080/article/thumb',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            location.reload()
+                        }else{
+                            alert(response.data.errMsg)
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+
+    new Vue({
+        el:"#mycomment",
+        data:{
+            mycontent:"",
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            tocomment:function (arid){
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("commentar",arid);
+                formDate.append("content",this.mycontent);
+
+                axios
+                    .post('http://localhost:8080/comment/addcomment',formDate)
                     .then(response =>{
                         if(response.data.result){
                             alert(response.data.resMsg)

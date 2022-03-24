@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.CommentDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Comment" id="CommentMap">
+        <result property="commentid" column="commentid" jdbcType="INTEGER"/>
+        <result property="commentarticleid" column="commentarticleid" jdbcType="INTEGER"/>
+        <result property="commentuserid" column="commentuserid" jdbcType="INTEGER"/>
+        <result property="commentcontent" column="commentcontent" jdbcType="VARCHAR"/>
+        <result property="commenttime" column="commenttime" jdbcType="TIMESTAMP"/>
+        <result property="commentthumb" column="commentthumb" jdbcType="INTEGER"/>
+        <result property="commenthot" column="commenthot" jdbcType="INTEGER"/>
+        <result property="commenttype" column="commenttype" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CommentMap">
+        select
+          commentid, commentarticleid, commentuserid, commentcontent, commenttime, commentthumb, commenthot, commenttype
+        from comment
+        where commentid = #{commentid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CommentMap">
+        select
+          commentid, commentarticleid, commentuserid, commentcontent, commenttime, commentthumb, commenthot, commenttype
+        from comment
+        <where>
+            <if test="co.commentid != null">
+                and commentid = #{co.commentid}
+            </if>
+            <if test="co.commentarticleid != null">
+                and commentarticleid = #{co.commentarticleid}
+            </if>
+            <if test="co.commentuserid != null">
+                and commentuserid = #{co.commentuserid}
+            </if>
+            <if test="co.commentcontent != null and co.commentcontent != ''">
+                and commentcontent = #{co.commentcontent}
+            </if>
+            <if test="co.commenttime != null">
+                and commenttime = #{co.commenttime}
+            </if>
+            <if test="co.commentthumb != null">
+                and commentthumb = #{co.commentthumb}
+            </if>
+            <if test="co.commenthot != null">
+                and commenthot = #{co.commenthot}
+            </if>
+            <if test="co.commenttype != null">
+                and commenttype = #{co.commenttype}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from comment
+        <where>
+            <if test="commentid != null">
+                and commentid = #{commentid}
+            </if>
+            <if test="commentarticleid != null">
+                and commentarticleid = #{commentarticleid}
+            </if>
+            <if test="commentuserid != null">
+                and commentuserid = #{commentuserid}
+            </if>
+            <if test="commentcontent != null and commentcontent != ''">
+                and commentcontent = #{commentcontent}
+            </if>
+            <if test="commenttime != null">
+                and commenttime = #{commenttime}
+            </if>
+            <if test="commentthumb != null">
+                and commentthumb = #{commentthumb}
+            </if>
+            <if test="commenthot != null">
+                and commenthot = #{commenthot}
+            </if>
+            <if test="commenttype != null">
+                and commenttype = #{commenttype}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="commentid" useGeneratedKeys="true">
+        insert into comment(commentarticleid, commentuserid, commentcontent, commenttime, commentthumb, commenthot, commenttype)
+        values (#{commentarticleid}, #{commentuserid}, #{commentcontent}, #{commenttime}, #{commentthumb}, #{commenthot}, #{commenttype})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="commentid" useGeneratedKeys="true">
+        insert into comment(commentarticleid, commentuserid, commentcontent, commenttime, commentthumb, commenthot, commenttype)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.commentarticleid}, #{entity.commentuserid}, #{entity.commentcontent}, #{entity.commenttime}, #{entity.commentthumb}, #{entity.commenthot}, #{entity.commenttype})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="commentid" useGeneratedKeys="true">
+        insert into comment(commentarticleid, commentuserid, commentcontent, commenttime, commentthumb, commenthot, commenttype)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.commentarticleid}, #{entity.commentuserid}, #{entity.commentcontent}, #{entity.commenttime}, #{entity.commentthumb}, #{entity.commenthot}, #{entity.commenttype})
+        </foreach>
+        on duplicate key update
+        commentarticleid = values(commentarticleid),
+        commentuserid = values(commentuserid),
+        commentcontent = values(commentcontent),
+        commenttime = values(commenttime),
+        commentthumb = values(commentthumb),
+        commenthot = values(commenthot),
+        commenttype = values(commenttype)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update comment
+        <set>
+            <if test="commentarticleid != null">
+                commentarticleid = #{commentarticleid},
+            </if>
+            <if test="commentuserid != null">
+                commentuserid = #{commentuserid},
+            </if>
+            <if test="commentcontent != null and commentcontent != ''">
+                commentcontent = #{commentcontent},
+            </if>
+            <if test="commenttime != null">
+                commenttime = #{commenttime},
+            </if>
+            <if test="commentthumb != null">
+                commentthumb = #{commentthumb},
+            </if>
+            <if test="commenthot != null">
+                commenthot = #{commenthot},
+            </if>
+            <if test="commenttype != null">
+                commenttype = #{commenttype},
+            </if>
+        </set>
+        where commentid = #{commentid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from comment where commentid = #{commentid}
+    </delete>
+
+</mapper>
+
