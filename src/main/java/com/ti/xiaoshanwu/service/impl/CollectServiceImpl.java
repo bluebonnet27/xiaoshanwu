@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import javax.annotation.Resource;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -63,6 +64,17 @@ public class CollectServiceImpl implements CollectService {
     public Page<Collect> queryByPage(Collect collect, PageRequest pageRequest) {
         long total = this.collectDao.count(collect);
         return new PageImpl<>(this.collectDao.queryAllByLimit(collect, pageRequest), pageRequest, total);
+    }
+
+    /**
+     * 不分页查询
+     *
+     * @param collect 筛选条件
+     * @return 查询结果
+     */
+    @Override
+    public List<Collect> queryByNoPage(Collect collect) {
+        return this.collectDao.queryAllByLimitNoPage(collect);
     }
 
     /**

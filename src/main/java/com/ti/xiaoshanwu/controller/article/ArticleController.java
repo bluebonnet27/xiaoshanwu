@@ -51,11 +51,15 @@ public class ArticleController {
     @Resource
     private CommentService commentService;
 
+    @Resource
+    private CollectService collectService;
+
     //主题四种排序方式
     static final int ORDER_DEFAULT= 0;
     static final int ORDER_HOT= 1;
     static final int ORDER_NEW= 2;
     static final int ORDER_NO_REPLY= 3;
+
 
     @RequestMapping("totheme")
     public String showArticleToTheme(Model model,
@@ -325,6 +329,7 @@ public class ArticleController {
         }
 
         Article article = this.articleService.queryById(articleid);
+        Date now = new Date();
 
         User author = this.userService.queryById(article.getArticleauthorid());
         UserImpl userImpl = this.userService.convertUserToUserImpl(author);
@@ -333,6 +338,22 @@ public class ArticleController {
         ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
 
         model.addAttribute("article",articleImpl);
+
+        //加载收藏
+        Collect siftCollect = new Collect();
+        siftCollect.setArticleid(articleid);
+        siftCollect.setUserid(userid);
+
+        List<Collect> collects = this.collectService.queryByNoPage(siftCollect);
+        if(collects.isEmpty()){
+            Collect fakeCollect = new Collect(1,1,1,now,1);
+            collects.add(fakeCollect);
+            model.addAttribute("iscollectempty",true);
+            model.addAttribute("collects",collects);
+        }else {
+            model.addAttribute("iscollectempty",false);
+            model.addAttribute("collects",collects);
+        }
 
         //加载评论
         //程序页转为类页

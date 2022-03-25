@@ -4,6 +4,8 @@ import com.ti.xiaoshanwu.entity.impl.CollectImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 /**
  * (Collect)表服务接口
  *
@@ -28,6 +30,14 @@ public interface CollectService {
      * @return 查询结果
      */
     Page<Collect> queryByPage(Collect collect, PageRequest pageRequest);
+
+    /**
+     * 不分页查询
+     *
+     * @param collect 筛选条件
+     * @return 查询结果
+     */
+    List<Collect> queryByNoPage(Collect collect);
 
     /**
      * 新增数据

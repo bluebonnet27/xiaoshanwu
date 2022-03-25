@@ -73,6 +73,12 @@
         #maincard-right2{
             margin-top: 5px;
         }
+        #maincard-right3{
+            margin-top: 5px;
+        }
+        #maincard-right4{
+            margin-top: 5px;
+        }
     </style>
 
 </head>
@@ -233,7 +239,7 @@
         <div class="col-sm-4">
             <div class="card" id="maincard-right1">
                 <div class="card-header">
-                    操作
+                    <span class="bi-wrench"></span> 操作
                 </div>
                 <div class="card-body" id="caozuo">
                     <button class="btn btn-danger" th:@click="|zan(${article.getArticleid()})|">
@@ -245,7 +251,7 @@
 
             <div class="card" id="maincard-right2">
                 <div class="card-header">
-                    作者
+                    <span class="bi-pencil"></span> 作者
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -279,6 +285,29 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card" id="maincard-right3">
+                <div class="card-header">
+                    <span class="bi-star"></span> 收藏夹
+                </div>
+                <div class="card-body">
+                    <h5 th:style="${iscollectempty}?'':'display: none'">您没有收藏这篇文章，要收藏么？</h5>
+                    <h5 th:style="${iscollectempty}?'display: none':''">这篇文章存在于以下收藏夹：</h5>
+                    <ul class="list-group" th:style="${iscollectempty}?'display: none':''">
+                        <li class="list-group-item" th:each="collect,iterStat:${collects}"
+                            th:text="${collect.getCollecttype()}"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" id="maincard-right4">
+                <div class="card-header">
+                    <span class="bi-badge-ad"></span> 广告
+                </div>
+                <div class="card-body">
+                    <h5>广告位招租</h5>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -302,12 +331,11 @@
 <script th:src="@{/editormd/lib/jquery.flowchart.min.js}"></script>
 <script th:src="@{/editormd/js/editormd.min.js}"></script>
 <script type="text/javascript">
-
     var testEditor;
 
     $(function () {
         testEditor = editormd.markdownToHTML("test-editormd", {
-            htmlDecode: "style,script,iframe", // you can filter tags decode
+            htmlDecode: "style,script,iframe", // tags
             emoji: true,
             taskList: true,
             tex: true, // 默认不解析

@@ -25,22 +25,46 @@
         from collect
         <where>
             <if test="co.collectid != null">
-                and co.collectid = #{co.collectid}
+                and collectid = #{co.collectid}
             </if>
             <if test="co.userid != null">
-                and co.userid = #{co.userid}
+                and userid = #{co.userid}
             </if>
             <if test="co.articleid != null">
-                and co.articleid = #{co.articleid}
+                and articleid = #{co.articleid}
             </if>
             <if test="co.collecttime != null">
-                and co.collecttime = #{co.collecttime}
+                and collecttime = #{co.collecttime}
             </if>
             <if test="co.collecttype != null">
-                and co.collecttype = #{co.collecttype}
+                and collecttype = #{co.collecttype}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--查询指定行数据，非分页-->
+    <select id="queryAllByLimitNoPage" resultMap="CollectMap">
+        select
+        collectid, userid, articleid, collecttime, collecttype
+        from collect
+        <where>
+            <if test="co.collectid != null">
+                and collectid = #{co.collectid}
+            </if>
+            <if test="co.userid != null">
+                and userid = #{co.userid}
+            </if>
+            <if test="co.articleid != null">
+                and articleid = #{co.articleid}
+            </if>
+            <if test="co.collecttime != null">
+                and collecttime = #{co.collecttime}
+            </if>
+            <if test="co.collecttype != null">
+                and collecttype = #{co.collecttype}
+            </if>
+        </where>
     </select>
 
     <!--统计总行数-->

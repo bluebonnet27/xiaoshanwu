@@ -33,6 +33,14 @@ public interface CollectDao {
     List<Collect> queryAllByLimit(@Param("co")Collect collect, @Param("pageable") Pageable pageable);
 
     /**
+     * 查询指定行数据，但不分页
+     *
+     * @param collect 查询条件
+     * @return 对象列表
+     */
+    List<Collect> queryAllByLimitNoPage(@Param("co")Collect collect);
+
+    /**
      * 统计总行数
      *
      * @param collect 查询条件

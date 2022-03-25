@@ -63,5 +63,15 @@ public class Collect implements Serializable {
         this.collecttype = collecttype;
     }
 
+    public Collect() {
+    }
+
+    public Collect(Integer collectid, Integer userid, Integer articleid, Date collecttime, Integer collecttype) {
+        this.collectid = collectid;
+        this.userid = userid;
+        this.articleid = articleid;
+        this.collecttime = collecttime;
+        this.collecttype = collecttype;
+    }
 }
 
