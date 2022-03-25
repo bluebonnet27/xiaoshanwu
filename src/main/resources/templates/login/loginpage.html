@@ -168,7 +168,7 @@
                     })
                     .then(response =>{
                         if(response.data.result){
-                            window.open('http://localhost:8080/ind/adminindex')
+                            window.open('http://localhost:8080/ind/adminindex','_self')
                         }else{
                             alert(response.data.errMsg);
                         }
