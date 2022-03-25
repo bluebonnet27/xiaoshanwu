@@ -51,6 +51,10 @@
             margin-top: 5px;
             margin-bottom: 5px;
         }
+        #tiezi2{
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
         #mainbody{
             background-image: url("https://s3.bmp.ovh/imgs/2022/03/07ca2075685f0fd8.png");
             background-size:100% 100%;
@@ -88,8 +92,18 @@
                 用户
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><h6 class="dropdown-header">我的</h6></li>
                 <li><a class="dropdown-item" href="/user/tousercenter"><span class="bi-people"></span> 个人中心</a></li>
-                <li><a class="dropdown-item" href="#"><span class="bi-people"></span> 反馈</a></li>
+                <li><a class="dropdown-item" href="/user/userallarticle"><span class="bi-card-text"></span> 我的帖子</a></li>
+                <li><a class="dropdown-item" href="#"><span class="bi-back"></span> 我的主题</a></li>
+                <li><a class="dropdown-item" href="/user/usercollects"><span class="bi-star"></span> 我的收藏</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><h6 class="dropdown-header">安全</h6></li>
+                <li><a class="dropdown-item" href="/user/userinfo"><span class="bi-clipboard-data"></span> 我的信息</a></li>
+                <li><a class="dropdown-item" href="/user/tochangepwd"><span class="bi-key"></span> 修改密码</a></li>
+                <li><a class="dropdown-item" href="/user/tochangeemail"><span class="bi-at"></span> 修改邮箱</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><h6 class="dropdown-header">其他</h6></li>
                 <li><a class="dropdown-item" href="/user/logout"><span class="bi-power"></span> 退出登录</a></li>
             </ul>
         </div>
@@ -149,40 +163,80 @@
                 </li>
             </ul>
 
-            <div class="card" id="tiezi" th:each="article,iterStat : ${articlesimpl}">
+<!--            <div class="card" id="tiezi" th:each="article,iterStat : ${articlesimpl}">-->
 
-                <div class="card-header">
-                    <span class="badge rounded-pill bg-primary" th:text="${article.getThemeName()}">分区</span>
+<!--                <div class="card-header">-->
+<!--                    <span class="badge rounded-pill bg-primary" th:text="${article.getThemeName()}">分区</span>-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <a th:text="${article.getArticletitle()}" class="h4 link-primary"-->
+<!--                       th:href="@{http://localhost:8080/article/articlemore(articleid=${article.getArticleid()})}">文章标题</a>-->
+<!--                    <table class="table table-borderless table-sm">-->
+<!--                        <tbody>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <span class="badge rounded-pill bg-success">作者</span>-->
+<!--                            </td>-->
+<!--                            <td th:text="${article.getArticleauthoridImpl()}">-->
+
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <span class="badge rounded-pill bg-success">发布时间</span>-->
+<!--                            </td>-->
+<!--                            <td th:text="${article.getArticlePublishTimeImpl()}">-->
+
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div class="card-footer">-->
+<!--                    <span class="bi-hand-thumbs-up"></span>-->
+<!--                    <span class="badge bg-secondary" th:text="${article.getArticlethumb()}">14</span>-->
+<!--                    <span class="bi-star"></span>-->
+<!--                    <span class="badge bg-secondary" th:text="${article.getArticlecollect()}">30</span>-->
+<!--                    <span class="bi-chat"></span>-->
+<!--                    <span class="badge bg-secondary" th:text="${article.getArticlereplycount()}">5</span>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="mdui-card" id="tiezi2" th:each="article,iterStat : ${articlesimpl}">
+                <!-- 卡片头部，包含头像、标题、副标题 -->
+                <div class="mdui-card-header">
+                    <img class="mdui-card-header-avatar" th:src="@{${article.getArticleauthorImg()}}"/>
+                    <div class="mdui-card-header-title" th:text="${article.getArticleauthoridImpl()}">
+                        Title</div>
+                    <div class="mdui-card-header-subtitle" th:text="${article.getArticlePublishTimeImpl()}">
+                        Subtitle</div>
                 </div>
-                <div class="card-body">
-                    <a th:text="${article.getArticletitle()}" class="h4 link-primary"
-                       th:href="@{http://localhost:8080/article/articlemore(articleid=${article.getArticleid()})}">文章标题</a>
-                    <table class="table table-borderless table-sm">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <span class="badge rounded-pill bg-success">作者</span>
-                            </td>
-                            <td th:text="${article.getArticleauthoridImpl()}">
 
-                            </td>
-                            <td>
-                                <span class="badge rounded-pill bg-success">发布时间</span>
-                            </td>
-                            <td th:text="${article.getArticlePublishTimeImpl()}">
-
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <!-- 卡片的标题和副标题 -->
+                <div class="mdui-card-primary">
+                    <div class="mdui-card-primary-title">
+                        <a th:text="${article.getArticletitle()}"
+                           th:href="@{http://localhost:8080/article/articlemore(articleid=${article.getArticleid()})}">
+                            文章标题</a>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <span class="bi-hand-thumbs-up"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlethumb()}">14</span>
-                    <span class="bi-star"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlecollect()}">30</span>
-                    <span class="bi-chat"></span>
-                    <span class="badge bg-secondary" th:text="${article.getArticlereplycount()}">5</span>
+
+                <!-- 卡片的按钮 -->
+                <div class="mdui-card-actions">
+                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple">
+                        <i class="mdui-icon mdui-icon-left material-icons">thumb_up</i>
+                        <span class="mdui-chip-title" th:text="${article.getArticlethumb()}"></span>
+                    </button>
+                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple">
+                        <i class="mdui-icon mdui-icon-left material-icons">star</i>
+                        <span class="mdui-chip-title" th:text="${article.getArticlecollect()}"></span>
+                    </button>
+                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple">
+                        <i class="mdui-icon mdui-icon-left material-icons">textsms</i>
+                        <span class="mdui-chip-title" th:text="${article.getArticlereplycount()}"></span>
+                    </button>
+                    <button class="mdui-btn mdui-color-theme-accent mdui-ripple">
+                        <i class="mdui-icon material-icons">trending_up</i>
+                        <span class="mdui-chip-title" th:text="${article.getArticlehot()}"></span>
+                    </button>
                 </div>
             </div>
 

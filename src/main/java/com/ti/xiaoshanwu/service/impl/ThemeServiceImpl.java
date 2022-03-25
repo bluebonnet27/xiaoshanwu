@@ -120,6 +120,10 @@ public class ThemeServiceImpl implements ThemeService {
                 imgHead = "https://s3.bmp.ovh/imgs/2022/03/bb97814045765fb8.jpg";
                 imgBg = "https://s3.bmp.ovh/imgs/2022/03/a7212ebdedb69e6f.png";
                 break;
+            case 4:
+                imgHead = "https://s3.bmp.ovh/imgs/2022/03/ff85c7c2a10bb57f.jpg";
+                imgBg = "https://s3.bmp.ovh/imgs/2022/03/2b96064d0e5c335f.jpg";
+                break;
             default:
                 imgHead = "https://s1.328888.xyz/2022/03/22/9ckMC.jpg";
                 imgBg = "https://s1.328888.xyz/2022/03/22/9c1fg.jpg";
