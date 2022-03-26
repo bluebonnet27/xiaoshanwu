@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.DriftbottleDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Driftbottle" id="DriftbottleMap">
+        <result property="bottleid" column="bottleid" jdbcType="INTEGER"/>
+        <result property="bottlesendid" column="bottlesendid" jdbcType="INTEGER"/>
+        <result property="bottletime" column="bottletime" jdbcType="TIMESTAMP"/>
+        <result property="bottlecontent" column="bottlecontent" jdbcType="VARCHAR"/>
+        <result property="bottleacceptid" column="bottleacceptid" jdbcType="INTEGER"/>
+        <result property="bottlestate" column="bottlestate" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DriftbottleMap">
+        select
+          bottleid, bottlesendid, bottletime, bottlecontent, bottleacceptid, bottlestate
+        from driftbottle
+        where bottleid = #{bottleid}
+    </select>
+
+    <!--随机取出一条或多条记录-->
+    <select id="randomQuery" resultMap="DriftbottleMap">
+        SELECT
+            bottleid, bottlesendid, bottletime, bottlecontent, bottleacceptid, bottlestate
+        FROM driftbottle as t1
+        WHERE t1.bottleid>=(RAND()*(SELECT MAX(bottleid) FROM driftbottle))
+        and
+              t1.bottlestate = 0
+        LIMIT #{recordnum};
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DriftbottleMap">
+        select
+          bottleid, bottlesendid, bottletime, bottlecontent, bottleacceptid, bottlestate
+        from driftbottle
+        <where>
+            <if test="bottleid != null">
+                and bottleid = #{bottleid}
+            </if>
+            <if test="bottlesendid != null">
+                and bottlesendid = #{bottlesendid}
+            </if>
+            <if test="bottletime != null">
+                and bottletime = #{bottletime}
+            </if>
+            <if test="bottlecontent != null and bottlecontent != ''">
+                and bottlecontent = #{bottlecontent}
+            </if>
+            <if test="bottleacceptid != null">
+                and bottleacceptid = #{bottleacceptid}
+            </if>
+            <if test="bottlestate != null">
+                and bottlestate = #{bottlestate}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from driftbottle
+        <where>
+            <if test="bottleid != null">
+                and bottleid = #{bottleid}
+            </if>
+            <if test="bottlesendid != null">
+                and bottlesendid = #{bottlesendid}
+            </if>
+            <if test="bottletime != null">
+                and bottletime = #{bottletime}
+            </if>
+            <if test="bottlecontent != null and bottlecontent != ''">
+                and bottlecontent = #{bottlecontent}
+            </if>
+            <if test="bottleacceptid != null">
+                and bottleacceptid = #{bottleacceptid}
+            </if>
+            <if test="bottlestate != null">
+                and bottlestate = #{bottlestate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="bottleid" useGeneratedKeys="true">
+        insert into driftbottle(bottlesendid, bottletime, bottlecontent, bottleacceptid, bottlestate)
+        values (#{bottlesendid}, #{bottletime}, #{bottlecontent}, #{bottleacceptid}, #{bottlestate})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="bottleid" useGeneratedKeys="true">
+        insert into driftbottle(bottlesendid, bottletime, bottlecontent, bottleacceptid, bottlestate)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.bottlesendid}, #{entity.bottletime}, #{entity.bottlecontent}, #{entity.bottleacceptid}, #{entity.bottlestate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="bottleid" useGeneratedKeys="true">
+        insert into driftbottle(bottlesendid, bottletime, bottlecontent, bottleacceptid, bottlestate)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.bottlesendid}, #{entity.bottletime}, #{entity.bottlecontent}, #{entity.bottleacceptid}, #{entity.bottlestate})
+        </foreach>
+        on duplicate key update
+        bottlesendid = values(bottlesendid),
+        bottletime = values(bottletime),
+        bottlecontent = values(bottlecontent),
+        bottleacceptid = values(bottleacceptid),
+        bottlestate = values(bottlestate)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update driftbottle
+        <set>
+            <if test="bottlesendid != null">
+                bottlesendid = #{bottlesendid},
+            </if>
+            <if test="bottletime != null">
+                bottletime = #{bottletime},
+            </if>
+            <if test="bottlecontent != null and bottlecontent != ''">
+                bottlecontent = #{bottlecontent},
+            </if>
+            <if test="bottleacceptid != null">
+                bottleacceptid = #{bottleacceptid},
+            </if>
+            <if test="bottlestate != null">
+                bottlestate = #{bottlestate},
+            </if>
+        </set>
+        where bottleid = #{bottleid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from driftbottle where bottleid = #{bottleid}
+    </delete>
+
+</mapper>
+

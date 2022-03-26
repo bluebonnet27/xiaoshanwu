@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>小山屋论坛-漂流瓶</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <!--  vue.js  -->
+    <script src="js/vue.js"></script>
+
+    <!--  bootstrap5 图标库-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+    <!--  备用cdn  -->
+
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+
+    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+    <!--  和风天气  -->
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
+
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+    <style>
+        #mainpart{
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/ind/userindex">
+            小山屋论坛</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+            </ul>
+
+        </div>
+        <div class="nav-item dropdown d-flex">
+            <a class="nav-link link-light dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${user.getUsername()}">
+                用户
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><h6 class="dropdown-header">我的</h6></li>
+                <li><a class="dropdown-item" href="/user/tousercenter"><span class="bi-people"></span> 个人中心</a></li>
+                <li><a class="dropdown-item" href="/user/userallarticle"><span class="bi-card-text"></span> 我的帖子</a></li>
+                <li><a class="dropdown-item" href="#"><span class="bi-back"></span> 我的主题</a></li>
+                <li><a class="dropdown-item" href="/user/usercollects"><span class="bi-star"></span> 我的收藏</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><h6 class="dropdown-header">安全</h6></li>
+                <li><a class="dropdown-item" href="/user/userinfo"><span class="bi-clipboard-data"></span> 我的信息</a></li>
+                <li><a class="dropdown-item" href="/user/tochangepwd"><span class="bi-key"></span> 修改密码</a></li>
+                <li><a class="dropdown-item" href="/user/tochangeemail"><span class="bi-at"></span> 修改邮箱</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><h6 class="dropdown-header">其他</h6></li>
+                <li><a class="dropdown-item" href="/user/logout"><span class="bi-power"></span> 退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container" id="mainpart">
+
+    <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/ind/userindex">小山屋论坛</a></li>
+            <li class="breadcrumb-item active" aria-current="page">漂流瓶</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-3">
+            <ul class="mdui-list">
+                <li class="mdui-subheader-inset">漂流瓶</li>
+                <li class="mdui-list-item mdui-ripple mdui-list-item-active">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                    <a class="mdui-list-item-content" href="/bottle/tobottleindex">主页</a>
+                </li>
+                <li class="mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">lightbulb_outline</i>
+                    <a class="mdui-list-item-content" href="/bottle/tobottleget">捞瓶子</a>
+                </li>
+                <li class="mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">send</i>
+                    <a class="mdui-list-item-content" href="/bottle/tobottlethrow">扔瓶子</a>
+                </li>
+                <li class="mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">&#xe838;</i>
+                    <a class="mdui-list-item-content" href="/bottle/tobottlemy">我的瓶子</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-9">
+            <h1><span class="bi-house"></span> 主页</h1>
+        </div>
+    </div>
+
+    <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+        <div class="container">
+            <ul class="bd-footer-links ps-0 mb-3">
+                <li class="d-inline-block" ><a href="https://github.com/bluebonnet27/xiaoshanwu">GitHub</a></li>
+            </ul>
+            <p class="mb-0">小山屋论坛 Copyright© 2022 All Rights Reserved. </p>
+            <p class="mb-0">当前版本 v0.1。</p>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
