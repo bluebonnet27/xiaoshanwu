@@ -5,6 +5,8 @@ import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 /**
  * (Theme)表服务接口
  *
@@ -29,6 +31,14 @@ public interface ThemeService {
      * @return 查询结果
      */
     Page<Theme> queryByPage(Theme theme, PageRequest pageRequest);
+
+    /**
+     * 不分页，直接查询所有主题
+     *
+     * @param theme 筛选条件
+     * @return 查询结果
+     */
+    List<Theme> queryByNoPage(Theme theme);
 
     /**
      * 新增数据

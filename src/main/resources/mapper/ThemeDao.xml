@@ -48,6 +48,31 @@
     </select>
 
     <!--  查询总数据  -->
+    <select id="queryAllByLimitNoPage" resultMap="ThemeMap">
+        select
+        themeid, themename, themeadminid, themestatement, themetime, themecount
+        from theme
+        <where>
+            <if test="tm.themeid != null">
+                and themeid = #{tm.themeid}
+            </if>
+            <if test="tm.themename != null and tm.themename != ''">
+                and themename = #{tm.themename}
+            </if>
+            <if test="tm.themeadminid != null">
+                and themeadminid = #{tm.themeadminid}
+            </if>
+            <if test="tm.themestatement != null and tm.themestatement != ''">
+                and themestatement = #{tm.themestatement}
+            </if>
+            <if test="tm.themetime != null">
+                and themetime = #{tm.themetime}
+            </if>
+            <if test="tm.themecount != null">
+                and themecount = #{tm.themecount}
+            </if>
+        </where>
+    </select>
 
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">

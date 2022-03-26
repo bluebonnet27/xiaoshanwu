@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionActivationListener;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -308,6 +305,16 @@ public class ArticleController {
         }
         model.addAttribute("pages",articles);
         model.addAttribute("articlesimpl",articlesImpl);
+
+        //最多帖子的主题
+        Theme siftTheme = new Theme();
+        List<Theme> themes = this.themeService.queryByNoPage(siftTheme);
+
+        //去掉管理区
+        themes.remove(0);
+
+        themes.sort(Comparator.comparing(Theme::getThemecount));
+        model.addAttribute("themes",themes);
         return "index";
     }
 

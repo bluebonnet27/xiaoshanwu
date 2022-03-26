@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -52,6 +53,17 @@ public class ThemeServiceImpl implements ThemeService {
     public Page<Theme> queryByPage(Theme theme, PageRequest pageRequest) {
         long total = this.themeDao.count(theme);
         return new PageImpl<>(this.themeDao.queryAllByLimit(theme, pageRequest), pageRequest, total);
+    }
+
+    /**
+     * 不分页，直接查询所有主题
+     *
+     * @param theme 筛选条件
+     * @return 查询结果
+     */
+    @Override
+    public List<Theme> queryByNoPage(Theme theme) {
+        return this.themeDao.queryAllByLimitNoPage(theme);
     }
 
     /**

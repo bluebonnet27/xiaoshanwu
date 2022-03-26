@@ -55,6 +55,12 @@
             background-image: url("https://s3.bmp.ovh/imgs/2022/03/07ca2075685f0fd8.png");
             background-size:100% 100%;
         }
+        #maincard-right1{
+
+        }
+        #maincard-right2{
+            margin-top: 5px;
+        }
     </style>
 
 </head>
@@ -203,7 +209,8 @@
                     <img class="mdui-card-header-avatar" th:src="@{${article.getArticleauthorImg()}}"/>
                     <div class="mdui-card-header-title" th:text="${article.getArticleauthoridImpl()}">
                         Title</div>
-                    <div class="mdui-card-header-subtitle" th:text="${article.getArticlePublishTimeImpl()}">
+                    <div class="mdui-card-header-subtitle" th:text="${article.getArticlePublishTimeImpl()} + ' @'
+                    +${article.getThemeName()}">
                         Subtitle</div>
                 </div>
 
@@ -254,7 +261,68 @@
             </nav>
         </div>
         <div class="col-sm-4">
+            <div class="mdui-card mdui-hoverable" id="maincard-right1">
+                <div class="mdui-card-header">
+                    <i class="mdui-icon material-icons mdui-card-header-avatar">event_note</i>
+                    <div class="mdui-card-header-title">公告</div>
+                    <div class="mdui-card-header-subtitle">小山屋论坛</div>
+                </div>
+                <!-- 卡片的媒体内容，可以包含图片、视频等媒体内容，以及标题、副标题 -->
+                <div class="mdui-card-media">
+                    <img src="https://s3.bmp.ovh/imgs/2022/03/07ca2075685f0fd8.png"/>
+                    <!-- 卡片中可以包含一个或多个菜单按钮 -->
+                    <div class="mdui-card-menu">
+                        <button class="mdui-btn mdui-btn-icon mdui-text-color-white">
+                            <i class="mdui-icon material-icons">arrow_forward</i>
+                        </button>
+                    </div>
+                    <div class="mdui-card-media-covered mdui-card-media-covered-gradient">
+                        <!-- 卡片的标题和副标题 -->
+                        <div class="mdui-card-primary">
+                            <div class="mdui-card-primary-title">封号公告</div>
+                            <div class="mdui-card-primary-subtitle">2022年3月25日</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 卡片的内容 -->
+                <div class="mdui-card-content">用户bluebonnet27（id=1）因恶意举报，账号已永封</div>
+            </div>
 
+            <div class="mdui-card mdui-hoverable" id="maincard-right2">
+
+                <!-- 卡片头部，包含头像、标题、副标题 -->
+                <div class="mdui-card-header">
+                    <i class="mdui-icon material-icons mdui-card-header-avatar">show_chart</i>
+                    <div class="mdui-card-header-title">热门主题</div>
+                    <div class="mdui-card-header-subtitle">看看大家都在聊什么？</div>
+                </div>
+
+                <div class="mdui-card-media">
+                    <img src="https://s3.bmp.ovh/imgs/2022/03/07ca2075685f0fd8.png"/>
+
+                    <div class="mdui-card-media-covered mdui-card-media-covered-gradient">
+                        <!-- 卡片的标题和副标题 -->
+                        <div class="mdui-card-primary">
+                            <div class="mdui-card-primary-title">看看最近的热门主题？</div>
+                            <div class="mdui-card-primary-subtitle" th:text="'论坛目前主题数：'+${themes.size()}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 卡片的内容 -->
+                <div class="mdui-card-content">
+                    <ul class="mdui-list">
+                        <li class="mdui-list-item mdui-ripple" th:each="theme,iterStat:${themes}">
+                            <a class="mdui-list-item-content" th:text="${theme.getThemename()}"
+                                th:href="@{/article/totheme(tid=${theme.getThemeid()})}"></a>
+                            <div class="mdui-chip">
+                                <span class="mdui-chip-title" th:text="${theme.getThemecount()}">0</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -80,6 +79,17 @@ public class IndexController {
             model.addAttribute("user",user);
             model.addAttribute("pages",articles);
             model.addAttribute("articlesimpl",articlesImpl);
+
+            //最多帖子的主题
+            Theme siftTheme = new Theme();
+            List<Theme> themes = this.themeService.queryByNoPage(siftTheme);
+
+            //去掉管理区
+            themes.remove(0);
+
+            themes.sort(Comparator.comparing(Theme::getThemecount));
+            model.addAttribute("themes",themes);
+
             return "index";
         }else {
             model.addAttribute("msg","session空");

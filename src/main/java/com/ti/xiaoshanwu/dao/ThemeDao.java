@@ -33,6 +33,14 @@ public interface ThemeDao {
     List<Theme> queryAllByLimit(@Param("tm") Theme theme, @Param("pageable") Pageable pageable);
 
     /**
+     * 查询指定行数据，不分页
+     *
+     * @param theme 查询条件
+     * @return 对象列表
+     */
+    List<Theme> queryAllByLimitNoPage(@Param("tm") Theme theme);
+
+    /**
      * 统计总行数
      *
      * @param theme 查询条件
