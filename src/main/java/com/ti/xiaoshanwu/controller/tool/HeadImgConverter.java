@@ -17,6 +17,9 @@ public class HeadImgConverter {
             case 1:
                 uimg = "https://s3.bmp.ovh/imgs/2021/09/1ecc277aceb7f0cc.jpg";
                 break;
+            case 2:
+                uimg = "https://s3.bmp.ovh/imgs/2022/03/f03a122e2881b469.jpg";
+                break;
             default:
                 uimg = "https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg";
                 break;

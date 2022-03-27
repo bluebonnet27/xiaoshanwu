@@ -116,7 +116,27 @@
             </ul>
         </div>
         <div class="col-9">
-
+            <div class="mdui-card" id="mybottle">
+                <!-- 卡片头部，包含头像、标题、副标题 -->
+                <div class="mdui-card-header">
+                    <i class="mdui-card-header-avatar mdui-icon material-icons">face</i>
+                    <div class="mdui-card-header-title">未知用户</div>
+                    <div class="mdui-card-header-subtitle">xxxx-xx-xx</div>
+                </div>
+                <div class="mdui-card-content">
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label">写点什么</label>
+                        <textarea class="mdui-textfield-input"
+                                  placeholder="流されるまま変わらぬまま,自分の舵を取れる日が来るの？" maxlength="255" v-model="ccontent"></textarea>
+                    </div>
+                </div>
+                <div class="mdui-card-actions">
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-float-right"
+                        @click="gofuckthrow()">
+                        <i class="mdui-icon material-icons mdui-icon-left">send</i> 用力扔出去
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -131,4 +151,35 @@
     </footer>
 </div>
 </body>
+<script>
+    new Vue({
+        el:"#mybottle",
+        data:{
+            ccontent:"",
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            gofuckthrow:function (){
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("bottlecontent",this.ccontent);
+
+                axios
+                    .post('/bottle/bottlethrow',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            window.open('http://localhost:8080/bottle/tobottleindex','_self')
+                        }else{
+                            alert(response.data.errMsg)
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+</script>
 </html>

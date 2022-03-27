@@ -131,14 +131,16 @@
 
                 <!-- 卡片的按钮 -->
                 <div class="mdui-card-actions">
-                    <a class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue">
+                    <a class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue"
+                        href="/bottle/tobottleget">
                         <i class="mdui-icon material-icons mdui-icon-left">&#xe15e;</i> 扔回去
                     </a>
-                    <a class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red">
+                    <a class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red"
+                       th:href="@{deletebottle(bottleid=${driftbottleimpl.getBottleid()})}">
                         <i class="mdui-icon material-icons mdui-icon-left">&#xe872;</i> 销毁瓶子
                     </a>
                     <a class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-green"
-                            th:href="@{collectbottle(bottleid=${driftbottleimpl.getBottleid()})}">
+                       th:href="@{collectbottle(bottleid=${driftbottleimpl.getBottleid()})}">
                         <i class="mdui-icon material-icons mdui-icon-left">&#xe838;</i>收藏瓶子
                     </a>
                 </div>

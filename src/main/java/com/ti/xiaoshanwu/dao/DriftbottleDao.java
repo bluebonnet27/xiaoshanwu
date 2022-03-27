@@ -30,7 +30,7 @@ public interface DriftbottleDao {
      * @param pageable         分页对象
      * @return 对象列表
      */
-    List<Driftbottle> queryAllByLimit(Driftbottle driftbottle, @Param("pageable") Pageable pageable);
+    List<Driftbottle> queryAllByLimit(@Param("bo") Driftbottle driftbottle, @Param("pageable") Pageable pageable);
 
     /**
      * Random query driftbottle.

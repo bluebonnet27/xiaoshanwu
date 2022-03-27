@@ -36,23 +36,23 @@
           bottleid, bottlesendid, bottletime, bottlecontent, bottleacceptid, bottlestate
         from driftbottle
         <where>
-            <if test="bottleid != null">
-                and bottleid = #{bottleid}
+            <if test="bo.bottleid != null">
+                and bottleid = #{bo.bottleid}
             </if>
-            <if test="bottlesendid != null">
-                and bottlesendid = #{bottlesendid}
+            <if test="bo.bottlesendid != null">
+                and bottlesendid = #{bo.bottlesendid}
             </if>
-            <if test="bottletime != null">
-                and bottletime = #{bottletime}
+            <if test="bo.bottletime != null">
+                and bottletime = #{bo.bottletime}
             </if>
-            <if test="bottlecontent != null and bottlecontent != ''">
-                and bottlecontent = #{bottlecontent}
+            <if test="bo.bottlecontent != null and bo.bottlecontent != ''">
+                and bottlecontent = #{bo.bottlecontent}
             </if>
-            <if test="bottleacceptid != null">
-                and bottleacceptid = #{bottleacceptid}
+            <if test="bo.bottleacceptid != null">
+                and bottleacceptid = #{bo.bottleacceptid}
             </if>
-            <if test="bottlestate != null">
-                and bottlestate = #{bottlestate}
+            <if test="bo.bottlestate != null">
+                and bottlestate = #{bo.bottlestate}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

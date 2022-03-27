@@ -116,7 +116,45 @@
             </ul>
         </div>
         <div class="col-9">
+            <h5>我的瓶子</h5>
+            <div class="mdui-panel" mdui-panel>
+                <div class="mdui-panel-item" th:each="bottle,iterStat:${driftbottles}">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title" th:text="${bottle.getBottleid()}">
+                            Start and end dates
+                        </div>
+                        <div class="mdui-panel-item-summary">
+                            <img th:src="@{${bottle.getBottlesendidImgImpl()}}" class="mdui-img-circle"
+                                 style="width: 30px;height: 30px">
+                        </div>
+                        <div class="mdui-panel-item-summary" th:text="${bottle.getBottlesendidNameImpl()}">
+                            End date: Not set</div>
+                        <div class="mdui-panel-item-summary" th:text="${bottle.getBottletimeStringImpl()}">
+                            End date: Not set</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <p th:text="${bottle.getBottlecontent()}">Third content</p>
+                    </div>
+                </div>
+            </div>
 
+            <div class="mdui-chip">
+                <span class="mdui-chip-title" th:text="${'收藏了'+pages.getTotalElements()+'个瓶子'}">
+                </span>
+            </div>
+
+            <nav>
+                <ul class="pagination">
+                    <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
+                        th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
+                        <a class="page-link"
+                           th:href="@{tobottlemy(page=${i},limit=${pages.getSize()})}"
+                           th:text="${i}">
+                            Previous</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 
