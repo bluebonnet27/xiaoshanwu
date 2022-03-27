@@ -20,8 +20,17 @@ public class HeadImgConverter {
             case 2:
                 uimg = "https://s3.bmp.ovh/imgs/2022/03/f03a122e2881b469.jpg";
                 break;
+            case 3:
+                uimg = "https://s3.bmp.ovh/imgs/2022/03/a62e7f67b1445b99.jpg";
+                break;
+            case 4:
+                uimg = "https://s3.bmp.ovh/imgs/2022/03/368165a02ad9e909.jpg";
+                break;
+            case 5:
+                uimg = "https://s3.bmp.ovh/imgs/2022/03/6a78629e60ae1311.jpg";
+                break;
             default:
-                uimg = "https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg";
+                uimg = "https://s3.bmp.ovh/imgs/2022/03/7a61277278197216.jpg";
                 break;
         }
 

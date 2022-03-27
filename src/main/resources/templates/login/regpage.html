@@ -69,10 +69,7 @@
                 <li class="breadcrumb-item active" aria-current="page">注册</li>
             </ol>
         </nav>
-        <div class="col-sm-3">
-
-        </div>
-        <div class="col-sm-6">
+        <div class="col-sm-8">
             <div id="formmain">
                 <form class="row g-3">
                     <label for="usernameinput" class="form-label">用户昵称</label>
@@ -112,12 +109,16 @@
                         <select id="headselect" class="form-select" aria-label="Default select example" v-model="uhead">
                             <option value="0">[默认头像组]27</option>
                             <option value="1">[默认头像组]嘉然今天吃什么</option>
+                            <option value="2">[默认头像组]应急食物</option>
+                            <option value="3">[头像组1]奸商</option>
+                            <option value="4">[头像组1]友好</option>
+                            <option value="5">[头像组1]妹妹</option>
                         </select>
                     </div>
                     <div class="accordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     默认头像组
                                 </button>
                             </h2>
@@ -145,6 +146,36 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    头像组1
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>奸商</th>
+                                            <th>友好</th>
+                                            <th>妹妹</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><img src="https://s3.bmp.ovh/imgs/2022/03/a62e7f67b1445b99.jpg"
+                                                     style="width: 50px;height: 50px"/> </td>
+                                            <td><img src="https://s3.bmp.ovh/imgs/2022/03/368165a02ad9e909.jpg"
+                                                     style="width: 50px;height: 50px"/> </td>
+                                            <td><img src="https://s3.bmp.ovh/imgs/2022/03/6a78629e60ae1311.jpg"
+                                                     style="width: 50px;height: 50px"/> </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="ustatement" class="form-label">描述</label>
@@ -155,7 +186,7 @@
                 <button class="btn btn-success" href="http://localhost:8080/login/tologin"><span class="bi-box-arrow-down-right"></span> 已有账号？直接登录！</button>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
 
         </div>
     </div>
