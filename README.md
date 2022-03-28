@@ -19,10 +19,12 @@
 
 * [Bootstrap5](https://bootstrapdoc.com/)
 * [Vue.js](https://cn.vuejs.org/)
+* [MDUI](https://www.mdui.org/)
 
 ### 后端
 
 * [Spring Boot](https://spring.io/projects/spring-boot)
+* [mybatis](https://mybatis.org/mybatis-3/zh/index.html)
 
 ### 模板引擎
 
