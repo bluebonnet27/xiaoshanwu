@@ -41,6 +41,9 @@ public class DriftBottleController {
             User nowUser = this.userService.queryById(userid);
             model.addAttribute("user",nowUser);
         }
+        Driftbottle siftDriftbottle = new Driftbottle();
+        long bottlesCount = this.driftbottleService.getCount(siftDriftbottle);
+        model.addAttribute("countAll",bottlesCount);
         return "driftbottle/bottleindex";
     }
 
@@ -193,6 +196,34 @@ public class DriftBottleController {
 
             insertBottleResult.setResult(true);
             insertBottleResult.setResMsg("投掷成功，时间为："+sendBottle.getBottletime().toString());
+        }
+        return insertBottleResult.toString();
+    }
+
+    @RequestMapping("bottlethrowspe")
+    @ResponseBody
+    public String driftBottleThrowSpe(HttpSession session,
+                                      String bottlecontent,
+                                      Integer targetid){
+        Integer userid = (Integer) session.getAttribute("uid");
+        JsonResult insertBottleResult = new JsonResult();
+        Date nowDate = new Date();
+        if(userid==null){
+            insertBottleResult.setResult(false);
+            insertBottleResult.setErrMsg("您的登录信息已失效，请重新登录");
+        }else {
+            Driftbottle driftbottle = new Driftbottle();
+
+            driftbottle.setBottlestate(1);
+            driftbottle.setBottlecontent(bottlecontent);
+            driftbottle.setBottletime(nowDate);
+            driftbottle.setBottlesendid(userid);
+            driftbottle.setBottleacceptid(targetid);
+
+            Driftbottle sendBottle = this.driftbottleService.insert(driftbottle);
+
+            insertBottleResult.setResult(true);
+            insertBottleResult.setResMsg("回复成功，您的回复会以定向漂流瓶的形式存入对方收藏，时间为："+sendBottle.getBottletime().toString());
         }
         return insertBottleResult.toString();
     }

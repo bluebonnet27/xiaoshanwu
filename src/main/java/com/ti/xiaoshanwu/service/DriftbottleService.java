@@ -39,6 +39,14 @@ public interface DriftbottleService {
     Page<Driftbottle> queryByPage(Driftbottle driftbottle, PageRequest pageRequest);
 
     /**
+     * Gets count.
+     *
+     * @param driftbottle the driftbottle
+     * @return the count
+     */
+    long getCount(Driftbottle driftbottle);
+
+    /**
      * 新增数据
      *
      * @param driftbottle 实例对象

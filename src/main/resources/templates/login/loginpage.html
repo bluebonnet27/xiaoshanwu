@@ -55,7 +55,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">关于</a>
+                    <a class="nav-link active" aria-current="page" href="http://localhost:8080/login/toreg">注册</a>
                 </li>
             </ul>
         </div>
@@ -104,11 +104,6 @@
             <button type="button" class="btn btn-primary" @click="submitForm()"><span class="bi-person"></span> 用户登录</button>
             <button type="button" class="btn btn-danger" @click="submitAdminForm()"><span class="bi-tools"></span> 管理员登录</button>
 
-            <div class="alert alert-info alert-dismissible fade show">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>提示：</strong> 如果你没有账号，可以考虑
-                <a href="http://localhost:8080/login/toreg" class="alert-link">注册一个</a>
-            </div>
         </div>
     </div>
 </div>
@@ -162,13 +157,13 @@
                 formDate.append("adminpwd",this.upwd);
 
                 axios
-                    .post('http://localhost:8080/login/adminlogin',formDate)
+                    .post('/login/adminlogin',formDate)
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                     })
                     .then(response =>{
                         if(response.data.result){
-                            window.open('http://localhost:8080/ind/adminindex','_self')
+                            window.open('/ind/adminindex','_self')
                         }else{
                             alert(response.data.errMsg);
                         }

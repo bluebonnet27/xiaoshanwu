@@ -68,6 +68,17 @@ public class DriftbottleServiceImpl implements DriftbottleService {
     }
 
     /**
+     * Gets count.
+     *
+     * @param driftbottle the driftbottle
+     * @return the count
+     */
+    @Override
+    public long getCount(Driftbottle driftbottle) {
+        return this.driftbottleDao.count(driftbottle);
+    }
+
+    /**
      * 新增数据
      *
      * @param driftbottle 实例对象

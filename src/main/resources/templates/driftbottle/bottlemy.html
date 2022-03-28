@@ -135,6 +135,22 @@
                     </div>
                     <div class="mdui-panel-item-body">
                         <p th:text="${bottle.getBottlecontent()}">Third content</p>
+                        <div class="mdui-panel" mdui-panel>
+                            <div class="mdui-panel-item">
+                                <div class="mdui-panel-item-header">回复</div>
+                                <div class="mdui-panel-item-body" id="mybottle">
+                                    <div class="mdui-textfield">
+                                        <label class="mdui-textfield-label">写点什么</label>
+                                        <textarea class="mdui-textfield-input"
+                                                  placeholder="分别的人在这里分别，相逢的人在这里相逢" maxlength="255" v-model="ccontent"></textarea>
+                                    </div>
+                                    <div class="mdui-panel-item-actions">
+                                        <button class="mdui-btn mdui-ripple mdui-color-blue"
+                                                th:@click="|gofuckthrow(${bottle.getBottlesendid()})|">回复</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,4 +185,36 @@
     </footer>
 </div>
 </body>
+<script>
+    new Vue({
+        el:"#mybottle",
+        data:{
+            ccontent:"",
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            gofuckthrow:function (targetid){
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("bottlecontent",this.ccontent);
+                formDate.append("targetid",targetid);
+
+                axios
+                    .post('/bottle/bottlethrowspe',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            window.location.reload()
+                        }else{
+                            alert(response.data.errMsg)
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+</script>
 </html>
