@@ -1,12 +1,15 @@
 package com.ti.xiaoshanwu.controller.admin;
 
 import com.ti.xiaoshanwu.entity.Admin;
+import com.ti.xiaoshanwu.entity.Board;
 import com.ti.xiaoshanwu.entity.Theme;
 import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.impl.BoardImpl;
 import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.AdminService;
+import com.ti.xiaoshanwu.service.BoardService;
 import com.ti.xiaoshanwu.service.ThemeService;
 import com.ti.xiaoshanwu.service.UserService;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +42,9 @@ public class AdminController {
 
     @Resource
     private ThemeService themeService;
+
+    @Resource
+    private BoardService boardService;
 
     @RequestMapping("tochangepwd")
     public String toChangePwd(HttpSession session,
@@ -238,5 +245,61 @@ public class AdminController {
 
         //
         return "admin/uuser/adminusermngdata";
+    }
+
+    @RequestMapping("alladminboards")
+    public String selectAllAdminBoards(Model model,
+                                       HttpSession session,
+                                       @RequestParam(defaultValue = "1") Integer page,
+                                       @RequestParam(defaultValue = "5") Integer limit){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("errtitle","session空");
+            model.addAttribute("errorsubtitle","空");
+            model.addAttribute("errtext","com/ti/xiaoshanwu/controller/admin/AdminController.java");
+            return "errorhandle";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        Board siftCondition = new Board();
+        siftCondition.setBoardtype(0);
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("boardid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<Board> boardPages = this.boardService.queryByPage(siftCondition,pageRequest);
+
+        ArrayList<BoardImpl> boardImpls = new ArrayList<>();
+
+        //发送到前端前二次处理
+        List<Board> boards = boardPages.getContent();
+
+        for(Board board:boards){
+            BoardImpl boardImpl = this.boardService.convertToBoardImpl(board);
+            boardImpls.add(boardImpl);
+        }
+
+        model.addAttribute("boardpages",boardPages);
+        model.addAttribute("boardImpls",boardImpls);
+        return "admin/board/adminboard";
+    }
+
+    @RequestMapping("toaddnewboard")
+    public String toAddNewBoard(Model model,HttpSession session){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("errtitle","session空");
+            model.addAttribute("errorsubtitle","空");
+            model.addAttribute("errtext","com/ti/xiaoshanwu/controller/admin/AdminController.java");
+            return "errorhandle";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+        return "admin/board/adminnewboard";
     }
 }

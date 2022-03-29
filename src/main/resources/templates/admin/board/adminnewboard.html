@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>小山屋论坛-用户管理</title>
+    <title>小山屋论坛-公告（管理员）</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
@@ -83,7 +83,7 @@
                 <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='http://localhost:8080/adm/allusersdefault'">
                     <span class="bi-person-video2"></span>   用户管理</button>
-                <button type="button" class="list-group-item list-group-item-action active"
+                <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='http://localhost:8080/adm/allthemes'">
                     <span class="bi-back"></span>   主题管理</button>
                 <button type="button" class="list-group-item list-group-item-action">
@@ -109,7 +109,8 @@
             <div class="list-group">
                 <button type="button" class="list-group-item list-group-item-action">
                     <span class="bi-bell"></span>   通知管理</button>
-                <button type="button" class="list-group-item list-group-item-action">
+                <button type="button" class="list-group-item list-group-item-action active"
+                        onclick="window.location.href='http://localhost:8080/adm/alladminboards'">
                     <span class="bi-clipboard"></span>   公告管理</button>
                 <button type="button" class="list-group-item list-group-item-action">
                     <span class="bi-person-rolodex"></span>   反馈管理</button>
@@ -118,54 +119,21 @@
         <div class="col-9">
             <div class="row">
                 <div class="col-sm-6">
-                    <h1><span class="bi-back"></span>   主题管理</h1>
+                    <h1><span class="bi-clipboard"></span>   公告管理</h1>
                 </div>
             </div>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="allusersdefault">全部主题</a>
+                    <a class="nav-link" href="alladminboards">全部公告</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="toaddnewboard">发布新公告</a>
                 </li>
             </ul>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>主题名</th>
-                    <th>管理员</th>
-                    <th>创建时间</th>
-                    <th>帖子数量</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="theme,iterStat : ${themeImpls}">
-                    <td th:text="${theme.getThemeid()}"></td>
-                    <td th:text="${theme.getThemename()}"></td>
-                    <td th:text="${theme.getThemeadminidImpl()}"></td>
-                    <td th:text="${theme.getThemeDateImpl()}"></td>
-                    <td th:text="${theme.getThemecount()}"></td>
-                    <td>
-                        <button class="btn btn-info disabled">
-                            <span class="bi-gear"></span> 管理
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="alert alert-info" role="alert" th:text="${'当前共有'+themepages.getTotalElements()+'个主题'}">
-            </div>
 
-            <nav>
-                <ul class="pagination">
-                    <li th:each="i : ${#numbers.sequence(1,themepages.getTotalPages())}"
-                        th:class="${themepages.getNumber() + 1 != i}?'page-item':'page-item active'">
-                        <a class="page-link"
-                           th:href="@{allthemes(page=${i},limit=${themepages.getSize()})}"
-                           th:text="${i}">
-                            Previous</a>
-                    </li>
-                </ul>
-            </nav>
+            <form class="form">
+
+            </form>
         </div>
     </div>
 </div>
