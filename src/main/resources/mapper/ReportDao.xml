@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.ReportDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Report" id="ReportMap">
+        <result property="reportid" column="reportid" jdbcType="INTEGER"/>
+        <result property="reporttype" column="reporttype" jdbcType="INTEGER"/>
+        <result property="reporttime" column="reporttime" jdbcType="TIMESTAMP"/>
+        <result property="reportreason" column="reportreason" jdbcType="VARCHAR"/>
+        <result property="reportuserid" column="reportuserid" jdbcType="INTEGER"/>
+        <result property="reporttoid" column="reporttoid" jdbcType="INTEGER"/>
+        <result property="reportstate" column="reportstate" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ReportMap">
+        select
+          reportid, reporttype, reporttime, reportreason, reportuserid, reporttoid, reportstate
+        from report
+        where reportid = #{reportid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ReportMap">
+        select
+          reportid, reporttype, reporttime, reportreason, reportuserid, reporttoid, reportstate
+        from report
+        <where>
+            <if test="reportid != null">
+                and reportid = #{reportid}
+            </if>
+            <if test="reporttype != null">
+                and reporttype = #{reporttype}
+            </if>
+            <if test="reporttime != null">
+                and reporttime = #{reporttime}
+            </if>
+            <if test="reportreason != null and reportreason != ''">
+                and reportreason = #{reportreason}
+            </if>
+            <if test="reportuserid != null">
+                and reportuserid = #{reportuserid}
+            </if>
+            <if test="reporttoid != null">
+                and reporttoid = #{reporttoid}
+            </if>
+            <if test="reportstate != null">
+                and reportstate = #{reportstate}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from report
+        <where>
+            <if test="reportid != null">
+                and reportid = #{reportid}
+            </if>
+            <if test="reporttype != null">
+                and reporttype = #{reporttype}
+            </if>
+            <if test="reporttime != null">
+                and reporttime = #{reporttime}
+            </if>
+            <if test="reportreason != null and reportreason != ''">
+                and reportreason = #{reportreason}
+            </if>
+            <if test="reportuserid != null">
+                and reportuserid = #{reportuserid}
+            </if>
+            <if test="reporttoid != null">
+                and reporttoid = #{reporttoid}
+            </if>
+            <if test="reportstate != null">
+                and reportstate = #{reportstate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="reportid" useGeneratedKeys="true">
+        insert into report(reporttype, reporttime, reportreason, reportuserid, reporttoid, reportstate)
+        values (#{reporttype}, #{reporttime}, #{reportreason}, #{reportuserid}, #{reporttoid}, #{reportstate})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="reportid" useGeneratedKeys="true">
+        insert into report(reporttype, reporttime, reportreason, reportuserid, reporttoid, reportstate)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.reporttype}, #{entity.reporttime}, #{entity.reportreason}, #{entity.reportuserid}, #{entity.reporttoid}, #{entity.reportstate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="reportid" useGeneratedKeys="true">
+        insert into report(reporttype, reporttime, reportreason, reportuserid, reporttoid, reportstate)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.reporttype}, #{entity.reporttime}, #{entity.reportreason}, #{entity.reportuserid}, #{entity.reporttoid}, #{entity.reportstate})
+        </foreach>
+        on duplicate key update
+        reporttype = values(reporttype),
+        reporttime = values(reporttime),
+        reportreason = values(reportreason),
+        reportuserid = values(reportuserid),
+        reporttoid = values(reporttoid),
+        reportstate = values(reportstate)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update report
+        <set>
+            <if test="reporttype != null">
+                reporttype = #{reporttype},
+            </if>
+            <if test="reporttime != null">
+                reporttime = #{reporttime},
+            </if>
+            <if test="reportreason != null and reportreason != ''">
+                reportreason = #{reportreason},
+            </if>
+            <if test="reportuserid != null">
+                reportuserid = #{reportuserid},
+            </if>
+            <if test="reporttoid != null">
+                reporttoid = #{reporttoid},
+            </if>
+            <if test="reportstate != null">
+                reportstate = #{reportstate},
+            </if>
+        </set>
+        where reportid = #{reportid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from report where reportid = #{reportid}
+    </delete>
+
+</mapper>
+
