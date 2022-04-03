@@ -1,15 +1,9 @@
 package com.ti.xiaoshanwu.controller;
 
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
-import com.ti.xiaoshanwu.entity.Admin;
-import com.ti.xiaoshanwu.entity.Article;
-import com.ti.xiaoshanwu.entity.Theme;
-import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.*;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
-import com.ti.xiaoshanwu.service.AdminService;
-import com.ti.xiaoshanwu.service.ArticleService;
-import com.ti.xiaoshanwu.service.ThemeService;
-import com.ti.xiaoshanwu.service.UserService;
+import com.ti.xiaoshanwu.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -41,6 +35,9 @@ public class IndexController {
 
     @Resource
     private ArticleService articleService;
+
+    @Resource
+    private BoardService boardService;
 
     /**
      * 跳转到用户首页.
@@ -136,6 +133,10 @@ public class IndexController {
     public String goLogout(HttpSession session,
                            Model model){
         session.removeAttribute("uid");
+        //查询最新公告内容
+        Board siftBoard = new Board();
+        List<Board> boards = this.boardService.queryByNoPage(siftBoard);
+        model.addAttribute("board", boards.get(0));
         return "login/loginpage";
     }
 }
