@@ -1,5 +1,6 @@
 package com.ti.xiaoshanwu.controller.admin;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.ti.xiaoshanwu.entity.Admin;
 import com.ti.xiaoshanwu.entity.Board;
 import com.ti.xiaoshanwu.entity.Theme;
@@ -337,5 +338,45 @@ public class AdminController {
 
         model.addAttribute("backboard",backBoard);
         return "admin/board/adminnewboardsuccess";
+    }
+
+    @RequestMapping("touserdetail")
+    public String toUserDetail(Model model,
+                               HttpSession session,
+                               Integer userid){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //查找用户详细信息
+        User targetUser = this.userService.queryById(userid);
+        UserImpl targetUserImpl = this.userService.convertUserToUserImpl(targetUser);
+        model.addAttribute("user",targetUserImpl);
+
+        return "admin/uuser/userdetail";
+    }
+
+    @RequestMapping("touserdetailmng")
+    public String toUserDetailMng(Model model,
+                                  HttpSession session,
+                                  Integer userid){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //查找用户详细信息
+        User targetUser = this.userService.queryById(userid);
+        UserImpl targetUserImpl = this.userService.convertUserToUserImpl(targetUser);
+        model.addAttribute("user",targetUserImpl);
+
+        return "admin/uuser/userdetailcon";
     }
 }

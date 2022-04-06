@@ -30,6 +30,17 @@ public interface CommentService {
      */
     Page<Comment> queryByPage(Comment comment, PageRequest pageRequest);
 
+
+    /**
+     * 分页查询，指定顺序
+     *
+     * @param comment     the comment
+     * @param pageRequest the page request
+     * @param order       the order
+     * @return the page
+     */
+    Page<Comment> queryByPage(Comment comment,PageRequest pageRequest,Integer order);
+
     /**
      * 新增数据
      *

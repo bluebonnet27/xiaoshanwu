@@ -85,7 +85,7 @@
                     <span class="bi-person-video2"></span>   用户管理</button>
                 <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='http://localhost:8080/adm/allthemes'">
-                    <span class="bi-back"></span>   主题管理</button>
+                    <span class="bi-back"></span>  主题管理</button>
                 <button type="button" class="list-group-item list-group-item-action">
                     <span class="bi-card-text"></span>   帖子管理</button>
                 <button type="button" class="list-group-item list-group-item-action"
@@ -117,81 +117,74 @@
             </div>
         </div>
         <div class="col-9">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h1><span class="bi-person-video2"></span> 用户管理</h1>
-                </div>
-                <div class="col-sm-6">
-                    <form class="d-flex" style="position: center">
-                        <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search">
-                        <button class="btn btn-success" type="button">
-                            <span class="bi-search"></span></button>
-                    </form>
-                </div>
-            </div>
+            <h5>用户管理/</h5>
+            <h1 th:text="${user.getUsername()}"><span class="bi-info"></span> 用户名</h1>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="allusersdefault">全部用户</a>
+                    <a class="nav-link active">个人详情</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="allusershead">模块管理员</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="userdata">用户数据</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">其他</a>
+                    <a class="nav-link" th:href="@{touserdetailmng(userid=${user.getUserid()})}">管理</a>
                 </li>
             </ul>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>用户名</th>
-                    <th>出生日期</th>
-                    <th>性别</th>
-                    <th>等级</th>
-                    <th>角色</th>
-                    <th>注册日期</th>
-                    <th>财产</th>
-                    <th>管理</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user,iterStat : ${userImpls}">
-                    <td th:text="${user.getUserid()}"></td>
-                    <td th:text="${user.getUsername()}"></td>
-                    <td th:text="${user.getUserbirthImpl()}"></td>
-                    <td th:text="${user.getUsersexImpl()}"></td>
-                    <td th:text="${user.getUserlv()}"></td>
-                    <td th:text="${user.getUserroleImpl()}"
-                        th:class="${user.getUserrole()==0}?'':'table-danger'">
-                    </td>
-                    <td th:text="${user.getUserregtimeImpl()}"></td>
-                    <td th:text="${user.getUsermoney()}"></td>
-                    <td>
-                        <a class="btn btn-info"
-                           th:href="@{touserdetail(userid=${user.getUserid()})}">
-                            <span class="bi-gear"></span> 管理
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="alert alert-info" role="alert" th:text="${'当前共有'+userpages.getTotalElements()+'个用户，更多信息请切换到“用户数据”选项卡'}">
-            </div>
-
-            <nav>
-                <ul class="pagination">
-                    <li th:each="i : ${#numbers.sequence(1,userpages.getTotalPages())}"
-                        th:class="${userpages.getNumber() + 1 != i}?'page-item':'page-item active'">
-                        <a class="page-link"
-                           th:href="@{allusersdefault(page=${i},limit=${userpages.getSize()})}"
-                           th:text="${i}">
-                            Previous</a>
-                    </li>
-                </ul>
-            </nav>
+            <form>
+                <fieldset>
+                    <div class="row mb-3">
+                        <label for="useridlab" class="col-sm-2 col-form-label">ID</label>
+                        <div class="col-sm-6">
+                            <input  class="form-control" id="useridlab" th:value="${user.getUserid()}" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="useremaillab" class="col-sm-2 col-form-label">邮箱</label>
+                        <div class="col-sm-6">
+                            <input  class="form-control" id="useremaillab" th:value="${user.getUseremail()}" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="userbirthlab" class="col-sm-2 col-form-label">生日</label>
+                        <div class="col-sm-6">
+                            <input  class="form-control" id="userbirthlab" th:value="${user.getUserbirthImpl()}" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="usersexlab" class="col-sm-2 col-form-label">性别</label>
+                        <div class="col-sm-6">
+                            <input  class="form-control" id="usersexlab" th:value="${user.getUsersexImpl()}" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="userlvlab" class="col-sm-2 col-form-label">等级</label>
+                        <div class="col-sm-6">
+                            <input  class="form-control" id="userlvlab" th:value="${user.getUserlv()}" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="userrolelab" class="col-sm-2 col-form-label">角色</label>
+                        <div class="col-sm-6">
+                            <input  class="form-control" id="userrolelab" th:value="${user.getUserroleImpl()}" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="userregtimelab" class="col-sm-2 col-form-label">注册时间</label>
+                        <div class="col-sm-6">
+                            <input  class="form-control" id="userregtimelab" th:value="${user.getUserregtimeImpl()}" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="usermoneylab" class="col-sm-2 col-form-label">财产</label>
+                        <div class="col-sm-6">
+                            <input  class="form-control" id="usermoneylab" th:value="${user.getUsermoney()}" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="userslab" class="col-sm-2 col-form-label">个人描述</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="userslab" th:value="${user.getUserstatement()}" disabled/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>

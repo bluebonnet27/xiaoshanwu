@@ -57,6 +57,8 @@ public class UserServiceImpl implements UserService {
         String urole = "用户";
         if(user.getUserrole()==1){
             urole = "版主";
+        }else if (user.getUserrole()==-1){
+            urole = "用户（已封禁）";
         }
 
         String usex = "男";

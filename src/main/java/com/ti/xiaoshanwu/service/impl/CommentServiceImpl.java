@@ -56,6 +56,30 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
+     * 分页查询，指定顺序
+     *
+     * @param comment     the comment
+     * @param pageRequest the page request
+     * @param order       the order
+     * @return the page
+     */
+    @Override
+    public Page<Comment> queryByPage(Comment comment, PageRequest pageRequest, Integer order) {
+        long total = this.commentDao.count(comment);
+        switch (order){
+            case 1:
+                return new PageImpl<>(this.commentDao.queryAllByLimitNew(comment, pageRequest), pageRequest, total);
+            case 2:
+                return new PageImpl<>(this.commentDao.queryAllByLimitHot(comment, pageRequest), pageRequest, total);
+            case 3:
+                return new PageImpl<>(this.commentDao.queryAllByLimitThumb(comment, pageRequest), pageRequest, total);
+            case 0:
+            default:
+                return new PageImpl<>(this.commentDao.queryAllByLimit(comment, pageRequest), pageRequest, total);
+        }
+    }
+
+    /**
      * 新增数据
      *
      * @param comment 实例对象

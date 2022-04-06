@@ -55,6 +55,111 @@
         limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 
+    <!--查询指定行数据 按时间-->
+    <select id="queryAllByLimitNew" resultMap="CommentMap">
+        select
+        commentid, commentarticleid, commentuserid, commentcontent, commenttime, commentthumb, commenthot, commenttype
+        from comment
+        <where>
+            <if test="co.commentid != null">
+                and commentid = #{co.commentid}
+            </if>
+            <if test="co.commentarticleid != null">
+                and commentarticleid = #{co.commentarticleid}
+            </if>
+            <if test="co.commentuserid != null">
+                and commentuserid = #{co.commentuserid}
+            </if>
+            <if test="co.commentcontent != null and co.commentcontent != ''">
+                and commentcontent = #{co.commentcontent}
+            </if>
+            <if test="co.commenttime != null">
+                and commenttime = #{co.commenttime}
+            </if>
+            <if test="co.commentthumb != null">
+                and commentthumb = #{co.commentthumb}
+            </if>
+            <if test="co.commenthot != null">
+                and commenthot = #{co.commenthot}
+            </if>
+            <if test="co.commenttype != null">
+                and commenttype = #{co.commenttype}
+            </if>
+        </where>
+        order by commenttime desc
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--查询指定行数据 按热度-->
+    <select id="queryAllByLimitHot" resultMap="CommentMap">
+        select
+        commentid, commentarticleid, commentuserid, commentcontent, commenttime, commentthumb, commenthot, commenttype
+        from comment
+        <where>
+            <if test="co.commentid != null">
+                and commentid = #{co.commentid}
+            </if>
+            <if test="co.commentarticleid != null">
+                and commentarticleid = #{co.commentarticleid}
+            </if>
+            <if test="co.commentuserid != null">
+                and commentuserid = #{co.commentuserid}
+            </if>
+            <if test="co.commentcontent != null and co.commentcontent != ''">
+                and commentcontent = #{co.commentcontent}
+            </if>
+            <if test="co.commenttime != null">
+                and commenttime = #{co.commenttime}
+            </if>
+            <if test="co.commentthumb != null">
+                and commentthumb = #{co.commentthumb}
+            </if>
+            <if test="co.commenthot != null">
+                and commenthot = #{co.commenthot}
+            </if>
+            <if test="co.commenttype != null">
+                and commenttype = #{co.commenttype}
+            </if>
+        </where>
+        order by commenthot desc
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--查询指定行数据 按点赞-->
+    <select id="queryAllByLimitThumb" resultMap="CommentMap">
+        select
+        commentid, commentarticleid, commentuserid, commentcontent, commenttime, commentthumb, commenthot, commenttype
+        from comment
+        <where>
+            <if test="co.commentid != null">
+                and commentid = #{co.commentid}
+            </if>
+            <if test="co.commentarticleid != null">
+                and commentarticleid = #{co.commentarticleid}
+            </if>
+            <if test="co.commentuserid != null">
+                and commentuserid = #{co.commentuserid}
+            </if>
+            <if test="co.commentcontent != null and co.commentcontent != ''">
+                and commentcontent = #{co.commentcontent}
+            </if>
+            <if test="co.commenttime != null">
+                and commenttime = #{co.commenttime}
+            </if>
+            <if test="co.commentthumb != null">
+                and commentthumb = #{co.commentthumb}
+            </if>
+            <if test="co.commenthot != null">
+                and commenthot = #{co.commenthot}
+            </if>
+            <if test="co.commenttype != null">
+                and commenttype = #{co.commenttype}
+            </if>
+        </where>
+        order by commentthumb desc
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">
         select count(1)

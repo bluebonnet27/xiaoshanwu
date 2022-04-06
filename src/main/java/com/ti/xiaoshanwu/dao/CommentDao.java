@@ -33,6 +33,33 @@ public interface CommentDao {
     List<Comment> queryAllByLimit(@Param("co") Comment comment, @Param("pageable") Pageable pageable);
 
     /**
+     * 查询指定行数据，按时间倒序
+     *
+     * @param comment 查询条件
+     * @param pageable         分页对象
+     * @return 对象列表
+     */
+    List<Comment> queryAllByLimitNew(@Param("co") Comment comment, @Param("pageable") Pageable pageable);
+
+    /**
+     * 查询指定行数据，按热度倒序
+     *
+     * @param comment 查询条件
+     * @param pageable         分页对象
+     * @return 对象列表
+     */
+    List<Comment> queryAllByLimitHot(@Param("co") Comment comment, @Param("pageable") Pageable pageable);
+
+    /**
+     * 查询指定行数据，按点赞倒序
+     *
+     * @param comment 查询条件
+     * @param pageable         分页对象
+     * @return 对象列表
+     */
+    List<Comment> queryAllByLimitThumb(@Param("co") Comment comment, @Param("pageable") Pageable pageable);
+
+    /**
      * 统计总行数
      *
      * @param comment 查询条件

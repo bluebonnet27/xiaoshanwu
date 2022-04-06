@@ -369,7 +369,13 @@ public class ArticleController {
         Comment siftComment = new Comment();
         siftComment.setCommentarticleid(articleid);
 
+        //0 = default
+        //1 = new
+        //2 = hot
+        //3 = thumb
         model.addAttribute("corder",corder);
+
+
         //排序依据，已经失效，使用数据库排序代替
         Sort sort = Sort.by(Sort.Order.desc("commentid"));
         //分页请求
@@ -378,7 +384,7 @@ public class ArticleController {
         Page<Comment> comments;
 
         //分类
-        comments = this.commentService.queryByPage(siftComment,pageRequest);
+        comments = this.commentService.queryByPage(siftComment,pageRequest,corder);
 
         List<Comment> commentsReal = comments.getContent();
         ArrayList<CommentImpl> commentsImpl = new ArrayList<>();;

@@ -183,10 +183,14 @@
                             排序方式
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item active" href="#">默认排序</a></li>
-                            <li><a class="dropdown-item" href="#">按最热</a></li>
-                            <li><a class="dropdown-item" href="#">按最新</a></li>
-                            <li><a class="dropdown-item" href="#">按点赞最多</a></li>
+                            <li><a th:class="${corder==0}?'dropdown-item active':'dropdown-item'"
+                                   th:href="@{articlemore(articleid=${article.getArticleid()},corder = 0)}">默认排序</a></li>
+                            <li><a th:class="${corder==1}?'dropdown-item active':'dropdown-item'"
+                                   th:href="@{articlemore(articleid=${article.getArticleid()},corder = 1)}">按最新</a></li>
+                            <li><a th:class="${corder==2}?'dropdown-item active':'dropdown-item'"
+                                   th:href="@{articlemore(articleid=${article.getArticleid()},corder = 2)}">按最热</a></li>
+                            <li><a th:class="${corder==3}?'dropdown-item active':'dropdown-item'"
+                                   th:href="@{articlemore(articleid=${article.getArticleid()},corder = 3)}">按点赞最多</a></li>
                         </ul>
                     </div>
                 </div>
