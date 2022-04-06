@@ -1,18 +1,13 @@
 package com.ti.xiaoshanwu.controller.admin;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
-import com.ti.xiaoshanwu.entity.Admin;
-import com.ti.xiaoshanwu.entity.Board;
-import com.ti.xiaoshanwu.entity.Theme;
-import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.*;
 import com.ti.xiaoshanwu.entity.impl.BoardImpl;
+import com.ti.xiaoshanwu.entity.impl.LoginrecordImpl;
 import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
-import com.ti.xiaoshanwu.service.AdminService;
-import com.ti.xiaoshanwu.service.BoardService;
-import com.ti.xiaoshanwu.service.ThemeService;
-import com.ti.xiaoshanwu.service.UserService;
+import com.ti.xiaoshanwu.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -47,6 +42,9 @@ public class AdminController {
 
     @Resource
     private BoardService boardService;
+
+    @Resource
+    private LoginrecordService loginrecordService;
 
     @RequestMapping("tochangepwd")
     public String toChangePwd(HttpSession session,
@@ -378,5 +376,47 @@ public class AdminController {
         model.addAttribute("user",targetUserImpl);
 
         return "admin/uuser/userdetailcon";
+    }
+
+    @RequestMapping("tologinrecords")
+    public String toLoginRecords(Model model,
+                                 HttpSession session,
+                                 @RequestParam(defaultValue = "1") Integer page,
+                                 @RequestParam(defaultValue = "5") Integer limit,
+                                 @RequestParam(defaultValue = "-1") Integer logintype){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //查询所有登录记录
+        //程序页转为类页
+        page = page -1;
+        Loginrecord siftCondition = new Loginrecord();
+        if(logintype != -1){
+            siftCondition.setLogintype(logintype);
+        }
+        model.addAttribute("logintype",logintype);
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("userid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+
+        Page<Loginrecord> pages = this.loginrecordService.queryByPage(siftCondition,pageRequest);
+        List<Loginrecord> loginrecords = pages.getContent();
+        ArrayList<LoginrecordImpl> loginrecordImpls = new ArrayList<>();
+
+        for (Loginrecord loginrecord:loginrecords){
+            LoginrecordImpl loginrecord1 = this.loginrecordService.convertToLoginrecordImpl(loginrecord);
+            loginrecordImpls.add(loginrecord1);
+        }
+
+        model.addAttribute("pages",pages);
+        model.addAttribute("loginrecordimpls",loginrecordImpls);
+
+        return "admin/record/adminloginrecords";
     }
 }

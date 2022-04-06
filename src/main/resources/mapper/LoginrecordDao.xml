@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.LoginrecordDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Loginrecord" id="LoginrecordMap">
+        <result property="loginrecordid" column="loginrecordid" jdbcType="INTEGER"/>
+        <result property="logintime" column="logintime" jdbcType="TIMESTAMP"/>
+        <result property="logintype" column="logintype" jdbcType="INTEGER"/>
+        <result property="loginid" column="loginid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="LoginrecordMap">
+        select
+          loginrecordid, logintime, logintype, loginid
+        from loginrecord
+        where loginrecordid = #{loginrecordid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="LoginrecordMap">
+        select
+          loginrecordid, logintime, logintype, loginid
+        from loginrecord
+        <where>
+            <if test="lo.loginrecordid != null">
+                and loginrecordid = #{lo.loginrecordid}
+            </if>
+            <if test="lo.logintime != null">
+                and logintime = #{lo.logintime}
+            </if>
+            <if test="lo.logintype != null">
+                and logintype = #{lo.logintype}
+            </if>
+            <if test="lo.loginid != null">
+                and loginid = #{lo.loginid}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from loginrecord
+        <where>
+            <if test="loginrecordid != null">
+                and loginrecordid = #{loginrecordid}
+            </if>
+            <if test="logintime != null">
+                and logintime = #{logintime}
+            </if>
+            <if test="logintype != null">
+                and logintype = #{logintype}
+            </if>
+            <if test="loginid != null">
+                and loginid = #{loginid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="loginrecordid" useGeneratedKeys="true">
+        insert into loginrecord(logintime, logintype, loginid)
+        values (#{logintime}, #{logintype}, #{loginid})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="loginrecordid" useGeneratedKeys="true">
+        insert into loginrecord(logintime, logintype, loginid)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.logintime}, #{entity.logintype}, #{entity.loginid})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="loginrecordid" useGeneratedKeys="true">
+        insert into loginrecord(logintime, logintype, loginid)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.logintime}, #{entity.logintype}, #{entity.loginid})
+        </foreach>
+        on duplicate key update
+        logintime = values(logintime),
+        logintype = values(logintype),
+        loginid = values(loginid)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update loginrecord
+        <set>
+            <if test="logintime != null">
+                logintime = #{logintime},
+            </if>
+            <if test="logintype != null">
+                logintype = #{logintype},
+            </if>
+            <if test="loginid != null">
+                loginid = #{loginid},
+            </if>
+        </set>
+        where loginrecordid = #{loginrecordid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from loginrecord where loginrecordid = #{loginrecordid}
+    </delete>
+
+</mapper>
+
