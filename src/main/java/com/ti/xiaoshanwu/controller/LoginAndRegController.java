@@ -3,10 +3,12 @@ package com.ti.xiaoshanwu.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ti.xiaoshanwu.entity.Admin;
 import com.ti.xiaoshanwu.entity.Board;
+import com.ti.xiaoshanwu.entity.Loginrecord;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.AdminService;
 import com.ti.xiaoshanwu.service.BoardService;
+import com.ti.xiaoshanwu.service.LoginrecordService;
 import com.ti.xiaoshanwu.service.UserService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,9 @@ public class LoginAndRegController {
     @Resource
     private BoardService boardService;
 
+    @Resource
+    private LoginrecordService loginrecordService;
+
     @RequestMapping("tologin")
     public String toLogin(Model model){
         //查询最新公告内容
@@ -65,6 +70,16 @@ public class LoginAndRegController {
                 loginBackResult.setResMsg(selectedUser.getUsername());
 
                 session.setAttribute("uid",selectedUser.getUserid());
+
+                //添加登录记录
+                Loginrecord loginrecord = new Loginrecord();
+                loginrecord.setLogintype(selectedUser.getUserrole());
+                loginrecord.setLoginid(selectedUser.getUserid());
+
+                Date now = new Date();
+                loginrecord.setLogintime(now);
+
+                Loginrecord backResult = this.loginrecordService.insert(loginrecord);
             }else{
                 loginBackResult.setResult(false);
                 loginBackResult.setErrMsg("密码错误");
@@ -95,6 +110,16 @@ public class LoginAndRegController {
                 adminQueryBackResult.setResult(true);
                 adminQueryBackResult.setResMsg(selectedAdmin.getAdminname());
                 session.setAttribute("uid",selectedAdmin.getAdminid());
+
+                //添加登录记录
+                Loginrecord loginrecord = new Loginrecord();
+                loginrecord.setLogintype(2);
+                loginrecord.setLoginid(selectedAdmin.getAdminid());
+
+                Date now = new Date();
+                loginrecord.setLogintime(now);
+
+                Loginrecord backResult = this.loginrecordService.insert(loginrecord);
             }
         }
         return adminQueryBackResult.toString();

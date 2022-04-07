@@ -7,9 +7,6 @@
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
-    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
-    <!--<script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>-->
-
     <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
     <script src="js/bootstrap.bundle.min.js"></script>
 
@@ -165,44 +162,6 @@
                     <a class="nav-link" href="http://localhost:8080/article/defaultnore">消灭零回复</a>
                 </li>
             </ul>
-
-<!--            <div class="card" id="tiezi" th:each="article,iterStat : ${articlesimpl}">-->
-
-<!--                <div class="card-header">-->
-<!--                    <span class="badge rounded-pill bg-primary" th:text="${article.getThemeName()}">分区</span>-->
-<!--                </div>-->
-<!--                <div class="card-body">-->
-<!--                    <a th:text="${article.getArticletitle()}" class="h4 link-primary"-->
-<!--                        th:href="@{http://localhost:8080/article/articlemore(articleid=${article.getArticleid()})}">文章标题</a>-->
-<!--                    <table class="table table-borderless table-sm">-->
-<!--                        <tbody>-->
-<!--                           <tr>-->
-<!--                               <td>-->
-<!--                                   <span class="badge rounded-pill bg-success">作者</span>-->
-<!--                               </td>-->
-<!--                               <td th:text="${article.getArticleauthoridImpl()}">-->
-
-<!--                               </td>-->
-<!--                               <td>-->
-<!--                                   <span class="badge rounded-pill bg-success">发布时间</span>-->
-<!--                               </td>-->
-<!--                               <td th:text="${article.getArticlePublishTimeImpl()}">-->
-
-<!--                               </td>-->
-<!--                           </tr>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
-<!--                </div>-->
-<!--                <div class="card-footer">-->
-<!--                    <span class="bi-hand-thumbs-up"></span>-->
-<!--                    <span class="badge bg-secondary" th:text="${article.getArticlethumb()}">14</span>-->
-<!--                    <span class="bi-star"></span>-->
-<!--                    <span class="badge bg-secondary" th:text="${article.getArticlecollect()}">30</span>-->
-<!--                    <span class="bi-chat"></span>-->
-<!--                    <span class="badge bg-secondary" th:text="${article.getArticlereplycount()}">5</span>-->
-<!--                </div>-->
-<!--            </div>-->
-
             <div class="mdui-card" id="tiezi2" th:each="article,iterStat : ${articlesimpl}">
                 <!-- 卡片头部，包含头像、标题、副标题 -->
                 <div class="mdui-card-header">
@@ -259,6 +218,28 @@
                     </li>
                 </ul>
             </nav>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Launch demo modal
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-sm-4">
             <div class="mdui-card mdui-hoverable" id="maincard-right1">

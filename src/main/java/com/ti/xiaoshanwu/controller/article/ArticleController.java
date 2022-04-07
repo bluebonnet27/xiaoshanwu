@@ -355,6 +355,7 @@ public class ArticleController {
         if(collects.isEmpty()){
             Collect fakeCollect = new Collect(1,1,1,now,1);
             collects.add(fakeCollect);
+
             model.addAttribute("iscollectempty",true);
             model.addAttribute("collects",collects);
         }else {

@@ -197,6 +197,126 @@
                         </div>
                     </div>
                 </fieldset>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#infochangemodal">
+                    修改个人信息
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="infochangemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">修改个人信息</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h5>找不到你要修改的东西？</h5>
+                                <p>
+                                    <a href="/user/tochangepwd" role="button" class="btn btn-secondary">修改密码</a>或者
+                                    <a href="/user/tochangeemail" role="button" class="btn btn-secondary">修改邮箱</a>请单独前往，
+                                    部分选项不支持在本页修改，请联系管理员修改
+                                </p>
+                                <hr>
+                                <h5>基本信息修改</h5>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="birthdate" class="form-label">出生日期</label>
+                                        <input class="form-control" type="date" id="birthdate" v-model="ubirth">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="sexselect" class="form-label">性别</label>
+                                        <select id="sexselect" class="form-select" aria-label="Default select example" v-model="usex">
+                                            <option value="0">男</option>
+                                            <option value="1">女</option>
+                                            <option value="2">非二元性别</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="headselect" class="form-label">头像</label>
+                                        <select id="headselect" class="form-select" aria-label="Default select example" v-model="uhead">
+                                            <option value="0">[默认头像组]27</option>
+                                            <option value="1">[默认头像组]嘉然今天吃什么</option>
+                                            <option value="2">[默认头像组]应急食物</option>
+                                            <option value="3">[头像组1]奸商</option>
+                                            <option value="4">[头像组1]友好</option>
+                                            <option value="5">[头像组1]妹妹</option>
+                                        </select>
+                                    </div>
+                                    <div class="accordion">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    默认头像组
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>27</th>
+                                                            <th>嘉然今天吃什么</th>
+                                                            <th>应急食物</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td><img src="https://s3.bmp.ovh/imgs/2022/03/e08d5a7f92af19a3.jpg"
+                                                                     style="width: 50px;height: 50px" alt="我是谁？"/> </td>
+                                                            <td><img src="https://s3.bmp.ovh/imgs/2021/09/1ecc277aceb7f0cc.jpg"
+                                                                     style="width: 50px;height: 50px"/> </td>
+                                                            <td><img src="https://s3.bmp.ovh/imgs/2022/03/f03a122e2881b469.jpg"
+                                                                     style="width: 50px;height: 50px"/> </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingTwo">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                    头像组1
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>奸商</th>
+                                                            <th>友好</th>
+                                                            <th>妹妹</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td><img src="https://s3.bmp.ovh/imgs/2022/03/a62e7f67b1445b99.jpg"
+                                                                     style="width: 50px;height: 50px"/> </td>
+                                                            <td><img src="https://s3.bmp.ovh/imgs/2022/03/368165a02ad9e909.jpg"
+                                                                     style="width: 50px;height: 50px"/> </td>
+                                                            <td><img src="https://s3.bmp.ovh/imgs/2022/03/6a78629e60ae1311.jpg"
+                                                                     style="width: 50px;height: 50px"/> </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ustatement" class="form-label">描述</label>
+                                        <textarea class="form-control" type="text" id="ustatement" v-model="ustate"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" @click="regForm()">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -212,3 +332,39 @@
 </div>
 </body>
 </html>
+<script>
+    new Vue({
+        el:"#infochangemodal",
+        data:{
+            ubirth:"",
+            usex:"",
+            uhead:"",
+            ustate:"",
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            regForm:function (){
+                const formDate=new FormData();
+                formDate.append("usersex",this.usex);
+                formDate.append("userhead",this.uhead);
+                formDate.append("userbirth",this.ubirth);
+                formDate.append("userstatement",this.ustate);
+
+                axios
+                    .post('http://localhost:8080/user/userchange',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                        }else{
+                            alert(response.data.errMsg);
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        const messageError = "发生错误\n错误名称：" + error.message;
+                        alert(messageError);
+                    });
+            }
+        }
+    })
+</script>

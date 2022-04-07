@@ -7,9 +7,6 @@
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
-    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
-    <!--<script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>-->
-
     <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
     <script src="js/bootstrap.bundle.min.js"></script>
 
@@ -20,7 +17,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
     <!--  备用cdn  -->
-
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
 
@@ -41,16 +37,6 @@
     <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
     <style>
-        #subnav{
-            margin-top: 20px;
-        }
-        #thinav{
-            margin-top: 10px;
-        }
-        #tiezi{
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
         #mainbody{
             background-image: url("https://s3.bmp.ovh/imgs/2022/03/07ca2075685f0fd8.png");
             background-size:100% 100%;
@@ -62,13 +48,13 @@
             margin: 10px;
         }
         #maincard{
-            margin-top: 60px;
+            margin-top: 10px;
         }
         #maincard2{
             margin-top: 5px;
         }
         #maincard-right1{
-            margin-top: 60px;
+            margin-top: 10px;
         }
         #maincard-right2{
             margin-top: 5px;
@@ -80,10 +66,9 @@
             margin-top: 5px;
         }
     </style>
-
 </head>
 <body id="mainbody">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="#">
             小山屋论坛</a>
@@ -95,10 +80,6 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#"><span class="bi-balloon-heart"></span>
                         漂流瓶</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><span class="bi-chat-left-quote"></span>
-                        风纪委员会</a>
                 </li>
             </ul>
 
@@ -126,6 +107,34 @@
         </div>
     </div>
 </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">举报这条评论</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">举报类别：</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">详细理由：</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">提交举报</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-sm-8">
@@ -200,9 +209,6 @@
                 <div class="row g-0">
                     <div class="col-md-2">
                         <img th:src="@{${comment.getCommentUserHeadImpl()}}" class="img-fluid img-thumbnail">
-                        <button type="button" class="btn btn-danger">
-                            <span class="bi-exclamation-triangle"></span> 举报该评论
-                        </button>
                     </div>
                     <div class="col-md-10">
                         <div class="card-body">
@@ -216,10 +222,15 @@
                             <a href="#" class="btn btn-outline-info">
                                 <span class="bi-hand-thumbs-up"></span>点赞
                             </a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal">
+                                举报
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+
             <nav>
                 <ul class="pagination">
                     <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
@@ -325,6 +336,8 @@
         </div>
     </div>
 </div>
+
+
 <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
     <div class="container">
         <ul class="bd-footer-links ps-0 mb-3">
@@ -336,9 +349,12 @@
 </footer>
 <link rel="stylesheet" th:href="@{/editormd/css/editormd.preview.css}"/>
 <script th:src="@{/js/jquery-3.5.1.js}"></script>
+<!--mark基本-->
 <script th:src="@{/editormd/lib/marked.min.js}"></script>
+<!--代码高亮-->
 <script th:src="@{/editormd/lib/prettify.min.js}"></script>
-<script th:src="@{/editormd/lib/raphael.min.js}"></script>
+<!--暂时不知道这个文件是干什么的，但加上这个popper就会失效-->
+<!--<script th:src="@{/editormd/lib/raphael.min.js}"></script>-->
 <script th:src="@{/editormd/lib/underscore.min.js}"></script>
 <script th:src="@{/editormd/lib/sequence-diagram.min.js}"></script>
 <script th:src="@{/editormd/lib/flowchart.min.js}"></script>

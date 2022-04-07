@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * The type Usercontroller.
@@ -389,5 +389,52 @@ public class UserController {
         model.addAttribute("ctype",collecttype);
 
         return "user/usercollect";
+    }
+
+    @RequestMapping("userchange")
+    @ResponseBody
+    public String changeUserInfo(@RequestParam Integer usersex,
+                                 @RequestParam Integer userhead,
+                                 @RequestParam String userbirth,
+                                 @RequestParam String userstatement,
+                                 HttpSession session){
+        JsonResult backReg = new JsonResult();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date ubirth = new Date();
+
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        if(targetUserid==null){
+            backReg.setResult(false);
+            backReg.setErrMsg("登录信息已丢失，请重新登录");
+
+            return backReg.toString();
+        }
+
+        try {
+            ubirth = dateFormat.parse(userbirth);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        User addUser = new User();
+
+        addUser.setUserid(targetUserid);
+        addUser.setUsersex(usersex);
+        addUser.setUserimg(userhead);
+        addUser.setUserbirth(ubirth);
+        addUser.setUserstatement(userstatement);
+
+        User backUser = this.userService.update(addUser);
+
+        if(backUser == null){
+            backReg.setResult(false);
+            backReg.setErrMsg("来自数据库方面的错误导致更新失败");
+        }else {
+            backReg.setResult(true);
+            backReg.setResMsg("您更新了如下数据：\n" + backUser.toHtmlString());
+        }
+
+        return backReg.toString();
     }
 }

@@ -154,10 +154,11 @@
                 <tr th:each="loginrecord,iterStat : ${loginrecordimpls}">
                     <td th:text="${loginrecord.getLoginid()}"></td>
                     <td th:text="${loginrecord.getLogintypeImpl()}"></td>
+                    <td th:text="${loginrecord.getLoginidNameImpl()}"></td>
                     <td th:text="${loginrecord.getLogintimeImpl()}"></td>
                     <td>
-                        <button class="btn btn-info disabled">
-                            <span class="bi-gear"></span> 管理
+                        <button class="btn btn-danger disabled">
+                            <span class="bi-gear"></span> 删除
                         </button>
                     </td>
                 </tr>

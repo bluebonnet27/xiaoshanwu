@@ -190,5 +190,12 @@ public class User implements Serializable {
                 ", usermoney=" + usermoney +
                 '}';
     }
+
+    public String toHtmlString(){
+        return "usersex:" + usersex + "\n"
+                + "userhead" + userimg + "\n"
+                + "userbirth" + userbirth + "\n"
+                + "userstatement" + userstatement;
+    }
 }
 
