@@ -51,6 +51,9 @@ public class ArticleController {
     @Resource
     private CollectService collectService;
 
+    @Resource
+    private FolderService folderService;
+
     //主题四种排序方式
     static final int ORDER_DEFAULT= 0;
     static final int ORDER_HOT= 1;
@@ -363,6 +366,12 @@ public class ArticleController {
             model.addAttribute("collects",collects);
         }
 
+        //加载用户所有收藏夹备用
+        Folder folderSift = new Folder();
+        folderSift.setFolderuser(userid);
+        List<Folder> folders = this.folderService.queryByPage(folderSift);
+        model.addAttribute("folders",folders);
+
         //加载评论
         //程序页转为类页
         page = page -1;
@@ -547,4 +556,6 @@ public class ArticleController {
 
         return backResult.toString();
     }
+
+
 }

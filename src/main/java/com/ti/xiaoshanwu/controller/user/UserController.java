@@ -3,6 +3,7 @@ package com.ti.xiaoshanwu.controller.user;
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.Collect;
+import com.ti.xiaoshanwu.entity.Theme;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
 import com.ti.xiaoshanwu.entity.impl.CollectImpl;
@@ -436,5 +437,38 @@ public class UserController {
         }
 
         return backReg.toString();
+    }
+
+    /**
+     * 返回用户管理的主题页
+     *
+     * @param model   the model
+     * @param session the session
+     * @return the string
+     */
+    @RequestMapping("tousertheme")
+    public String toUserTheme(Model model,HttpSession session){
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        User targetUser = userService.queryById(targetUserid);
+
+        if(targetUserid==null){
+            model.addAttribute("errtitle","Uid is null");
+            model.addAttribute("errsubtitle","targetuid is null");
+            model.addAttribute("errtext","");
+
+            return "errorhandle";
+        }
+
+        model.addAttribute("user",targetUser);
+
+        Theme themeSift = new Theme();
+        themeSift.setThemeadminid(targetUserid);
+        List<Theme> themes = this.themeService.queryByNoPage(themeSift);
+
+        if(themes.isEmpty()){
+            return "user/utheme/uthemenull";
+        }else {
+            return "user/utheme/usertheme";
+        }
     }
 }

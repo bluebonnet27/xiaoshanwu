@@ -14,6 +14,8 @@ public class CollectImpl extends Collect {
 
     private String collectThemeImpl;
 
+    private String collectFolderNameImpl;
+
     public String getUserNameImpl() {
         return userNameImpl;
     }
@@ -44,6 +46,14 @@ public class CollectImpl extends Collect {
 
     public void setCollectThemeImpl(String collectThemeImpl) {
         this.collectThemeImpl = collectThemeImpl;
+    }
+
+    public String getCollectFolderNameImpl() {
+        return collectFolderNameImpl;
+    }
+
+    public void setCollectFolderNameImpl(String collectFolderNameImpl) {
+        this.collectFolderNameImpl = collectFolderNameImpl;
     }
 
     public CollectImpl() {

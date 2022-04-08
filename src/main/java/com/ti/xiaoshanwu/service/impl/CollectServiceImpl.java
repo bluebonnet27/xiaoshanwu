@@ -1,11 +1,8 @@
 package com.ti.xiaoshanwu.service.impl;
 
-import com.ti.xiaoshanwu.dao.ArticleDao;
-import com.ti.xiaoshanwu.dao.ThemeDao;
-import com.ti.xiaoshanwu.dao.UserDao;
+import com.ti.xiaoshanwu.dao.*;
 import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.Collect;
-import com.ti.xiaoshanwu.dao.CollectDao;
 import com.ti.xiaoshanwu.entity.Theme;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.impl.CollectImpl;
@@ -41,6 +38,9 @@ public class CollectServiceImpl implements CollectService {
 
     @Resource
     private ThemeDao themeDao;
+
+    @Resource
+    private FolderDao folderDao;
 
     /**
      * 通过ID查询单条数据
@@ -137,6 +137,9 @@ public class CollectServiceImpl implements CollectService {
         //收藏时间
         String collectTime = dateFormat.format(collect.getCollecttime());
         collectImpl.setCollectTimeImpl(collectTime);
+        //收藏夹名称
+        String collectFolderName = this.folderDao.queryById(collect.getCollecttype()).getFoldername();
+        collectImpl.setCollectFolderNameImpl(collectFolderName);
 
         return collectImpl;
     }

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.FolderDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Folder" id="FolderMap">
+        <result property="folderid" column="folderid" jdbcType="INTEGER"/>
+        <result property="foldername" column="foldername" jdbcType="VARCHAR"/>
+        <result property="foldertime" column="foldertime" jdbcType="TIMESTAMP"/>
+        <result property="folderuser" column="folderuser" jdbcType="INTEGER"/>
+        <result property="folderstatement" column="folderstatement" jdbcType="VARCHAR"/>
+        <result property="foldercount" column="foldercount" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="FolderMap">
+        select
+          folderid, foldername, foldertime, folderuser, folderstatement, foldercount
+        from folder
+        where folderid = #{folderid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="FolderMap">
+        select
+          folderid, foldername, foldertime, folderuser, folderstatement, foldercount
+        from folder
+        <where>
+            <if test="folderid != null">
+                and folderid = #{folderid}
+            </if>
+            <if test="foldername != null and foldername != ''">
+                and foldername = #{foldername}
+            </if>
+            <if test="foldertime != null">
+                and foldertime = #{foldertime}
+            </if>
+            <if test="folderuser != null">
+                and folderuser = #{folderuser}
+            </if>
+            <if test="folderstatement != null and folderstatement != ''">
+                and folderstatement = #{folderstatement}
+            </if>
+            <if test="foldercount != null">
+                and foldercount = #{foldercount}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--查询指定行数据，不分页-->
+    <select id="queryAllByLimitNoPage" resultMap="FolderMap">
+        select
+        folderid, foldername, foldertime, folderuser, folderstatement, foldercount
+        from folder
+        <where>
+            <if test="folderid != null">
+                and folderid = #{folderid}
+            </if>
+            <if test="foldername != null and foldername != ''">
+                and foldername = #{foldername}
+            </if>
+            <if test="foldertime != null">
+                and foldertime = #{foldertime}
+            </if>
+            <if test="folderuser != null">
+                and folderuser = #{folderuser}
+            </if>
+            <if test="folderstatement != null and folderstatement != ''">
+                and folderstatement = #{folderstatement}
+            </if>
+            <if test="foldercount != null">
+                and foldercount = #{foldercount}
+            </if>
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from folder
+        <where>
+            <if test="folderid != null">
+                and folderid = #{folderid}
+            </if>
+            <if test="foldername != null and foldername != ''">
+                and foldername = #{foldername}
+            </if>
+            <if test="foldertime != null">
+                and foldertime = #{foldertime}
+            </if>
+            <if test="folderuser != null">
+                and folderuser = #{folderuser}
+            </if>
+            <if test="folderstatement != null and folderstatement != ''">
+                and folderstatement = #{folderstatement}
+            </if>
+            <if test="foldercount != null">
+                and foldercount = #{foldercount}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="folderid" useGeneratedKeys="true">
+        insert into folder(foldername, foldertime, folderuser, folderstatement, foldercount)
+        values (#{foldername}, #{foldertime}, #{folderuser}, #{folderstatement}, #{foldercount})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="folderid" useGeneratedKeys="true">
+        insert into folder(foldername, foldertime, folderuser, folderstatement, foldercount)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.foldername}, #{entity.foldertime}, #{entity.folderuser}, #{entity.folderstatement}, #{entity.foldercount})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="folderid" useGeneratedKeys="true">
+        insert into folder(foldername, foldertime, folderuser, folderstatement, foldercount)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.foldername}, #{entity.foldertime}, #{entity.folderuser}, #{entity.folderstatement}, #{entity.foldercount})
+        </foreach>
+        on duplicate key update
+        foldername = values(foldername),
+        foldertime = values(foldertime),
+        folderuser = values(folderuser),
+        folderstatement = values(folderstatement),
+        foldercount = values(foldercount)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update folder
+        <set>
+            <if test="foldername != null and foldername != ''">
+                foldername = #{foldername},
+            </if>
+            <if test="foldertime != null">
+                foldertime = #{foldertime},
+            </if>
+            <if test="folderuser != null">
+                folderuser = #{folderuser},
+            </if>
+            <if test="folderstatement != null and folderstatement != ''">
+                folderstatement = #{folderstatement},
+            </if>
+            <if test="foldercount != null">
+                foldercount = #{foldercount},
+            </if>
+        </set>
+        where folderid = #{folderid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from folder where folderid = #{folderid}
+    </delete>
+
+</mapper>
+

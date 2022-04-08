@@ -135,6 +135,34 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="collectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="collectModalLabel">收藏帖子</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="col-form-label">选择一个收藏夹</label>
+<!--                        <input type="text" class="form-control" id="recipient-name">-->
+                        <div class="form-check" th:each="folder,iterStat:${folders}">
+                            <input class="form-check-input" type="radio" th:value="${folder.getFolderid()}" id="flexRadioDefault1" v-model="folderselect">
+                            <label class="form-check-label" for="flexRadioDefault1" th:text="${folder.getFoldername()}">
+
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">收藏</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-sm-8">
@@ -268,9 +296,11 @@
                 </div>
                 <div class="card-body" id="caozuo">
                     <button class="btn btn-danger" th:@click="|zan(${article.getArticleid()})|">
-                        <span class="bi-hand-thumbs-up"></span>点赞</button>
-                    <button class="btn btn-success">
-                        <span class="bi-star"></span>收藏</button>
+                        <span class="bi-hand-thumbs-up"></span>点赞
+                    </button>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#collectModal">
+                        <span class="bi-star"></span>收藏
+                    </button>
                 </div>
             </div>
 
