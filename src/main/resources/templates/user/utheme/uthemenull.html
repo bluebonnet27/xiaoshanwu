@@ -118,13 +118,13 @@
         <div class="col-3">
             <h3>我的</h3>
             <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action active"
+                <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='/user/tousercenter'">
                     <span class="bi-journal-check"></span> 我的数据</button>
                 <button type="button" class="list-group-item list-group-item-action"
                         onclick="window.location.href='/user/userallarticle'">
                     <span class="bi-card-text"></span> 我的帖子</button>
-                <button type="button" class="list-group-item list-group-item-action"
+                <button type="button" class="list-group-item list-group-item-action active"
                         onclick="window.location.href='/user/tousertheme'">
                     <span class="bi-back"></span> 我的主题</button>
                 <button type="button" class="list-group-item list-group-item-action"
@@ -145,17 +145,8 @@
             </div>
         </div>
         <div class="col-9">
-            <h1><span class="bi-journal-check"></span> 我的数据</h1>
-            <div class="row">
-                <div class="col-sm-4">
-                    <h5 th:text="'文章总数：' + ${articlenum}"></h5>
-                    <div id="articletopicchart" style="width: 600px;height:400px;"></div>
-                    <input type="hidden" th:value="${theme01}" id="theme01">
-                    <input type="hidden" th:value="${theme0}" id="theme0">
-                    <input type="hidden" th:value="${theme1}" id="theme1">
-                    <input type="hidden" th:value="${themeo}" id="themeo">
-                </div>
-            </div>
+            <h1><span class="bi-back"></span> 我的主题</h1>
+            <h1>你没有担任任何一个主题的管理员，请联系论坛管理员以担任某个主题的管理员</h1>
         </div>
     </div>
 
@@ -171,33 +162,3 @@
 </div>
 </body>
 </html>
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var articleThemeChart = echarts.init(document.getElementById('articletopicchart'));
-
-    var theme01=$("#theme01").val();
-    var theme0=$("#theme0").val();
-    var theme1=$("#theme1").val();
-    var themeo=$("#themeo").val();
-
-    // 指定图表的配置项和数据
-    var articleThemeoption = {
-        series : [
-            {
-                name: '访问来源',
-                type: 'pie',
-                radius: '55%',
-                roseType: 'angle',
-                data:[
-                    {value:theme01, name:'管理区'},
-                    {value:theme0, name:'编程'},
-                    {value:theme1, name:'求职招聘'},
-                    {value:themeo, name:'其他'},
-                ]
-            }
-        ]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    articleThemeChart.setOption(articleThemeoption);
-</script>
