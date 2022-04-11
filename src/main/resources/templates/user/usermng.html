@@ -153,6 +153,9 @@
                     <input type="hidden" th:value="${theme01}" id="theme01">
                     <input type="hidden" th:value="${theme0}" id="theme0">
                     <input type="hidden" th:value="${theme1}" id="theme1">
+                    <input type="hidden" th:value="${theme2}" id="theme2">
+                    <input type="hidden" th:value="${theme3}" id="theme3">
+                    <input type="hidden" th:value="${theme4}" id="theme4">
                     <input type="hidden" th:value="${themeo}" id="themeo">
                 </div>
             </div>
@@ -178,6 +181,9 @@
     var theme01=$("#theme01").val();
     var theme0=$("#theme0").val();
     var theme1=$("#theme1").val();
+    var theme2=$("#theme2").val();
+    var theme3=$("#theme3").val();
+    var theme4=$("#theme4").val();
     var themeo=$("#themeo").val();
 
     // 指定图表的配置项和数据
@@ -186,12 +192,13 @@
             {
                 name: '访问来源',
                 type: 'pie',
-                radius: '55%',
-                roseType: 'angle',
                 data:[
                     {value:theme01, name:'管理区'},
                     {value:theme0, name:'编程'},
                     {value:theme1, name:'求职招聘'},
+                    {value:theme2, name:'动漫'},
+                    {value:theme3, name:'游戏'},
+                    {value:theme4, name:'文学'},
                     {value:themeo, name:'其他'},
                 ]
             }

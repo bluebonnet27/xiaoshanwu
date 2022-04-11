@@ -149,6 +149,9 @@ public class UserController {
         int theme__1 = 0;
         int theme_0 = 0;
         int theme_1 = 0;
+        int theme_2 = 0;
+        int theme_3 = 0;
+        int theme_4 = 0;
         int theme_others = 0;
 
         for (Article article:articles){
@@ -163,6 +166,15 @@ public class UserController {
                 case 1:
                     theme_1 +=1;
                     break;
+                case 2:
+                    theme_2 +=1;
+                    break;
+                case 3:
+                    theme_3 +=1;
+                    break;
+                case 4:
+                    theme_4 +=1;
+                    break;
                 default:
                     theme_others += 1;
                     break;
@@ -172,7 +184,11 @@ public class UserController {
         model.addAttribute("theme01",theme__1);
         model.addAttribute("theme0",theme_0);
         model.addAttribute("theme1",theme_1);
+        model.addAttribute("theme2",theme_2);
+        model.addAttribute("theme3",theme_3);
+        model.addAttribute("theme4",theme_4);
         model.addAttribute("themeo",theme_others);
+
         model.addAttribute("articlenum",articles.size());
         model.addAttribute("user",targetUser);
         return "user/usermng";
