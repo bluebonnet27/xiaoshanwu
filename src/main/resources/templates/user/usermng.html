@@ -158,6 +158,14 @@
                     <input type="hidden" th:value="${theme4}" id="theme4">
                     <input type="hidden" th:value="${themeo}" id="themeo">
                 </div>
+
+                <div class="col-sm-4">
+                    <h5>论坛足迹</h5>
+                    <div id="allsendchart" style="width: 600px;height:400px;"></div>
+                    <input type="hidden" th:value="${articlec}" id="arc">
+                    <input type="hidden" th:value="${commentc}" id="cmc">
+                    <input type="hidden" th:value="${driftc}" id="dc">
+                </div>
             </div>
         </div>
     </div>
@@ -200,11 +208,36 @@
                     {value:theme3, name:'游戏'},
                     {value:theme4, name:'文学'},
                     {value:themeo, name:'其他'},
-                ]
+                ],
+                radius: ['40%', '70%']
             }
         ]
     };
 
     // 使用刚指定的配置项和数据显示图表。
     articleThemeChart.setOption(articleThemeoption);
+</script>
+<script type="text/javascript">
+    var allSendChart = echarts.init(document.getElementById('allsendchart'));
+
+    var arca=$("#arc").val();
+    var cmcc=$("#cmc").val();
+    var dcd=$("#dc").val();
+
+    var allSendOption = {
+        series: [
+            {
+                name: '论坛足迹',
+                type: 'pie',
+                data:[
+                    {value:arca, name:'帖子'},
+                    {value:cmcc, name:'评论'},
+                    {value:dcd, name:'漂流瓶'}
+                ],
+                radius: ['40%', '70%']
+            }
+        ]
+    };
+
+    allSendChart.setOption(allSendOption)
 </script>

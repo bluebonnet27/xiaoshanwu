@@ -39,6 +39,14 @@ public interface DriftbottleService {
     Page<Driftbottle> queryByPage(Driftbottle driftbottle, PageRequest pageRequest);
 
     /**
+     * 查询满足条件的漂流瓶总数.
+     *
+     * @param driftbottle the driftbottle
+     * @return the long
+     */
+    long countDriftbottle(Driftbottle driftbottle);
+
+    /**
      * Gets count.
      *
      * @param driftbottle the driftbottle

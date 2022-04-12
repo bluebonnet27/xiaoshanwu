@@ -80,6 +80,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
+     * 查询满足要求的帖子数量.
+     *
+     * @param comment the comment
+     * @return the long
+     */
+    @Override
+    public long countComment(Comment comment) {
+        return this.commentDao.count(comment);
+    }
+
+    /**
      * 新增数据
      *
      * @param comment 实例对象

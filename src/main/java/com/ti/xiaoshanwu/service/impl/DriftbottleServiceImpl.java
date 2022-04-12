@@ -68,6 +68,17 @@ public class DriftbottleServiceImpl implements DriftbottleService {
     }
 
     /**
+     * 查询满足条件的漂流瓶总数.
+     *
+     * @param driftbottle the driftbottle
+     * @return the long
+     */
+    @Override
+    public long countDriftbottle(Driftbottle driftbottle) {
+        return this.driftbottleDao.count(driftbottle);
+    }
+
+    /**
      * Gets count.
      *
      * @param driftbottle the driftbottle

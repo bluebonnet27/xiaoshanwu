@@ -1,18 +1,12 @@
 package com.ti.xiaoshanwu.controller.user;
 
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
-import com.ti.xiaoshanwu.entity.Article;
-import com.ti.xiaoshanwu.entity.Collect;
-import com.ti.xiaoshanwu.entity.Theme;
-import com.ti.xiaoshanwu.entity.User;
+import com.ti.xiaoshanwu.entity.*;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
 import com.ti.xiaoshanwu.entity.impl.CollectImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
-import com.ti.xiaoshanwu.service.ArticleService;
-import com.ti.xiaoshanwu.service.CollectService;
-import com.ti.xiaoshanwu.service.ThemeService;
-import com.ti.xiaoshanwu.service.UserService;
+import com.ti.xiaoshanwu.service.*;
 import com.ti.xiaoshanwu.service.impl.MailService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,6 +47,12 @@ public class UserController {
 
     @Resource
     private CollectService collectService;
+
+    @Resource
+    private CommentService commentService;
+
+    @Resource
+    private DriftbottleService driftbottleService;
 
     /**
      * 展示用户所有的帖子.
@@ -190,6 +190,23 @@ public class UserController {
         model.addAttribute("themeo",theme_others);
 
         model.addAttribute("articlenum",articles.size());
+
+        //论坛足迹
+        Integer articleCount = articles.size();
+
+        Comment comment = new Comment();
+        comment.setCommentuserid(targetUserid);
+        long commentCount = this.commentService.countComment(comment);
+
+        Driftbottle driftbottle = new Driftbottle();
+        driftbottle.setBottlesendid(targetUserid);
+        long driftbottleCount = this.driftbottleService.countDriftbottle(driftbottle);
+
+        model.addAttribute("articlec",articleCount);
+        model.addAttribute("commentc",commentCount);
+        model.addAttribute("driftc",driftbottleCount);
+
+
         model.addAttribute("user",targetUser);
         return "user/usermng";
     }

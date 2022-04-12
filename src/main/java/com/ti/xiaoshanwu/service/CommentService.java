@@ -42,6 +42,14 @@ public interface CommentService {
     Page<Comment> queryByPage(Comment comment,PageRequest pageRequest,Integer order);
 
     /**
+     * 查询满足要求的帖子数量.
+     *
+     * @param comment the comment
+     * @return the long
+     */
+    long countComment(Comment comment);
+
+    /**
      * 新增数据
      *
      * @param comment 实例对象
