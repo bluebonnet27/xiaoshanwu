@@ -54,6 +54,9 @@ public class ArticleController {
     @Resource
     private FolderService folderService;
 
+    @Resource
+    private BoardService boardService;
+
     //主题四种排序方式
     static final int ORDER_DEFAULT= 0;
     static final int ORDER_HOT= 1;
@@ -173,6 +176,12 @@ public class ArticleController {
             model.addAttribute("user",user);
             model.addAttribute("pages",articles);
             model.addAttribute("articlesimpl",articlesImpl);
+
+            //查询最新公告内容
+            Board siftBoard = new Board();
+            List<Board> boards = this.boardService.queryByNoPage(siftBoard);
+            model.addAttribute("board", this.boardService.convertToBoardImpl(boards.get(0)));
+
             return "mainpage/defaultandhot";
         }else {
             model.addAttribute("errtitle","用户信息失效");
@@ -218,6 +227,12 @@ public class ArticleController {
             model.addAttribute("user",user);
             model.addAttribute("pages",articles);
             model.addAttribute("articlesimpl",articlesImpl);
+
+            //查询最新公告内容
+            Board siftBoard = new Board();
+            List<Board> boards = this.boardService.queryByNoPage(siftBoard);
+            model.addAttribute("board", this.boardService.convertToBoardImpl(boards.get(0)));
+
             return "mainpage/defaultandzero";
         }else {
             model.addAttribute("errtitle","用户信息失效");
@@ -262,6 +277,12 @@ public class ArticleController {
             model.addAttribute("user",user);
             model.addAttribute("pages",articles);
             model.addAttribute("articlesimpl",articlesImpl);
+
+            //查询最新公告内容
+            Board siftBoard = new Board();
+            List<Board> boards = this.boardService.queryByNoPage(siftBoard);
+            model.addAttribute("board", this.boardService.convertToBoardImpl(boards.get(0)));
+
             return "mainpage/defaultandnew";
         }else {
             model.addAttribute("errtitle","用户信息失效");
@@ -315,6 +336,11 @@ public class ArticleController {
 
         //去掉管理区
         themes.remove(0);
+
+        //查询最新公告内容
+        Board siftBoard = new Board();
+        List<Board> boards = this.boardService.queryByNoPage(siftBoard);
+        model.addAttribute("board", this.boardService.convertToBoardImpl(boards.get(0)));
 
         themes.sort(Comparator.comparing(Theme::getThemecount));
         model.addAttribute("themes",themes);

@@ -87,6 +87,11 @@ public class IndexController {
             themes.sort(Comparator.comparing(Theme::getThemecount));
             model.addAttribute("themes",themes);
 
+            //查询最新公告内容
+            Board siftBoard = new Board();
+            List<Board> boards = this.boardService.queryByNoPage(siftBoard);
+            model.addAttribute("board", this.boardService.convertToBoardImpl(boards.get(0)));
+
             return "index";
         }else {
             model.addAttribute("msg","session空");

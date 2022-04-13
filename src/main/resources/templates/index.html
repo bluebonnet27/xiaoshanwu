@@ -64,7 +64,7 @@
 <body id="mainbody">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/ind/userindex">
             小山屋论坛</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -74,10 +74,6 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/bottle/tobottleindex"><span class="bi-balloon-heart"></span>
                         漂流瓶</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><span class="bi-chat-left-quote"></span>
-                        风纪委员会</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/article/toarticleup"><span class="bi-chat-left-quote"></span>
@@ -260,13 +256,13 @@
                     <div class="mdui-card-media-covered mdui-card-media-covered-gradient">
                         <!-- 卡片的标题和副标题 -->
                         <div class="mdui-card-primary">
-                            <div class="mdui-card-primary-title">封号公告</div>
-                            <div class="mdui-card-primary-subtitle">2022年3月25日</div>
+                            <div class="mdui-card-primary-title" th:text="${board.getBoardtitle()}">公告标题</div>
+                            <div class="mdui-card-primary-subtitle" th:text="${board.getBoardThemeNameImpl()}">分区</div>
                         </div>
                     </div>
                 </div>
                 <!-- 卡片的内容 -->
-                <div class="mdui-card-content">用户bluebonnet27（id=1）因恶意举报，账号已永封</div>
+                <div class="mdui-card-content" th:text="${board.getBoardDateStringImpl()}">发布日期</div>
             </div>
 
             <div class="mdui-card mdui-hoverable" id="maincard-right2">

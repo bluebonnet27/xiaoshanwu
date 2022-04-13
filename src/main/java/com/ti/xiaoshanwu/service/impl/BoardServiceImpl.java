@@ -114,8 +114,14 @@ public class BoardServiceImpl implements BoardService {
         copyProperties(board,newBoardImpl);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-        Theme themeForBoard = this.themeDao.queryById(board.getBoardtheme());
-        String themeName = themeForBoard.getThemename();
+
+        String themeName;
+        if(board.getBoardtheme()!=-1){
+            Theme themeForBoard = this.themeDao.queryById(board.getBoardtheme());
+            themeName = themeForBoard.getThemename();
+        }else {
+            themeName = "全局公告";
+        }
 
         newBoardImpl.setBoardDateStringImpl(dateFormat.format(board.getBoarddate()));
         newBoardImpl.setBoardThemeNameImpl(themeName);
