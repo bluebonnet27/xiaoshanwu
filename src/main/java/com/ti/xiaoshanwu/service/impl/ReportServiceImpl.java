@@ -46,6 +46,17 @@ public class ReportServiceImpl implements ReportService {
     }
 
     /**
+     * 查询满足给定条件的举报是否存在
+     *
+     * @param report the report
+     * @return the boolean
+     */
+    @Override
+    public Boolean isReportExist(Report report) {
+        return this.reportDao.count(report) != 0;
+    }
+
+    /**
      * 新增数据
      *
      * @param report 实例对象

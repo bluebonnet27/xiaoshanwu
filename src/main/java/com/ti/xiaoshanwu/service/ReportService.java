@@ -30,6 +30,14 @@ public interface ReportService {
     Page<Report> queryByPage(Report report, PageRequest pageRequest);
 
     /**
+     * 查询满足给定条件的举报是否存在
+     *
+     * @param report the report
+     * @return the boolean
+     */
+    Boolean isReportExist(Report report);
+
+    /**
      * 新增数据
      *
      * @param report 实例对象

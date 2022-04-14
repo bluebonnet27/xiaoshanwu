@@ -111,26 +111,38 @@
 <!-- Modal -->
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div id="reportCommentModalSpecial" class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">举报这条评论</h5>
+                <h5 class="modal-title" id="reportCommentLabel">举报评论</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <h5>填写举报事项</h5>
                 <form>
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">举报类别：</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <label for="reportCommentreason1" class="col-form-label">举报类别：</label>
+                        <select id="reportCommentreason1" class="form-select" aria-label="Default select example" v-model="rreason1">
+                            <option value="贴子内包含低俗不雅的色情图片、露骨文字描述等。">色情低俗</option>
+                            <option value="贴子内容是与吧主题不相符的广告，影响我的浏览。">垃圾广告</option>
+                            <option value="贴子内有恶意辱骂等人身攻击内容。">辱骂攻击</option>
+                            <option value="贴子内包含违反国家法律和贴吧协议的内容，例如非法枪支买卖、删贴服务、发贴机服务等。">涉嫌违法犯罪</option>
+                            <option value="贴子内包含与时政不符或敏感信息等内容。">时政信息不实</option>
+                            <option value="0">其他违规信息</option>
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="message-text" class="col-form-label">详细理由：</label>
-                        <textarea class="form-control" id="message-text"></textarea>
+                        <label for="reportCommentreason2" class="col-form-label">详细理由：</label>
+                        <textarea class="form-control" id="reportCommentreason2" v-model="rreason2"></textarea>
                     </div>
                 </form>
+                <br>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">提交举报</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary"  data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="谨慎举报！被证实为恶意或虚假举报者将被永久封号" th:@click="|reportComment(${article.getArticleid()})|" >
+                    提交举报
+                </button>
             </div>
         </div>
     </div>
@@ -171,9 +183,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <h5>填写举报事项</h5>
                 <form>
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">举报类别：</label>
+                        <label for="reportreason1" class="col-form-label">举报类别：</label>
                         <select id="reportreason1" class="form-select" aria-label="Default select example" v-model="rreason1">
                             <option value="贴子内包含低俗不雅的色情图片、露骨文字描述等。">色情低俗</option>
                             <option value="贴子内容是与吧主题不相符的广告，影响我的浏览。">垃圾广告</option>
@@ -184,14 +197,18 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="message-text" class="col-form-label">详细理由：</label>
+                        <label for="reportreason2" class="col-form-label">详细理由：</label>
                         <textarea class="form-control" id="reportreason2" v-model="rreason2"></textarea>
                     </div>
                 </form>
+                <br>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" th:@click="|reportArticle(${article.getArticleid()})|">提交举报</button>
+                <button type="button" class="btn btn-primary"  data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="谨慎举报！被证实为恶意或虚假举报者将被永久封号" th:@click="|reportArticle(${article.getArticleid()})|" >
+                    提交举报
+                </button>
             </div>
         </div>
     </div>
@@ -546,6 +563,55 @@
             }
         }
     })
+
+    new Vue({
+        el:"#reportCommentModalSpecial",
+        data:{
+            rreason1:"",
+            rreason2:"",
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            reportComment:function (arid){
+
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("reporttoid",arid);
+
+                if(this.rreason1 !== "0"){
+                    formDate.append("reportreason",this.rreason1);
+                }else {
+                    formDate.append("reportreason",this.rreason2);
+                }
+
+                // formDate.append("reportreason","理由：" + data.rreason1 + data.rreason2);
+
+                formDate.append("reporttype","0");
+
+                axios
+                    .post('http://localhost:8080/rep/addreport',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            location.reload()
+                        }else{
+                            alert(response.data.errMsg)
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+</script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
 </script>
 </body>
 </html>

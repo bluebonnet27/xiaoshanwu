@@ -56,9 +56,25 @@ public class ReportController {
         if(reportUser == null){
             reportBackResult.setResult(false);
             reportBackResult.setErrMsg("用户信息已失效，请重新登录");
+            return reportBackResult.toString();
         }else {
-            Report addReport = new Report(reporttype,reportTime,reportreason,userId,reporttoid,0);
-            Report backResultReport = this.reportService.insert(addReport);
+            Report insertReport = new Report();
+
+            insertReport.setReporttype(reporttype);
+            insertReport.setReportuserid(userId);
+            insertReport.setReporttoid(reporttoid);
+            insertReport.setReportstate(0);
+
+            if(this.reportService.isReportExist(insertReport)){
+                reportBackResult.setResult(false);
+                reportBackResult.setErrMsg("您有一条正在进行的举报等待管理员处理，请不要重复举报");
+                return reportBackResult.toString();
+            }
+
+            insertReport.setReporttime(reportTime);
+            insertReport.setReportreason(reportreason);
+
+            Report backResultReport = this.reportService.insert(insertReport);
 
             if(backResultReport == null){
                 reportBackResult.setResult(false);
@@ -67,8 +83,7 @@ public class ReportController {
                 reportBackResult.setResult(true);
                 reportBackResult.setResMsg("举报成功，以下是您的举报信息" + backResultReport.getReportreason());
             }
+            return reportBackResult.toString();
         }
-
-        return reportBackResult.toString();
     }
 }
