@@ -83,5 +83,26 @@ public class Report implements Serializable {
         this.reportstate = reportstate;
     }
 
+    public Report() {
+    }
+
+    public Report(Integer reportid, Integer reporttype, Date reporttime, String reportreason, Integer reportuserid, Integer reporttoid, Integer reportstate) {
+        this.reportid = reportid;
+        this.reporttype = reporttype;
+        this.reporttime = reporttime;
+        this.reportreason = reportreason;
+        this.reportuserid = reportuserid;
+        this.reporttoid = reporttoid;
+        this.reportstate = reportstate;
+    }
+
+    public Report(Integer reporttype, Date reporttime, String reportreason, Integer reportuserid, Integer reporttoid, Integer reportstate) {
+        this.reporttype = reporttype;
+        this.reporttime = reporttime;
+        this.reportreason = reportreason;
+        this.reportuserid = reportuserid;
+        this.reporttoid = reporttoid;
+        this.reportstate = reportstate;
+    }
 }
 

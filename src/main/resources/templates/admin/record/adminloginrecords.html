@@ -158,7 +158,9 @@
                     <td th:text="${loginrecord.getLoginidNameImpl()}"></td>
                     <td th:text="${loginrecord.getLogintimeImpl()}"></td>
                     <td>
-                        <button class="btn btn-danger disabled">
+                        <button class="btn btn-danger"
+                                data-bs-toggle="popover" title="禁止的操作"
+                                data-bs-content="您无权删除记录">
                             <span class="bi-gear"></span> 删除
                         </button>
                     </td>
@@ -193,3 +195,9 @@
 </footer>
 </body>
 </html>
+<script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+</script>
