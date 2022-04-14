@@ -289,7 +289,7 @@
                         <img th:src="@{${comment.getCommentUserHeadImpl()}}" class="img-fluid img-thumbnail">
                     </div>
                     <div class="col-md-10">
-                        <div class="card-body">
+                        <div class="card-body" id="commentmain">
                             <h5 class="card-title" th:text="${comment.getCommentUserNameImpl()}+'    #'+${iterStat.count}">Card title</h5>
                             <p class="card-text" th:text="${comment.getCommentcontent()}">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                             <p class="card-text">
@@ -297,9 +297,9 @@
                                     Last updated 3 mins ago
                                 </small>
                             </p>
-                            <a href="#" class="btn btn-outline-info">
-                                <span class="bi-hand-thumbs-up"></span>点赞
-                            </a>
+                            <button th:@click="|zanComment(${comment.getCommentid()})|" class="btn btn-outline-info" th:text="'点赞 ' + ${comment.getCommentthumb()}">
+                                点赞 23
+                            </button>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal">
                                 举报
@@ -476,6 +476,36 @@
 
                 axios
                     .post('http://localhost:8080/article/thumb',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            location.reload()
+                        }else{
+                            alert(response.data.errMsg)
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+
+    new Vue({
+        el:"#commentmain",
+        data:{
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            zanComment:function (cid){
+
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("commentid",cid);
+
+                axios
+                    .post('http://localhost:8080/comment/thumb',formDate)
                     .then(response =>{
                         if(response.data.result){
                             alert(response.data.resMsg)

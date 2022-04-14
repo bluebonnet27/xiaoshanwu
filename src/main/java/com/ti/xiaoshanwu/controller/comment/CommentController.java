@@ -1,10 +1,13 @@
 package com.ti.xiaoshanwu.controller.comment;
 
+import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.Comment;
 import com.ti.xiaoshanwu.entity.Report;
+import com.ti.xiaoshanwu.entity.Thumbrecord;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.CommentService;
 import com.ti.xiaoshanwu.service.ReportService;
+import com.ti.xiaoshanwu.service.ThumbrecordService;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,9 @@ public class CommentController {
 
     @Resource
     private ReportService reportService;
+
+    @Resource
+    private ThumbrecordService thumbrecordService;
 
     @RequestMapping("addcomment")
     @ResponseBody
@@ -88,5 +94,60 @@ public class CommentController {
             reportBackResult.setErrMsg("举报提交成功！");
         }
         return reportBackResult.toString();
+    }
+
+    @RequestMapping("thumb")
+    @ResponseBody
+    public String thumbUpComment(HttpSession session,
+                                 Integer commentid){
+        Integer userid = (Integer) session.getAttribute("uid");
+        JsonResult<?> backResult = new JsonResult<>();
+        Thumbrecord thumbrecord = new Thumbrecord();
+        //用户点赞
+        thumbrecord.setThumbbytype(0);
+        //用户id
+        thumbrecord.setThumbby(userid);
+        //点赞评论
+        thumbrecord.setThumbtotype(1);
+        //点赞id
+        thumbrecord.setThumbto(commentid);
+
+        Date currentTime = new Date();
+
+        if(userid==null){
+            backResult.setResult(false);
+            backResult.setErrMsg("登录信息失效，请重新登录");
+        }else if(this.thumbrecordService.isThumbRecordExist(thumbrecord)) {
+            backResult.setResult(false);
+            backResult.setErrMsg("您已经点过赞了！");
+        }else {
+            Comment newComment = new Comment();
+            Comment oldComment = this.commentService.queryById(commentid);
+            newComment.setCommentid(commentid);
+
+            //添加点赞数据
+            newComment.setCommentthumb(oldComment.getCommentthumb() + 1);
+
+            Comment backResultComment = this.commentService.update(newComment);
+
+            Thumbrecord thumbrecordNew = new Thumbrecord();
+            //用户点赞
+            thumbrecordNew.setThumbbytype(0);
+            //用户id
+            thumbrecordNew.setThumbby(userid);
+            //点赞评论
+            thumbrecordNew.setThumbtotype(1);
+            //点赞id
+            thumbrecordNew.setThumbto(commentid);
+            //time
+            thumbrecordNew.setThumbtime(currentTime);
+
+            this.thumbrecordService.insert(thumbrecordNew);
+
+            backResult.setResult(true);
+            backResult.setResMsg("点赞成功，您的点赞已被记录，id为 ");
+        }
+
+        return backResult.toString();
     }
 }
