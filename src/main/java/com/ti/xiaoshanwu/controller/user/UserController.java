@@ -522,4 +522,12 @@ public class UserController {
             return "user/utheme/usertheme";
         }
     }
+
+    @RequestMapping("allreports")
+    public String getAllReports(Model model,HttpSession session,
+                                @RequestParam(defaultValue = "-1") Integer reportstate,
+                                @RequestParam(defaultValue = "1") Integer page,
+                                @RequestParam(defaultValue = "8") Integer limit){
+       return "user/userreports";
+    }
 }
