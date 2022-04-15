@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ti.xiaoshanwu.dao.NoticeDao">
+
+    <resultMap type="com.ti.xiaoshanwu.entity.Notice" id="NoticeMap">
+        <result property="noticeid" column="noticeid" jdbcType="INTEGER"/>
+        <result property="noticetime" column="noticetime" jdbcType="TIMESTAMP"/>
+        <result property="noticefromtype" column="noticefromtype" jdbcType="INTEGER"/>
+        <result property="noticefromid" column="noticefromid" jdbcType="INTEGER"/>
+        <result property="noticetotype" column="noticetotype" jdbcType="INTEGER"/>
+        <result property="noticetoid" column="noticetoid" jdbcType="INTEGER"/>
+        <result property="noticetype" column="noticetype" jdbcType="INTEGER"/>
+        <result property="noticetitle" column="noticetitle" jdbcType="VARCHAR"/>
+        <result property="noticecontent" column="noticecontent" jdbcType="VARCHAR"/>
+        <result property="noticestate" column="noticestate" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NoticeMap">
+        select
+          noticeid, noticetime, noticefromtype, noticefromid, noticetotype, noticetoid, noticetype, noticetitle, noticecontent, noticestate
+        from notice
+        where noticeid = #{noticeid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NoticeMap">
+        select
+          noticeid, noticetime, noticefromtype, noticefromid, noticetotype, noticetoid, noticetype, noticetitle, noticecontent, noticestate
+        from notice
+        <where>
+            <if test="no.noticeid != null">
+                and noticeid = #{no.noticeid}
+            </if>
+            <if test="no.noticetime != null">
+                and noticetime = #{no.noticetime}
+            </if>
+            <if test="no.noticefromtype != null">
+                and noticefromtype = #{no.noticefromtype}
+            </if>
+            <if test="no.noticefromid != null">
+                and noticefromid = #{no.noticefromid}
+            </if>
+            <if test="no.noticetotype != null">
+                and noticetotype = #{no.noticetotype}
+            </if>
+            <if test="no.noticetoid != null">
+                and noticetoid = #{no.noticetoid}
+            </if>
+            <if test="no.noticetype != null">
+                and noticetype = #{no.noticetype}
+            </if>
+            <if test="no.noticetitle != null and no.noticetitle != ''">
+                and noticetitle = #{no.noticetitle}
+            </if>
+            <if test="no.noticecontent != null and no.noticecontent != ''">
+                and noticecontent = #{no.noticecontent}
+            </if>
+            <if test="no.noticestate != null">
+                and noticestate = #{no.noticestate}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from notice
+        <where>
+            <if test="noticeid != null">
+                and noticeid = #{noticeid}
+            </if>
+            <if test="noticetime != null">
+                and noticetime = #{noticetime}
+            </if>
+            <if test="noticefromtype != null">
+                and noticefromtype = #{noticefromtype}
+            </if>
+            <if test="noticefromid != null">
+                and noticefromid = #{noticefromid}
+            </if>
+            <if test="noticetotype != null">
+                and noticetotype = #{noticetotype}
+            </if>
+            <if test="noticetoid != null">
+                and noticetoid = #{noticetoid}
+            </if>
+            <if test="noticetype != null">
+                and noticetype = #{noticetype}
+            </if>
+            <if test="noticetitle != null and noticetitle != ''">
+                and noticetitle = #{noticetitle}
+            </if>
+            <if test="noticecontent != null and noticecontent != ''">
+                and noticecontent = #{noticecontent}
+            </if>
+            <if test="noticestate != null">
+                and noticestate = #{noticestate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="noticeid" useGeneratedKeys="true">
+        insert into notice(noticetime, noticefromtype, noticefromid, noticetotype, noticetoid, noticetype, noticetitle, noticecontent, noticestate)
+        values (#{noticetime}, #{noticefromtype}, #{noticefromid}, #{noticetotype}, #{noticetoid}, #{noticetype}, #{noticetitle}, #{noticecontent}, #{noticestate})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="noticeid" useGeneratedKeys="true">
+        insert into notice(noticetime, noticefromtype, noticefromid, noticetotype, noticetoid, noticetype, noticetitle, noticecontent, noticestate)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.noticetime}, #{entity.noticefromtype}, #{entity.noticefromid}, #{entity.noticetotype}, #{entity.noticetoid}, #{entity.noticetype}, #{entity.noticetitle}, #{entity.noticecontent}, #{entity.noticestate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="noticeid" useGeneratedKeys="true">
+        insert into notice(noticetime, noticefromtype, noticefromid, noticetotype, noticetoid, noticetype, noticetitle, noticecontent, noticestate)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.noticetime}, #{entity.noticefromtype}, #{entity.noticefromid}, #{entity.noticetotype}, #{entity.noticetoid}, #{entity.noticetype}, #{entity.noticetitle}, #{entity.noticecontent}, #{entity.noticestate})
+        </foreach>
+        on duplicate key update
+        noticetime = values(noticetime),
+        noticefromtype = values(noticefromtype),
+        noticefromid = values(noticefromid),
+        noticetotype = values(noticetotype),
+        noticetoid = values(noticetoid),
+        noticetype = values(noticetype),
+        noticetitle = values(noticetitle),
+        noticecontent = values(noticecontent),
+        noticestate = values(noticestate)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update notice
+        <set>
+            <if test="noticetime != null">
+                noticetime = #{noticetime},
+            </if>
+            <if test="noticefromtype != null">
+                noticefromtype = #{noticefromtype},
+            </if>
+            <if test="noticefromid != null">
+                noticefromid = #{noticefromid},
+            </if>
+            <if test="noticetotype != null">
+                noticetotype = #{noticetotype},
+            </if>
+            <if test="noticetoid != null">
+                noticetoid = #{noticetoid},
+            </if>
+            <if test="noticetype != null">
+                noticetype = #{noticetype},
+            </if>
+            <if test="noticetitle != null and noticetitle != ''">
+                noticetitle = #{noticetitle},
+            </if>
+            <if test="noticecontent != null and noticecontent != ''">
+                noticecontent = #{noticecontent},
+            </if>
+            <if test="noticestate != null">
+                noticestate = #{noticestate},
+            </if>
+        </set>
+        where noticeid = #{noticeid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from notice where noticeid = #{noticeid}
+    </delete>
+
+</mapper>
+

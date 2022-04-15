@@ -39,7 +39,7 @@ public class CommentController {
                                  Integer commentar,
                                  String content){
         Integer userid = (Integer) session.getAttribute("uid");
-        JsonResult commentBackResult = new JsonResult();
+        JsonResult<?> commentBackResult = new JsonResult<>();
 
         if(userid==null){
             commentBackResult.setResult(false);
