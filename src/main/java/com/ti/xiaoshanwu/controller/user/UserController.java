@@ -4,6 +4,7 @@ import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.*;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
 import com.ti.xiaoshanwu.entity.impl.CollectImpl;
+import com.ti.xiaoshanwu.entity.impl.ReportImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.*;
@@ -11,6 +12,7 @@ import com.ti.xiaoshanwu.service.impl.MailService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +55,9 @@ public class UserController {
 
     @Resource
     private DriftbottleService driftbottleService;
+
+    @Resource
+    private ReportService reportService;
 
     /**
      * 展示用户所有的帖子.
@@ -524,10 +529,71 @@ public class UserController {
     }
 
     @RequestMapping("allreports")
-    public String getAllReports(Model model,HttpSession session,
+    public String getAllReports(Model model,
+                                HttpSession session,
                                 @RequestParam(defaultValue = "-1") Integer reportstate,
+                                @RequestParam(defaultValue = "-1") Integer reporttype,
                                 @RequestParam(defaultValue = "1") Integer page,
                                 @RequestParam(defaultValue = "8") Integer limit){
-       return "user/userreports";
+        Integer targetUserid = (Integer) session.getAttribute("uid");
+        if(targetUserid==null){
+            model.addAttribute("errtitle","登录信息失效");
+            model.addAttribute("errsubtitle","uid是空的");
+            model.addAttribute("errtext","com/ti/xiaoshanwu/controller/user/UserController.java");
+
+            return "errorhandle";
+        }
+        User targetUser = userService.queryById(targetUserid);
+        UserImpl targetUserImpl = userService.convertUserToUserImpl(targetUser);
+
+        HeadImgConverter headImgConverter = new HeadImgConverter();
+        String userHeadImgUrl = headImgConverter.imgConvert(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        String userHeadImgBgUrl = headImgConverter.imgConvertBg(targetUser.getUserimg()==null?0:targetUser.getUserimg());
+        model.addAttribute("headimg",userHeadImgUrl);
+        model.addAttribute("headimgbg",userHeadImgBgUrl);
+
+        model.addAttribute("user",targetUserImpl);
+
+        //加载举报
+        //帖子
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        Report reportSiftCondition = new Report();
+        reportSiftCondition.setReportuserid(targetUserid);
+
+        if(reportstate!=-1){
+            reportSiftCondition.setReportstate(reportstate);
+        }
+
+        if(reporttype!=-1){
+            reportSiftCondition.setReporttype(reporttype);
+        }
+
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("reportid"));
+
+
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<Report> reportPages = this.reportService.queryByPage(reportSiftCondition,pageRequest);
+
+        //前端数据二次处理
+        List<Report> reportsNew = reportPages.getContent();
+        ArrayList<ReportImpl> reportsImpl = new ArrayList<>();
+
+
+        for(Report report:reportsNew){
+            ReportImpl reportImpl = this.reportService.convertToImpl(report);
+            reportsImpl.add(reportImpl);
+        }
+
+        model.addAttribute("pages",reportPages);
+        model.addAttribute("reportsimpl",reportsImpl);
+        model.addAttribute("reportstate",reportstate);
+        model.addAttribute("reporttype",reporttype);
+
+        return "user/userreports";
     }
 }

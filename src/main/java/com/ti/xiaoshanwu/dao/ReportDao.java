@@ -30,7 +30,7 @@ public interface ReportDao {
      * @param pageable         分页对象
      * @return 对象列表
      */
-    List<Report> queryAllByLimit(Report report, @Param("pageable") Pageable pageable);
+    List<Report> queryAllByLimit(@Param("re") Report report, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数

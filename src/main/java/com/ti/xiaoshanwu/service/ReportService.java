@@ -1,6 +1,7 @@
 package com.ti.xiaoshanwu.service;
 
 import com.ti.xiaoshanwu.entity.Report;
+import com.ti.xiaoshanwu.entity.impl.ReportImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -60,5 +61,13 @@ public interface ReportService {
      * @return 是否成功
      */
     boolean deleteById(Integer reportid);
+
+    /**
+     * 转换为implement扩展类.
+     *
+     * @param report the report
+     * @return the report
+     */
+    ReportImpl convertToImpl(Report report);
 
 }

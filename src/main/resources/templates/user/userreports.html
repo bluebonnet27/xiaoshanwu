@@ -147,13 +147,82 @@
             <div class="list-group">
                 <button type="button" class="list-group-item list-group-item-action">
                     <span class="bi-bell"></span> 我的通知</button>
-                <button type="button" class="list-group-item list-group-item-action active">
+                <button type="button" class="list-group-item list-group-item-action active"
+                        onclick="window.location.href='/user/allreports'">
                     <span class="bi-exclamation-circle"></span> 我的举报</button>
                 <button type="button" class="list-group-item list-group-item-action">
                     <span class="bi-question-lg"></span> 我的反馈</button>
             </div>
         </div>
+        <div class="col-9">
+            <h1><span class="bi-exclamation-circle"></span> 我的举报</h1>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a th:class="${reportstate == -1}?'nav-link active':'nav-link'"
+                       th:href="@{allreports(reportstate = -1)}">
+                        全部举报
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${reportstate == 0}?'nav-link active':'nav-link'"
+                       th:href="@{allreports(reportstate = 0)}">
+                        待处理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${reportstate == 1}?'nav-link active':'nav-link'"
+                       th:href="@{allreports(reportstate = 1)}">
+                        已处理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${reportstate == 2}?'nav-link active':'nav-link'"
+                       th:href="@{allreports(reportstate = 2)}">
+                        已驳回
+                    </a>
+                </li>
+            </ul>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>举报id</th>
+                    <th>举报类型</th>
+                    <th>举报理由</th>
+                    <th>举报时间</th>
+                    <th>举报者</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="report,iterStat : ${reportsimpl}">
+                    <td th:text="${report.getReportid()}"></td>
+                    <td th:text="${report.getReporttypeImpl()}"></td>
+                    <td th:text="${report.getReportreason()}"></td>
+                    <td th:text="${report.getReporttimeImpl()}"></td>
+                    <td th:text="${report.getReportuseridNameImpl()}"></td>
+                    <td>
+                        <button class="btn btn-info disabled">
+                            <span class="bi-gear">操作</span>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="alert alert-info" role="alert" th:text="${'当前共有'+pages.getTotalElements()+'个举报'}">
+            </div>
 
+            <nav>
+                <ul class="pagination">
+                    <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
+                        th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
+                        <a class="page-link"
+                           th:href="@{allreports(page=${i},limit=${pages.getSize()},reporttype=${reporttype},reportstate=${reportstate})}"
+                           th:text="${i}">
+                            Previous</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
     <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">

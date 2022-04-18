@@ -26,26 +26,26 @@
           reportid, reporttype, reporttime, reportreason, reportuserid, reporttoid, reportstate
         from report
         <where>
-            <if test="reportid != null">
-                and reportid = #{reportid}
+            <if test="re.reportid != null">
+                and reportid = #{re.reportid}
             </if>
-            <if test="reporttype != null">
-                and reporttype = #{reporttype}
+            <if test="re.reporttype != null">
+                and reporttype = #{re.reporttype}
             </if>
-            <if test="reporttime != null">
-                and reporttime = #{reporttime}
+            <if test="re.reporttime != null">
+                and reporttime = #{re.reporttime}
             </if>
-            <if test="reportreason != null and reportreason != ''">
-                and reportreason = #{reportreason}
+            <if test="re.reportreason != null and re.reportreason != ''">
+                and reportreason = #{re.reportreason}
             </if>
-            <if test="reportuserid != null">
-                and reportuserid = #{reportuserid}
+            <if test="re.reportuserid != null">
+                and reportuserid = #{re.reportuserid}
             </if>
-            <if test="reporttoid != null">
-                and reporttoid = #{reporttoid}
+            <if test="re.reporttoid != null">
+                and reporttoid = #{re.reporttoid}
             </if>
-            <if test="reportstate != null">
-                and reportstate = #{reportstate}
+            <if test="re.reportstate != null">
+                and reportstate = #{re.reportstate}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}
