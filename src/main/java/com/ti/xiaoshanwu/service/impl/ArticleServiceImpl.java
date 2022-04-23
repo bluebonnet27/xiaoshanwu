@@ -165,4 +165,15 @@ public class ArticleServiceImpl implements ArticleService {
         articleImpl.setArticleChangeTimeImpl(changeDate);
         return articleImpl;
     }
+
+    /**
+     * 批量插入或更新帖子.
+     *
+     * @param articles the articles
+     * @return the integer
+     */
+    @Override
+    public Integer insertOrUpdateArticleBatch(List<Article> articles) {
+        return this.articleDao.insertOrUpdateBatch(articles);
+    }
 }

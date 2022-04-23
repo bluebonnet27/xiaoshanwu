@@ -1,6 +1,8 @@
 package com.ti.xiaoshanwu.controller;
 
+import com.sun.prism.PixelFormat;
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
+import com.ti.xiaoshanwu.controller.tool.HotTool;
 import com.ti.xiaoshanwu.entity.*;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
 import com.ti.xiaoshanwu.service.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.DatatypeConfigurationException;
 import java.util.*;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -67,9 +70,12 @@ public class IndexController {
             //前端数据二次处理
             List<Article> articlesNew = articles.getContent();
             ArrayList<ArticleImpl> articlesImpl = new ArrayList<>();
+            HotTool hotTool = new HotTool();
 
             for(Article article:articlesNew){
                 ArticleImpl articleImpl2 = this.articleService.convertToArticleImpl(article);
+
+                System.out.println(article.getArticletitle() + "--hot--"+ Math.round(hotTool.calculateArticleHot(article)*100000));
                 articlesImpl.add(articleImpl2);
             }
 

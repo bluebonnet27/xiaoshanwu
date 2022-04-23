@@ -1,6 +1,7 @@
 package com.ti.xiaoshanwu.controller.admin;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.ti.xiaoshanwu.controller.tool.HotTool;
 import com.ti.xiaoshanwu.entity.*;
 import com.ti.xiaoshanwu.entity.impl.BoardImpl;
 import com.ti.xiaoshanwu.entity.impl.LoginrecordImpl;
@@ -45,6 +46,9 @@ public class AdminController {
 
     @Resource
     private LoginrecordService loginrecordService;
+
+    @Resource
+    private ArticleService articleService;
 
     @RequestMapping("tochangepwd")
     public String toChangePwd(HttpSession session,
@@ -418,5 +422,38 @@ public class AdminController {
         model.addAttribute("loginrecordimpls",loginrecordImpls);
 
         return "admin/record/adminloginrecords";
+    }
+
+    @RequestMapping("articlesmng")
+    public String toArticlesMng(Model model,HttpSession session){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+        return "admin/article/adminarticlesmng";
+    }
+
+    @RequestMapping("refreshhot")
+    public String refreshAllHot(Model model,HttpSession session){
+        Article siftCondition = new Article();
+        List<Article> articles = this.articleService.queryArticles(siftCondition);
+        Integer count = 0;
+
+        HotTool hotTool = new HotTool();
+        for (Article article:articles){
+            Integer articleHot = (int) Math.round(hotTool.calculateArticleHot(article) * 100000);
+            article.setArticlehot(articleHot);
+            Article articleBack = this.articleService.update(article);
+            count++;
+        }
+
+        model.addAttribute("errortitle","刷新热度成功！");
+        model.addAttribute("errsubtitle","共刷新"+count+"行帖子");
+        model.addAttribute("errtext","com.ti.xiaoshanwu.controller.admin.AdminController.refreshAllHot");
+
+        return "errorhandle";
     }
 }

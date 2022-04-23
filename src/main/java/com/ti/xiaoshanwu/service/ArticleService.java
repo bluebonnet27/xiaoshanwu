@@ -82,4 +82,12 @@ public interface ArticleService {
      */
     ArticleImpl convertToArticleImpl(Article article);
 
+    /**
+     * 批量插入或更新帖子.
+     *
+     * @param articles the articles
+     * @return the integer
+     */
+    Integer insertOrUpdateArticleBatch(List<Article> articles);
+
 }
