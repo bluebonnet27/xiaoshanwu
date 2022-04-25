@@ -1,21 +1,47 @@
 package com.ti.xiaoshanwu.controller.tool;
 
 import com.ti.xiaoshanwu.entity.Article;
+import com.ti.xiaoshanwu.entity.Comment;
+import com.ti.xiaoshanwu.service.CommentService;
+import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 import java.lang.Math;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 用于计算热度的类.
  *
  * @author TiHongsheng
  */
+@Component
 public class HotTool {
+
+    @Resource
+    private CommentService commentService;
 
     double gama = 0.1;
 
     public double calculateArticleHot(Article article){
         //获取时间维度相关内容
-        long deltaTime = (article.getArticlechangetime().getTime() -
-                article.getArticlepublishtime().getTime())/1000;
+        Comment siftCondition = new Comment();
+        siftCondition.setCommentarticleid(article.getArticleid());
+
+        System.out.println("siftCondition");
+        System.out.println(siftCondition);
+
+        Comment comment = this.commentService.getNewestComment(siftCondition);
+
+        long deltaTime;
+        if(comment!=null){
+            deltaTime = (article.getArticlechangetime().getTime() -
+                    article.getArticlepublishtime().getTime())/1000;
+        }else {
+            deltaTime = 0;
+        }
 
         //获取互动量维度相关内容
         Integer replyNum = article.getArticlereplycount();

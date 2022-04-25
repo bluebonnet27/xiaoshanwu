@@ -9,6 +9,7 @@ import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -49,6 +50,9 @@ public class AdminController {
 
     @Resource
     private ArticleService articleService;
+
+    @Autowired
+    private HotTool hotTool;
 
     @RequestMapping("tochangepwd")
     public String toChangePwd(HttpSession session,
@@ -442,9 +446,8 @@ public class AdminController {
         List<Article> articles = this.articleService.queryArticles(siftCondition);
         Integer count = 0;
 
-        HotTool hotTool = new HotTool();
         for (Article article:articles){
-            Integer articleHot = (int) Math.round(hotTool.calculateArticleHot(article) * 100000);
+            Integer articleHot = (int) Math.round(this.hotTool.calculateArticleHot(article) * 100000);
             article.setArticlehot(articleHot);
             Article articleBack = this.articleService.update(article);
             count++;

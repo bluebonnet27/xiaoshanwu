@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -76,6 +77,25 @@ public class CommentServiceImpl implements CommentService {
             case 0:
             default:
                 return new PageImpl<>(this.commentDao.queryAllByLimit(comment, pageRequest), pageRequest, total);
+        }
+    }
+
+    /**
+     * 获取最新一条评论.
+     *
+     * @param comment the comment
+     * @return the newest comment
+     */
+    @Override
+    public Comment getNewestComment(Comment comment) {
+        System.out.println("DAO!!!!!!!!!!");
+        List<Comment> comments = this.commentDao.queryAllByLimitNewNoPage(comment);
+        if(comments.isEmpty()) {
+            System.out.println("EMPTY!!!!!!!!");
+            return null;
+        } else {
+            System.out.println("FULL!!!!!!!!!");
+            return comments.get(0);
         }
     }
 

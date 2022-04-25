@@ -42,6 +42,14 @@ public interface CommentDao {
     List<Comment> queryAllByLimitNew(@Param("co") Comment comment, @Param("pageable") Pageable pageable);
 
     /**
+     * Query all by limit new no page list.
+     *
+     * @param comment the comment
+     * @return the list
+     */
+    List<Comment> queryAllByLimitNewNoPage(@Param("co") Comment comment);
+
+    /**
      * 查询指定行数据，按热度倒序
      *
      * @param comment 查询条件

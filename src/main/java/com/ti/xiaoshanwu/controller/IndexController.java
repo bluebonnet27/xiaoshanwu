@@ -74,8 +74,6 @@ public class IndexController {
 
             for(Article article:articlesNew){
                 ArticleImpl articleImpl2 = this.articleService.convertToArticleImpl(article);
-
-                System.out.println(article.getArticletitle() + "--hot--"+ Math.round(hotTool.calculateArticleHot(article)*100000));
                 articlesImpl.add(articleImpl2);
             }
 

@@ -42,6 +42,14 @@ public interface CommentService {
     Page<Comment> queryByPage(Comment comment,PageRequest pageRequest,Integer order);
 
     /**
+     * 获取最新一条评论.
+     *
+     * @param comment the comment
+     * @return the newest comment
+     */
+    Comment getNewestComment(Comment comment);
+
+    /**
      * 查询满足要求的帖子数量.
      *
      * @param comment the comment

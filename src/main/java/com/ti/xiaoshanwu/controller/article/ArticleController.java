@@ -155,7 +155,6 @@ public class ArticleController {
             page = page -1;
             //筛选条件
             Article siftCondition = new Article();
-            siftCondition.setArticlereplycount(0);
             //排序依据
             Sort sort = Sort.by(Sort.Order.desc("articlehot"));
             //分页请求

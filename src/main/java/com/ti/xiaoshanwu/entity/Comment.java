@@ -93,5 +93,18 @@ public class Comment implements Serializable {
         this.commenttype = commenttype;
     }
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "commentid=" + commentid +
+                ", commentarticleid=" + commentarticleid +
+                ", commentuserid=" + commentuserid +
+                ", commentcontent='" + commentcontent + '\'' +
+                ", commenttime=" + commenttime +
+                ", commentthumb=" + commentthumb +
+                ", commenthot=" + commenthot +
+                ", commenttype=" + commenttype +
+                '}';
+    }
 }
 
