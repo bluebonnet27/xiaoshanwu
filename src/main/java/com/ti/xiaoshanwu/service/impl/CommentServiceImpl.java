@@ -81,6 +81,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
+     * 不分页查询.
+     *
+     * @param comment the comment
+     * @return the list
+     */
+    @Override
+    public List<Comment> queryByPage(Comment comment) {
+        return this.commentDao.queryAllByLimitNewNoPage(comment);
+    }
+
+    /**
      * 获取最新一条评论.
      *
      * @param comment the comment

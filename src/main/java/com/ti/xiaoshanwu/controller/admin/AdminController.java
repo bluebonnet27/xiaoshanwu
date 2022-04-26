@@ -54,6 +54,9 @@ public class AdminController {
     @Autowired
     private HotTool hotTool;
 
+    @Resource
+    private CommentService commentService;
+
     @RequestMapping("tochangepwd")
     public String toChangePwd(HttpSession session,
                               Model model){
@@ -453,8 +456,18 @@ public class AdminController {
             count++;
         }
 
+        Comment commentSiftCondition = new Comment();
+        List<Comment> comments = this.commentService.queryByPage(commentSiftCondition);
+        Integer commentCount = 0;
+        for (Comment comment:comments){
+            Integer commentHot = (int) Math.round(this.hotTool.calculateCommentHot(comment) * 100000);
+            comment.setCommenthot(commentHot);
+            Comment commentBack = this.commentService.update(comment);
+            commentCount++;
+        }
+
         model.addAttribute("errortitle","刷新热度成功！");
-        model.addAttribute("errsubtitle","共刷新"+count+"行帖子");
+        model.addAttribute("errsubtitle","共刷新"+count+"行帖子,"+commentCount+"行评论");
         model.addAttribute("errtext","com.ti.xiaoshanwu.controller.admin.AdminController.refreshAllHot");
 
         return "errorhandle";

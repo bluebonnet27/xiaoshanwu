@@ -300,6 +300,9 @@
                             <button th:@click="|zanComment(${comment.getCommentid()})|" class="btn btn-outline-info" th:text="'点赞 ' + ${comment.getCommentthumb()}">
                                 点赞 23
                             </button>
+                            <button class="btn btn-outline-danger" th:text="'热度 ' + ${comment.getCommenthot()}">
+                                热度 57
+                            </button>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal">
                                 举报
@@ -314,7 +317,7 @@
                     <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
                         th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
                         <a class="page-link"
-                           th:href="@{articlemore(page=${i},limit=${pages.getSize()},corder=${corder})}"
+                           th:href="@{articlemore(articleid=${article.getArticleid()},page=${i},limit=${pages.getSize()},corder=${corder})}"
                            th:text="${i}">
                             Previous</a>
                     </li>

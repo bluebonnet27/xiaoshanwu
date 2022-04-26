@@ -5,6 +5,8 @@ import com.ti.xiaoshanwu.entity.impl.CommentImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 /**
  * (Comment)表服务接口
  *
@@ -40,6 +42,14 @@ public interface CommentService {
      * @return the page
      */
     Page<Comment> queryByPage(Comment comment,PageRequest pageRequest,Integer order);
+
+    /**
+     * 不分页查询.
+     *
+     * @param comment the comment
+     * @return the list
+     */
+    List<Comment> queryByPage(Comment comment);
 
     /**
      * 获取最新一条评论.
