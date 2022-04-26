@@ -582,5 +582,53 @@ public class ArticleController {
         return backResult.toString();
     }
 
+    @RequestMapping("collectarticle")
+    @ResponseBody
+    public String collectArticle(HttpSession session,
+                                 Integer articleid){
+        Integer userid = (Integer) session.getAttribute("uid");
+        JsonResult backResult = new JsonResult();
+        Collect collect = new Collect();
+        //用户id
+        collect.setUserid(userid);
+        //文章id
+        collect.setArticleid(articleid);
+
+        Date currentTime = new Date();
+
+        if(userid==null){
+            backResult.setResult(false);
+            backResult.setErrMsg("登录信息失效，请重新登录");
+        }else if(this.collectService.isCollectExisted(collect)) {
+            backResult.setResult(false);
+            backResult.setErrMsg("您收藏过了！");
+        }else {
+            Article newArticle = new Article();
+            Article oldArticle = this.articleService.queryById(articleid);
+
+            newArticle.setArticleid(articleid);
+            newArticle.setArticlecollect(oldArticle.getArticlecollect() + 1);
+
+            Article backResultArticle = this.articleService.update(newArticle);
+
+            Collect collectNew = new Collect();
+            //用户点赞
+            collectNew.setCollecttype(1);
+            //用户id
+            collectNew.setUserid(userid);
+            //点赞文章
+            collectNew.setArticleid(articleid);
+            //time
+            collectNew.setCollecttime(currentTime);
+
+            this.collectService.insert(collectNew);
+
+            backResult.setResult(true);
+            backResult.setResMsg("点赞成功，您的点赞已被记录，id为 ");
+        }
+
+        return backResult.toString();
+    }
+
 
 }

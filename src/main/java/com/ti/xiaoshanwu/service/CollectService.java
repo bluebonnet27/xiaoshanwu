@@ -71,4 +71,12 @@ public interface CollectService {
      */
     CollectImpl convertToCollectImpl(Collect collect);
 
+    /**
+     * Is collect existed boolean.
+     *
+     * @param collect the collect
+     * @return the boolean
+     */
+    Boolean isCollectExisted(Collect collect);
+
 }

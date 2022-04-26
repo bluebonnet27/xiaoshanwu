@@ -168,9 +168,9 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" id="collectOp">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">收藏</button>
+                <button type="button" class="btn btn-primary"  th:@click="|shoucang(${article.getArticleid()})|">收藏</button>
             </div>
         </div>
     </div>
@@ -256,7 +256,7 @@
                 </div>
             </div>
 
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger" role="alert" id="commentsID">
                 本文版权为作者所有，如需转载，请注明作者名字以及文章来源。
             </div>
 
@@ -313,7 +313,7 @@
             </div>
 
             <nav>
-                <ul class="pagination">
+                <ul th:class="${pages.getTotalPages() == 0}?'pagination invisible':'pagination'">
                     <li th:each="i : ${#numbers.sequence(1,pages.getTotalPages())}"
                         th:class="${pages.getNumber() + 1 != i}?'page-item':'page-item active'">
                         <a class="page-link"
@@ -424,6 +424,28 @@
 </div>
 
 
+<div class="mdui-fab-wrapper" id="exampleFab" mdui-fab="{trigger: 'hover'}">
+    <button class="mdui-fab mdui-ripple mdui-color-theme-accent">
+        <!-- 默认显示的图标 -->
+        <i class="mdui-icon material-icons">add</i>
+
+        <!-- 在拨号菜单开始打开时，平滑切换到该图标，若不需要切换图标，则可以省略该元素 -->
+        <i class="mdui-icon mdui-fab-opened material-icons">add</i>
+    </button>
+    <div class="mdui-fab-dial">
+        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-pink"
+                onclick="window.location.href='#top'">
+            <i class="mdui-icon material-icons">&#xe5d8;</i>
+        </button>
+        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red"
+                onclick="window.location.href='#commentsID'">
+            <i class="mdui-icon material-icons">&#xe0b9;</i>
+        </button>
+    </div>
+</div>
+
+
+
 <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
     <div class="container">
         <ul class="bd-footer-links ps-0 mb-3">
@@ -479,6 +501,36 @@
 
                 axios
                     .post('http://localhost:8080/article/thumb',formDate)
+                    .then(response =>{
+                        if(response.data.result){
+                            alert(response.data.resMsg)
+                            location.reload()
+                        }else{
+                            alert(response.data.errMsg)
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+
+    new Vue({
+        el:"#collectOp",
+        data:{
+            errMsg:"",
+            resMsg:""
+        },
+        methods:{
+            shoucang:function (aid){
+
+                //封装表单参数
+                const formDate=new FormData();
+                formDate.append("articleid",aid);
+
+                axios
+                    .post('http://localhost:8080/article/collectarticle',formDate)
                     .then(response =>{
                         if(response.data.result){
                             alert(response.data.resMsg)

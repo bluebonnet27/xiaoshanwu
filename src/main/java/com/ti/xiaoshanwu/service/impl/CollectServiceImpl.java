@@ -143,4 +143,16 @@ public class CollectServiceImpl implements CollectService {
 
         return collectImpl;
     }
+
+    /**
+     * Is collect existed boolean.
+     *
+     * @param collect the collect
+     * @return the boolean
+     */
+    @Override
+    public Boolean isCollectExisted(Collect collect) {
+        List<Collect> collects = this.collectDao.queryAllByLimitNoPage(collect);
+        return !collects.isEmpty();
+    }
 }
