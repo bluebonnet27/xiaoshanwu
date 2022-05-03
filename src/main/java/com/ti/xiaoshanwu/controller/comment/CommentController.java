@@ -1,13 +1,16 @@
 package com.ti.xiaoshanwu.controller.comment;
 
+import com.ti.xiaoshanwu.controller.tool.HotTool;
 import com.ti.xiaoshanwu.entity.Article;
 import com.ti.xiaoshanwu.entity.Comment;
 import com.ti.xiaoshanwu.entity.Report;
 import com.ti.xiaoshanwu.entity.Thumbrecord;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
+import com.ti.xiaoshanwu.service.ArticleService;
 import com.ti.xiaoshanwu.service.CommentService;
 import com.ti.xiaoshanwu.service.ReportService;
 import com.ti.xiaoshanwu.service.ThumbrecordService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -32,6 +36,12 @@ public class CommentController {
 
     @Resource
     private ThumbrecordService thumbrecordService;
+
+    @Resource
+    private ArticleService articleService;
+
+    @Autowired
+    private HotTool hotTool;
 
     @RequestMapping("addcomment")
     @ResponseBody
@@ -59,6 +69,14 @@ public class CommentController {
 
             commentBackResult.setResult(true);
             commentBackResult.setResMsg("评论成功,您的评论日期为 " + submitComment.getCommenttime());
+
+            //回复数，帖子热度更新
+            Article targetArticle = this.articleService.queryById(commentar);
+            targetArticle.setArticlereplycount(targetArticle.getArticlereplycount() + 1);
+            Integer articleHot = (int) Math.round(this.hotTool.calculateArticleHot(targetArticle) * 100000);
+            targetArticle.setArticlehot(articleHot);
+
+            this.articleService.update(targetArticle);
         }
 
         return commentBackResult.toString();

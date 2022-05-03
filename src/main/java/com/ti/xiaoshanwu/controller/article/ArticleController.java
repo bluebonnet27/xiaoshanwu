@@ -2,6 +2,7 @@ package com.ti.xiaoshanwu.controller.article;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
+import com.ti.xiaoshanwu.controller.tool.HotTool;
 import com.ti.xiaoshanwu.entity.*;
 import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
 import com.ti.xiaoshanwu.entity.impl.CommentImpl;
@@ -9,6 +10,7 @@ import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
 import com.ti.xiaoshanwu.entity.impl.UserImpl;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -56,6 +58,9 @@ public class ArticleController {
 
     @Resource
     private BoardService boardService;
+
+    @Autowired
+    private HotTool hotTool;
 
     //主题四种排序方式
     static final int ORDER_DEFAULT= 0;
@@ -558,6 +563,13 @@ public class ArticleController {
 
             newArticle.setArticleid(articleid);
             newArticle.setArticlethumb(oldArticle.getArticlethumb() + 1);
+            Integer oldArticleHot = (int) Math.round(this.hotTool.calculateArticleHot(oldArticle) * 100000);
+            oldArticle.setArticlethumb(oldArticle.getArticlethumb() + 1);
+
+            //更新帖子热度
+            Integer articleHot = (int) Math.round(this.hotTool.calculateArticleHot(oldArticle) * 100000);
+
+            newArticle.setArticlehot(articleHot);
 
             Article backResultArticle = this.articleService.update(newArticle);
 
@@ -575,8 +587,10 @@ public class ArticleController {
 
             this.thumbrecordService.insert(thumbrecordNew);
 
+            int deltaHot =  articleHot - oldArticleHot;
+
             backResult.setResult(true);
-            backResult.setResMsg("点赞成功，您的点赞已被记录，id为 ");
+            backResult.setResMsg("点赞成功，此次点赞为帖子增加了"+ deltaHot +"热度");
         }
 
         return backResult.toString();
@@ -608,6 +622,13 @@ public class ArticleController {
 
             newArticle.setArticleid(articleid);
             newArticle.setArticlecollect(oldArticle.getArticlecollect() + 1);
+            Integer oldArticleHot = (int) Math.round(this.hotTool.calculateArticleHot(oldArticle) * 100000);
+            oldArticle.setArticlethumb(oldArticle.getArticlethumb() + 1);
+
+            //更新帖子热度
+            Integer articleHot = (int) Math.round(this.hotTool.calculateArticleHot(oldArticle) * 100000);
+
+            newArticle.setArticlehot(articleHot);
 
             Article backResultArticle = this.articleService.update(newArticle);
 
@@ -622,9 +643,10 @@ public class ArticleController {
             collectNew.setCollecttime(currentTime);
 
             this.collectService.insert(collectNew);
+            int deltaHot =  articleHot - oldArticleHot;
 
             backResult.setResult(true);
-            backResult.setResMsg("点赞成功，您的点赞已被记录，id为 ");
+            backResult.setResMsg("收藏成功，此次收藏为帖子增加了"+ deltaHot +"热度");
         }
 
         return backResult.toString();

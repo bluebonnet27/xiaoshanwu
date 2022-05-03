@@ -3,25 +3,25 @@ package com.ti.xiaoshanwu.controller.admin;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.ti.xiaoshanwu.controller.tool.HotTool;
 import com.ti.xiaoshanwu.entity.*;
-import com.ti.xiaoshanwu.entity.impl.BoardImpl;
-import com.ti.xiaoshanwu.entity.impl.LoginrecordImpl;
-import com.ti.xiaoshanwu.entity.impl.ThemeImpl;
-import com.ti.xiaoshanwu.entity.impl.UserImpl;
+import com.ti.xiaoshanwu.entity.impl.*;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
 import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +56,9 @@ public class AdminController {
 
     @Resource
     private CommentService commentService;
+
+    @Resource
+    private ReportService reportService;
 
     @RequestMapping("tochangepwd")
     public String toChangePwd(HttpSession session,
@@ -225,6 +228,50 @@ public class AdminController {
         return "admin/ttheme/adminthememng";
     }
 
+    @RequestMapping("allreports")
+    public String getAllReports(HttpSession session,
+                                @RequestParam(defaultValue = "1") Integer page,
+                                @RequestParam(defaultValue = "10") Integer limit,
+                                Model model,
+                                @RequestParam(defaultValue = "-1") Integer reporttype){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //程序页转为类页
+        page = page -1;
+        //筛选条件
+        Report reportCondition = new Report();
+        if(reporttype != -1){
+            reportCondition.setReporttype(reporttype);
+        }
+        //排序依据
+        Sort sort = Sort.by(Sort.Order.desc("reportid"));
+        //分页请求
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+        //执行
+        Page<Report> reportPages = this.reportService.queryByPage(reportCondition,pageRequest);
+        ArrayList<ReportImpl> reportImpls = new ArrayList<>();
+
+        //发送到前端前二次处理
+        List<Report> reports = reportPages.getContent();
+
+        for(Report report:reports){
+            ReportImpl reportImpl = this.reportService.convertToImpl(report);
+            reportImpls.add(reportImpl);
+        }
+
+        model.addAttribute("reportpages",reportPages);
+        model.addAttribute("reportImpls",reportImpls);
+
+        model.addAttribute("reporttype",reporttype);
+        return "admin/report/adminreports";
+    }
+
     @RequestMapping("userdata")
     public String getUserData(HttpSession session,
                               Model model){
@@ -367,6 +414,43 @@ public class AdminController {
         model.addAttribute("user",targetUserImpl);
 
         return "admin/uuser/userdetail";
+    }
+
+    @RequestMapping("toreportdetail")
+    public String toReportDetail(Model model,
+                                 HttpSession session,
+                                 Integer reportid,
+                                 Integer reporttype){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+
+        //查找举报详细信息
+        Report foundReport = this.reportService.queryById(reportid);
+        ReportImpl reportImpl = this.reportService.convertToImpl(foundReport);
+
+        model.addAttribute("reporttype",reporttype);
+        if(reporttype == 0){
+            Article article = this.articleService.queryById(foundReport.getReporttoid());
+            model.addAttribute("ctt",article);
+        }else if(reporttype == 1){
+            Comment comment = this.commentService.queryById(foundReport.getReporttoid());
+            Article article = new Article();
+            article.setArticlecontent(comment.getCommentcontent());
+            model.addAttribute("ctt",article);
+        }else {
+            Article article = this.articleService.queryById(foundReport.getReporttoid());
+            model.addAttribute("ctt",article);
+        }
+
+
+        model.addAttribute("report",reportImpl);
+
+        return "admin/report/reportdetail";
     }
 
     @RequestMapping("touserdetailmng")

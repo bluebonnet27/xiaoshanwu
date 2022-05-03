@@ -70,7 +70,6 @@ public class IndexController {
             //前端数据二次处理
             List<Article> articlesNew = articles.getContent();
             ArrayList<ArticleImpl> articlesImpl = new ArrayList<>();
-            HotTool hotTool = new HotTool();
 
             for(Article article:articlesNew){
                 ArticleImpl articleImpl2 = this.articleService.convertToArticleImpl(article);
