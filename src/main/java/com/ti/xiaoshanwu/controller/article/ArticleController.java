@@ -118,6 +118,10 @@ public class ArticleController {
 
 
             for(Article article:articlesNew){
+                //去除热度为-1的帖子
+                if(article.getArticlehot() < 0){
+                    continue;
+                }
                 ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
                 articlesImpl.add(articleImpl);
             }
@@ -173,6 +177,10 @@ public class ArticleController {
 
 
             for(Article article:articlesNew){
+                //去除热度为-1的帖子
+                if(article.getArticlehot() < 0){
+                    continue;
+                }
                 ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
                 articlesImpl.add(articleImpl);
             }
@@ -224,6 +232,10 @@ public class ArticleController {
 
 
             for(Article article:articlesNew){
+                //去除热度为-1的帖子
+                if(article.getArticlehot() < 0){
+                    continue;
+                }
                 ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
                 articlesImpl.add(articleImpl);
             }
@@ -274,6 +286,10 @@ public class ArticleController {
 
 
             for(Article article:articlesNew){
+                //去除热度为-1的帖子
+                if(article.getArticlehot() < 0){
+                    continue;
+                }
                 ArticleImpl articleImpl = this.articleService.convertToArticleImpl(article);
                 articlesImpl.add(articleImpl);
             }

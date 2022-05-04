@@ -84,4 +84,8 @@ public class HotTool {
 
         return commentHotBase*commentHotTop;
     }
+
+    public Integer intCalculateHot(Double oldHot){
+       return  (int) Math.round(oldHot * 100000);
+    }
 }

@@ -1,11 +1,17 @@
 package com.ti.xiaoshanwu.controller.report;
 
+import com.ti.xiaoshanwu.controller.tool.HotTool;
+import com.ti.xiaoshanwu.entity.Article;
+import com.ti.xiaoshanwu.entity.Comment;
 import com.ti.xiaoshanwu.entity.Report;
 import com.ti.xiaoshanwu.entity.User;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
+import com.ti.xiaoshanwu.service.ArticleService;
+import com.ti.xiaoshanwu.service.CommentService;
 import com.ti.xiaoshanwu.service.ReportService;
 import com.ti.xiaoshanwu.service.UserService;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +34,15 @@ public class ReportController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private ArticleService articleService;
+
+    @Resource
+    private CommentService commentService;
+
+    @Autowired
+    private HotTool hotTool;
 
     /**
      * 提交举报的方法.
@@ -80,10 +95,45 @@ public class ReportController {
                 reportBackResult.setResult(false);
                 reportBackResult.setErrMsg("由于数据库的原因举报失败，请联系管理员");
             }else {
+                //暂时清空热度值
+                if(reporttype == 0){
+                    Article reportAricle = this.articleService.queryById(reporttoid);
+                    reportAricle.setArticlehot(-1);
+                    this.articleService.update(reportAricle);
+                }
                 reportBackResult.setResult(true);
                 reportBackResult.setResMsg("举报成功，以下是您的举报信息" + backResultReport.getReportreason());
             }
             return reportBackResult.toString();
         }
+    }
+
+    @RequestMapping("disagreport")
+    @ResponseBody
+    public String disagreeReport(HttpSession session,Integer reportid){
+        JsonResult<?> reportBackResult = new JsonResult<>();
+        Report targetReport = this.reportService.queryById(reportid);
+
+        //更改举报状态 0 = 待处理,2 = 已驳回
+        targetReport.setReportstate(2);
+        this.reportService.update(targetReport);
+
+        //恢复帖子/评论热度
+        if(targetReport.getReporttype() == 0){
+            Article targetArticle = this.articleService.queryById(targetReport.getReporttoid());
+            Integer newHot = this.hotTool.intCalculateHot(this.hotTool.calculateArticleHot(targetArticle));
+            targetArticle.setArticlehot(newHot);
+            this.articleService.update(targetArticle);
+        }else{
+            Comment targetComment = this.commentService.queryById(targetReport.getReporttoid());
+            Integer newHot = this.hotTool.intCalculateHot(this.hotTool.calculateCommentHot(targetComment));
+            targetComment.setCommenthot(newHot);
+            this.commentService.update(targetComment);
+        }
+
+        reportBackResult.setResult(true);
+        reportBackResult.setResMsg("驳回举报成功，帖子/评论热度已恢复原样");
+
+        return reportBackResult.toString();
     }
 }
