@@ -45,7 +45,7 @@ public class CommentController {
 
     @RequestMapping("addcomment")
     @ResponseBody
-    private String addNewComment(HttpSession session,
+    public String addNewComment(HttpSession session,
                                  Integer commentar,
                                  String content){
         Integer userid = (Integer) session.getAttribute("uid");
