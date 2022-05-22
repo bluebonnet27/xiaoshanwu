@@ -90,4 +90,5 @@ public interface ArticleService {
      */
     Integer insertOrUpdateArticleBatch(List<Article> articles);
 
+    Long queryArticleNumByArticle(Article article);
 }

@@ -176,4 +176,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Integer insertOrUpdateArticleBatch(List<Article> articles) {
         return this.articleDao.insertOrUpdateBatch(articles);
     }
+
+    @Override
+    public Long queryArticleNumByArticle(Article article) {
+        return this.articleDao.count(article);
+    }
 }

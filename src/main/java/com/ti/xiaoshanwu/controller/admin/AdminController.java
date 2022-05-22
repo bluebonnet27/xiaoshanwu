@@ -556,4 +556,16 @@ public class AdminController {
 
         return "errorhandle";
     }
+
+    @RequestMapping("mnghot")
+    public String hotMng(Model model,HttpSession session){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("msg","session空");
+            return "messagepage";
+        }
+        int adminid = (int) session.getAttribute("uid");
+        Admin foundAdmin = this.adminService.queryById(adminid);
+        model.addAttribute("admin",foundAdmin);
+        return "admin/hot/hotmng";
+    }
 }

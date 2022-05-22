@@ -122,6 +122,53 @@ public class IndexController {
                 String adminname = foundAdmin.getAdminname();
                 model.addAttribute("adminname",adminname);
 
+                //用户数据可视化
+                //sex 0 = male,1 = female,2 = spec
+                User maleUser = new User();
+                maleUser.setUsersex(0);
+                User femaleUser = new User();
+                femaleUser.setUsersex(1);
+                User specUser = new User();
+                specUser.setUsersex(2);
+
+                Integer male = Math.toIntExact(this.userService.queryUserNum(maleUser));
+                Integer female = Math.toIntExact(this.userService.queryUserNum(femaleUser));
+                Integer specialSex = Math.toIntExact(this.userService.queryUserNum(specUser));
+
+                model.addAttribute("malec",male);
+                model.addAttribute("femalec",female);
+                model.addAttribute("specc",specialSex);
+
+                //帖子数据可视化
+                Article articleProg = new Article();
+                articleProg.setArticlethemeid(0);
+                Article articleJob = new Article();
+                articleJob.setArticlethemeid(1);
+                Article articleAni = new Article();
+                articleAni.setArticlethemeid(2);
+                Article articleGam = new Article();
+                articleGam.setArticlethemeid(3);
+                Article articleLit = new Article();
+                articleLit.setArticlethemeid(4);
+
+                Integer articleProgCount =
+                        Math.toIntExact(this.articleService.queryArticleNumByArticle(articleProg));
+                Integer articleJobCount =
+                        Math.toIntExact(this.articleService.queryArticleNumByArticle(articleJob));
+                Integer articleAniCount =
+                        Math.toIntExact(this.articleService.queryArticleNumByArticle(articleAni));
+                Integer articleGamCount =
+                        Math.toIntExact(this.articleService.queryArticleNumByArticle(articleGam));
+                Integer articleLitCount =
+                        Math.toIntExact(this.articleService.queryArticleNumByArticle(articleLit));
+
+                model.addAttribute("arProg",articleProgCount);
+                model.addAttribute("arJob",articleJobCount);
+                model.addAttribute("arAni",articleAniCount);
+                model.addAttribute("arGam",articleGamCount);
+                model.addAttribute("arLit",articleLitCount);
+
+
                 return "admin/adminindex";
             }
         }else {
