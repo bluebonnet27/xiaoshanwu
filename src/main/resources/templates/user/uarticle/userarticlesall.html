@@ -33,6 +33,8 @@
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
 
+    <script src="../js/jquery-3.5.1.js"></script>
+
     <!--  和风天气  -->
     <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
 
@@ -43,6 +45,24 @@
     </style>
 
 </head>
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="collectModalLabel">帖子/评论详情</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="test-editormd">
+                    <textarea style="display:none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" id="collectOp">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
@@ -71,6 +91,7 @@
         </div>
     </div>
 </nav>
+
 <div class="container" id="mainpart">
 
     <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
@@ -174,7 +195,7 @@
                        th:href="@{userallarticle(themeid=4)}">文学</a>
                 </li>
             </ul>
-            <table class="table table-hover">
+            <table class="table table-hover" id="vueopendetail">
                 <thead>
                 <tr>
                     <th>id</th>
@@ -199,9 +220,13 @@
                     <td th:text="${article.getArticlecollect()}"></td>
                     <td th:text="${article.getArticlereplycount()}"></td>
                     <td>
-                        <button class="btn btn-info disabled">
-                            <span class="bi-gear"></span>
+                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detailModal"
+                                th:attr="data-content=${article.getArticlecontent()},data-title=${article.getArticletitle()}">
+                            <span class="bi bi-three-dots"></span>
                         </button>
+<!--                        <button class="btn btn-info" th:onclick="|getDetail(${article.getArticlecontent()})|">-->
+<!--                            <span class="bi-gear"></span>-->
+<!--                        </button>-->
                     </td>
                 </tr>
                 </tbody>
@@ -234,3 +259,49 @@
 </div>
 </body>
 </html>
+<link rel="stylesheet" th:href="@{/editormd/css/editormd.preview.css}"/>
+<script th:src="@{/js/jquery-3.5.1.js}"></script>
+<!--mark基本-->
+<script th:src="@{/editormd/lib/marked.min.js}"></script>
+<!--代码高亮-->
+<script th:src="@{/editormd/lib/prettify.min.js}"></script>
+<!--暂时不知道这个文件是干什么的，但加上这个popper就会失效-->
+<!--<script th:src="@{/editormd/lib/raphael.min.js}"></script>-->
+<script th:src="@{/editormd/lib/underscore.min.js}"></script>
+<script th:src="@{/editormd/lib/sequence-diagram.min.js}"></script>
+<script th:src="@{/editormd/lib/flowchart.min.js}"></script>
+<script th:src="@{/editormd/lib/jquery.flowchart.min.js}"></script>
+<script th:src="@{/editormd/js/editormd.min.js}"></script>
+<script>
+    var exampleModal = document.getElementById('detailModal')
+    exampleModal.addEventListener('shown.bs.modal', function (event) {
+
+        var button = event.relatedTarget
+
+        var arcontent = button.getAttribute('data-content')
+        var artitle = button.getAttribute('data-title')
+
+        var modalBodyInput = exampleModal.querySelector('.modal-body textarea')
+        var modaltitle = exampleModal.querySelector('.modal-title')
+
+        modalBodyInput.value = arcontent
+        modaltitle.textContent = artitle
+
+        var testEditor;
+        $(function () {
+            testEditor = editormd.markdownToHTML("test-editormd", {
+                htmlDecode: "style,script,iframe", // tags
+                emoji: true,
+                taskList: true,
+                tex: true, // 默认不解析
+                flowChart: false, // 默认不解析
+                sequenceDiagram: true, // 默认不解析
+                path: "./editormd/lib/",
+                previewTheme: "dark"
+            })
+        })
+    })
+    exampleModal.addEventListener('hide.bs.modal', function(event){
+        location.reload()
+    });
+</script>

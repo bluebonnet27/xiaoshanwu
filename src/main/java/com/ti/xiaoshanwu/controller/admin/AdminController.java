@@ -97,14 +97,20 @@ public class AdminController {
 
                 session.removeAttribute("uid");
             }else {
-                Admin updateAdmin = new Admin(adminid,adminpwd);
-                Admin newAdmin = adminService.update(updateAdmin);
+                if(adminpwd==null){
+                    changePwdBackResult.setResult(false);
+                    changePwdBackResult.setResMsg("密码不能为空");
+                }else {
+                    Admin updateAdmin = new Admin(adminid,adminpwd);
 
-                changePwdBackResult.setResult(true);
-                changePwdBackResult.setResMsg("更改成功，你好：" + newAdmin.getAdminname() + "\n" +
-                        "你的登录信息已被清除，请重新登录");
+                    Admin newAdmin = adminService.update(updateAdmin);
 
-                session.removeAttribute("uid");
+                    changePwdBackResult.setResult(true);
+                    changePwdBackResult.setResMsg("更改成功，你好：" + newAdmin.getAdminname() + "\n" +
+                            "你的登录信息已被清除，请重新登录");
+
+                    session.removeAttribute("uid");
+                }
             }
         }else {
             changePwdBackResult.setResult(false);

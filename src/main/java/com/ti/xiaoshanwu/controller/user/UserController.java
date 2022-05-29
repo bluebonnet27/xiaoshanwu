@@ -2,10 +2,7 @@ package com.ti.xiaoshanwu.controller.user;
 
 import com.ti.xiaoshanwu.controller.tool.HeadImgConverter;
 import com.ti.xiaoshanwu.entity.*;
-import com.ti.xiaoshanwu.entity.impl.ArticleImpl;
-import com.ti.xiaoshanwu.entity.impl.CollectImpl;
-import com.ti.xiaoshanwu.entity.impl.ReportImpl;
-import com.ti.xiaoshanwu.entity.impl.UserImpl;
+import com.ti.xiaoshanwu.entity.impl.*;
 import com.ti.xiaoshanwu.entity.tool.JsonResult;
 import com.ti.xiaoshanwu.service.*;
 import com.ti.xiaoshanwu.service.impl.MailService;
@@ -353,7 +350,7 @@ public class UserController {
 
     @RequestMapping("userchangepwd")
     @ResponseBody
-    public String changePwdById(String newpwd,
+    public String changePwdById(@RequestParam String newpwd,
                                 HttpSession session){
         Integer targetUserid = (Integer) session.getAttribute("uid");
         JsonResult changePwdResult = new JsonResult();
@@ -520,10 +517,16 @@ public class UserController {
         themeSift.setThemeadminid(targetUserid);
         List<Theme> themes = this.themeService.queryByNoPage(themeSift);
 
+        ArrayList<ThemeImpl> themesImpl = new ArrayList<>();
+        for(Theme theme:themes){
+            ThemeImpl theme1 = this.themeService.convertToThemeImpl(theme);
+            themesImpl.add(theme1);
+        }
+
         if(themes.isEmpty()){
             return "user/utheme/uthemenull";
         }else {
-            model.addAttribute("themes",themes);
+            model.addAttribute("themes",themesImpl);
             return "user/utheme/usertheme";
         }
     }

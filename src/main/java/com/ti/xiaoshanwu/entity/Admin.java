@@ -53,6 +53,9 @@ public class Admin implements Serializable {
         this.adminpwd = adminpwd;
     }
 
+    public Admin() {
+    }
+
     @Override
     public String toString() {
         return "Admin{" +
