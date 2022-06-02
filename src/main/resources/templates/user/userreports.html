@@ -187,9 +187,9 @@
                     <td th:text="${report.getReporttimeImpl()}"></td>
                     <td th:text="${report.getReportuseridNameImpl()}"></td>
                     <td>
-                        <button class="btn btn-info disabled">
-                            <span class="bi-gear">操作</span>
-                        </button>
+                        <a class="btn btn-info" th:href="@{/article/articlemore(articleid=${report.getReporttoid()})}">
+                            <span class="bi-three-dots"> 详情</span>
+                        </a>
                     </td>
                 </tr>
                 </tbody>

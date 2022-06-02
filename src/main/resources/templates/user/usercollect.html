@@ -174,9 +174,9 @@
                     <td th:text="${collect.getCollectTimeImpl()}"></td>
                     <td th:text="${collect.getCollectFolderNameImpl()}"></td>
                     <td>
-                        <button class="btn btn-info">
+                        <a class="btn btn-info" th:href="@{/article/articlemore(articleid=${collect.getArticleid()})}">
                             <span class="bi-three-dots"> 详情</span>
-                        </button>
+                        </a>
                     </td>
                 </tr>
                 </tbody>

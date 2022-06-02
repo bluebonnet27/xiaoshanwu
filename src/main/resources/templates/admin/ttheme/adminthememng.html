@@ -44,6 +44,45 @@
 
 </head>
 <body>
+<div class="modal fade" id="changeThemeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="collectModalLabel">主题信息</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-3">
+                        <label for="themename" class="col-sm-2 col-form-label">主题名称</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="themename" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="themetime" class="col-sm-2 col-form-label">创建时间</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="themetime" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="adminname" class="col-sm-2 col-form-label">管理员</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="adminname" disabled>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="themestatement" class="col-form-label">描述</label>
+                        <textarea class="form-control" id="themestatement" disabled></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         <a class="navbar-brand" href="#">
@@ -141,8 +180,9 @@
                     <td th:text="${theme.getThemeDateImpl()}"></td>
                     <td th:text="${theme.getThemecount()}"></td>
                     <td>
-                        <button class="btn btn-info disabled">
-                            <span class="bi-gear"></span> 管理
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeThemeModal"
+                                th:attr="data-title=${theme.getThemename()},data-time=${theme.getThemeDateImpl()},data-admin=${theme.getThemeadminidImpl()},data-state=${theme.getThemestatement()}">
+                            <span class="bi bi-three-dots"></span> 详情
                         </button>
                     </td>
                 </tr>
@@ -176,3 +216,27 @@
 </footer>
 </body>
 </html>
+<script>
+    var exampleModal = document.getElementById('changeThemeModal')
+    exampleModal.addEventListener('shown.bs.modal', function (event) {
+
+        var button = event.relatedTarget
+
+        var thtitle = button.getAttribute('data-title')
+        var thtime = button.getAttribute('data-time')
+        var thadmin = button.getAttribute('data-admin')
+        var thstate = button.getAttribute('data-state')
+
+        var modaltitle = exampleModal.querySelector('.modal-title')
+
+        var thtitleModal = document.getElementById('themename')
+        var thtimeModal = document.getElementById('themetime')
+        var thadminModal = document.getElementById('adminname')
+        var thstateModal = document.getElementById('themestatement')
+
+        thtitleModal.value = thtitle
+        thtimeModal.value = thtime
+        thadminModal.value = thadmin
+        thstateModal.value = thstate
+    })
+</script>
