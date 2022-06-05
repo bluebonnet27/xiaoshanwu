@@ -10,6 +10,7 @@ import com.ti.xiaoshanwu.service.AdminService;
 import com.ti.xiaoshanwu.service.BoardService;
 import com.ti.xiaoshanwu.service.LoginrecordService;
 import com.ti.xiaoshanwu.service.UserService;
+import com.ti.xiaoshanwu.service.impl.MailService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * @author TiHongsheng
@@ -44,6 +46,9 @@ public class LoginAndRegController {
     @Resource
     private LoginrecordService loginrecordService;
 
+    @Resource
+    private MailService mailService;
+
     @RequestMapping("tologin")
     public String toLogin(Model model){
         //查询最新公告内容
@@ -55,6 +60,85 @@ public class LoginAndRegController {
 
     @RequestMapping("toreg")
     public String toReg(){ return "login/regpage"; }
+
+    @RequestMapping("tofindpwdpage")
+    public String toFindPwdPage(){ return "login/findpwd";}
+
+    @RequestMapping("reggetcode")
+    @ResponseBody
+    public String regGetCheckCode(HttpSession session, String testemail){
+        JsonResult emailCodeBackResult = new JsonResult();
+
+        String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
+        String message = "您的验证码为："+checkCode;
+        try {
+            mailService.sendSimpleMail(testemail, "小山屋论坛-验证码", message);
+            session.setAttribute("emailcode",checkCode);
+            emailCodeBackResult.setResult(true);
+            emailCodeBackResult.setResMsg("验证码发送成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            emailCodeBackResult.setResult(false);
+            emailCodeBackResult.setErrMsg("验证码发送失败");
+        }
+
+        return emailCodeBackResult.toString();
+    }
+
+    @RequestMapping("findbackpwd")
+    @ResponseBody
+    public String regFindPwd(HttpSession session,
+                             @RequestParam String newpwd,
+                             @RequestParam String uemail,
+                             @RequestParam String checkcode){
+        JsonResult backResult = new JsonResult();
+        User findedUser = this.userService.queryByEmail(uemail);
+        if(findedUser==null){
+            backResult.setResult(false);
+            backResult.setErrMsg("无法找到此邮箱对应的用户，请检查您的邮箱输入是否正确");
+
+            return backResult.toString();
+        }else {
+            String savedCheckCode = (String) session.getAttribute("emailcode");
+            if(checkcode.equals(savedCheckCode)){
+                User newUser = new User();
+                newUser.setUserid(findedUser.getUserid());
+                newUser.setUserpwd(newpwd);
+
+                User backUser = this.userService.update(newUser);
+
+                if(backUser==null){
+                    backResult.setResult(false);
+                    backResult.setErrMsg("由于数据库的原因，密码更新失败");
+
+                    return backResult.toString();
+                }else {
+                    backResult.setResult(true);
+                    backResult.setResMsg("密码修改成功，将为您跳转到首页");
+
+                    //添加登录记录
+                    Loginrecord loginrecord = new Loginrecord();
+                    loginrecord.setLogintype(findedUser.getUserrole());
+                    loginrecord.setLoginid(findedUser.getUserid());
+
+                    Date now = new Date();
+                    loginrecord.setLogintime(now);
+
+                    Loginrecord recordBackResult = this.loginrecordService.insert(loginrecord);
+
+                    //session
+                    session.setAttribute("uid",findedUser.getUserid());
+
+                    return backResult.toString();
+                }
+            }else {
+                backResult.setResult(false);
+                backResult.setErrMsg("验证码错误");
+
+                return backResult.toString();
+            }
+        }
+    }
 
     @RequestMapping("testlogin")
     public @ResponseBody String getUserByUseremailAndUserpwd(HttpSession session,

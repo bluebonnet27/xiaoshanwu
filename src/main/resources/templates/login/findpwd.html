@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
-    <title>小山屋论坛-登录</title>
+    <title>小山屋论坛-找回密码</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -64,44 +64,43 @@
         <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">小山屋论坛</a></li>
-                <li class="breadcrumb-item active" aria-current="page">登录</li>
+                <li class="breadcrumb-item active" aria-current="page">找回密码</li>
             </ol>
         </nav>
         <div class="col-sm">
             <div class="card">
-                <h5 class="card-header">最新公告</h5>
+                <h5 class="card-header">你正在找回您的密码</h5>
                 <div class="card-body">
-                    <h4 class="card-title" th:text="${board.getBoardtitle()}">更新日志 v0.1</h4>
-                    <p class="card-text" th:text="${board.getBoarddate()}"></p>
-                    <a href="https://github.com/bluebonnet27/xiaoshanwu" class="btn btn-info"><span class="bi-github"></span> github地址</a>
+                    <h4 class="card-title">别担心，我们都有不顺利的时候</h4>
+                    <p class="card-text">在右侧验证邮箱，并填写新的密码即可修改密码</p>
                 </div>
             </div>
         </div>
-        <div id="loginform" class="col-sm">
+        <div id="findpwdform" class="col-sm">
             <form>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">电子邮件地址/用户名</label>
                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                            placeholder="example@example.com" v-model="uemail">
-                    <div id="emailHelp" class="form-text">用户请填写邮箱，管理员请填写用户名</div>
+                    <div id="emailHelp" class="form-text">填写您注册时的邮箱</div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">密码</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" v-model="upwd">
-                    <div id="pwdHelp" class="form-text">不要将密码泄露给任何人</div>
+                    <label for="exampleInputEmail1" class="form-label">验证码</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="surepwdid" aria-describedby="surepwdhelp"
+                               v-model="surepwd">
+                        <div id="surepwdhelp" class="form-text">填写您刚收到的六位数验证码</div>
+                    </div>
+                    <button type="button" class="btn btn-info" v-bind:class="{disabled:dis}" @click="getCode()">
+                        发送验证码</button>
                 </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">记住我</label>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">新密码</label>
+                    <input type="text" class="form-control" id="exampleInputPassword1" v-model="upwd">
+                    <div id="pwdHelp" class="form-text">不要将密码泄露给任何人</div>
                 </div>
             </form>
             <button type="button" class="btn btn-primary" @click="submitForm()"><span class="bi-person"></span> 用户登录</button>
-            <button type="button" class="btn btn-danger" @click="submitAdminForm()"><span class="bi-tools"></span> 管理员登录</button>
-            <button type="button" class="btn btn-info"
-                    onclick="window.location.href='http://localhost:8080/login/tofindpwdpage'">
-                <span class="bi-question-lg"></span> 我忘记了我的密码
-            </button>
-
         </div>
     </div>
 </div>
@@ -118,50 +117,44 @@
 </html>
 <script>
     new Vue({
-        el:"#loginform",
+        el:"#findpwdform",
         data:{
+            dis:false,
             uemail:"",
             upwd:"",
+            surepwd:"",
             errMsg:"",
             resMsg:""
         },
         methods:{
-            submitForm:function (){
-                //封装表单参数
-                const formDate=new FormData();
-                formDate.append("email",this.uemail);
-                formDate.append("pwd",this.upwd);
-
+            getCode:function (){
                 axios
-                    .post('/login/testlogin',formDate)
-                    .catch(function (error) { // 请求失败处理
-                        console.log(error);
-                    })
+                    .post('/login/reggetcode?testemail=' + this.uemail)
                     .then(response =>{
                         if(response.data.result){
-                            window.open('/ind/userindex','_self')
-                        }else{
-                            alert(response.data.errMsg);
+                            alert(response.data.resMsg)
+                            this.dis = true
+                        }else {
+                            alert(response.data.errMsg)
                         }
                     })
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                     });
             },
-            submitAdminForm:function (){
+            submitForm:function (){
                 //封装表单参数
                 const formDate=new FormData();
-                formDate.append("adminname",this.uemail);
-                formDate.append("adminpwd",this.upwd);
+                formDate.append("newpwd",this.upwd);
+                formDate.append("uemail",this.uemail);
+                formDate.append("checkcode",this.surepwd);
 
                 axios
-                    .post('/login/adminlogin',formDate)
-                    .catch(function (error) { // 请求失败处理
-                        console.log(error);
-                    })
+                    .post('/login/findbackpwd',formDate)
                     .then(response =>{
                         if(response.data.result){
-                            window.open('/ind/adminindex','_self')
+                            alert(response.data.resMsg)
+                            window.open('/ind/userindex','_self')
                         }else{
                             alert(response.data.errMsg);
                         }
